@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRL", "IRL\IRL.csproj", "{44E29DE0-AAD5-46A9-AFDF-5BBB464DA4CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRT", "IRL\IRT.csproj", "{44E29DE0-AAD5-46A9-AFDF-5BBB464DA4CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
