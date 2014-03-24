@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="7969a709-5757-4b1a-abc6-be60a4fb0434" name="UML_Shapes" linkedPackageId="f2447ef0-0803-4f89-bc13-ff8b588303d4" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="a9bb8975-a736-4a4b-8704-fbb99073cbe9">
+      <profileInstance Id="9b6a2e57-83fc-44ff-9b78-1570bbf82883" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="0320b03c-dee1-46ab-b422-053c6ddb9ca4">
+      <profileInstance Id="0c878a85-bfad-49b2-ae51-0df8515fef0f" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="a23fd83e-b9f7-400c-84dd-0b0ace19991e" name="Shape" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="9bdf1fc2-2422-4e31-aeed-3979173515d6" />
+        <ownedOperationsInternal>
+          <operation Id="983aef21-b305-4531-8265-d158afc745a8" name="bool isInside" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="22c4d984-1db2-430c-a84f-b0a1fa6d1b53" />
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter Id="a1d4535e-4dfc-4ead-9fde-c5006169885e" name="Vector3 p" direction="In" isUnique="false">
+                  <elementDefinition Id="4ce4cc13-1282-42de-9dea-c59bbd9b2195" />
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+  </packagedElements>
+  <package Id="f2447ef0-0803-4f89-bc13-ff8b588303d4" name="Architecture">
+    <elementDefinition Id="640eb018-42ea-486c-a038-4e71f703db8b" />
+  </package>
+</logicalClassDesignerModel>
