@@ -6,16 +6,16 @@ using Microsoft.Xna.Framework;
 
 namespace IRL
 {
-    private enum InhomogeneityType
+    public enum InhomogeneityType
     {
         RADIAL, XYZ
     };
-    private struct Inhomogeneity
+    public struct Inhomogeneity
     {
         private Func<float, float, float, float> XYZInhomogeneity;
         private Func<float, float> RadialInhomogeneity;
-        private Vector3 Origin= new Vector3(0,0,0);
-        private InhomogeneityType Type = InhomogeneityType.XYZ;
+        private Vector3 Origin;
+        private InhomogeneityType Type;
 
         public Inhomogeneity(Func<float, float, float, float> XYZ, Vector3 origin)
         {
