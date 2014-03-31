@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRT", "IRL\IRT.csproj", "{44E29DE0-AAD5-46A9-AFDF-5BBB464DA4CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsGame1", "WindowsGame1\WindowsGame1\WindowsGame1.csproj", "{776BF0FA-7963-4CF1-BBFB-39A418C277C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRTViewer", "WindowsGame1\WindowsGame1\IRTViewer.csproj", "{776BF0FA-7963-4CF1-BBFB-39A418C277C5}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "WindowsGame1Content", "WindowsGame1\WindowsGame1Content\WindowsGame1Content.contentproj", "{C0F5D3D1-BEC6-486D-BB09-A20726E09835}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRTViewerContent", "WindowsGame1\WindowsGame1Content\IRTViewerContent.contentproj", "{C0F5D3D1-BEC6-486D-BB09-A20726E09835}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

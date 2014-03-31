@@ -18,6 +18,8 @@ namespace WindowsGame1
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Model cylinder;
+        float aspectRatio;
 
         public Game1()
         {
@@ -46,6 +48,8 @@ namespace WindowsGame1
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            cylinder = Content.Load<Model>("Models\\cylinder");
+            aspectRatio = graphics.GraphicsDevice.Viewport.AspectRatio;
 
             // TODO: use this.Content to load your game content here
         }
@@ -70,11 +74,20 @@ namespace WindowsGame1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+
+            modelRotation += (float)gameTime.ElapsedGameTime.TotalMilliseconds *
+            MathHelper.ToRadians(0.1f);
             // TODO: Add your update logic here
 
             base.Update(gameTime);
         }
 
+
+        Vector3 modelPosition = Vector3.Zero;
+        float modelRotation = 0.0f;
+
+        // Set the position of the camera in world space, for our view matrix.
+        Vector3 cameraPosition = new Vector3(0.0f, .5f, 5f);
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -82,7 +95,31 @@ namespace WindowsGame1
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+            Matrix[] transforms = new Matrix[cylinder.Bones.Count];
+            cylinder.CopyAbsoluteBoneTransformsTo(transforms);
 
+            // Draw the model. A model can have multiple meshes, so loop.
+            foreach (ModelMesh mesh in cylinder.Meshes)
+            {
+                // This is where the mesh orientation is set, as well 
+                // as our camera and projection.
+                foreach (BasicEffect effect in mesh.Effects)
+                {
+                    effect.EnableDefaultLighting();
+                    effect.World = transforms[mesh.ParentBone.Index] *
+                        Matrix.CreateRotationX((float)Math.PI / 2)*
+                        Matrix.CreateRotationY(modelRotation)
+                        * Matrix.CreateTranslation(modelPosition);
+                    effect.View = Matrix.CreateLookAt(cameraPosition,
+                        Vector3.Zero, Vector3.Up);
+                    effect.Projection = Matrix.CreatePerspectiveFieldOfView(
+                        MathHelper.ToRadians(45.0f), aspectRatio,
+                        1.0f, 10000.0f);
+                }
+                // Draw the mesh, using the effects set above.
+                mesh.Draw();
+            }
+            base.Draw(gameTime);
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
