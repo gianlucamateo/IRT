@@ -17,20 +17,23 @@ namespace IRT.Engine
             this.Radius = radius;
         }
 
-
-
         public bool isInside(Vector3 r)
         {
             Vector3 diff = r - Center;
             return diff.Length() <= Radius;
         }
 
-        public Vector3 getGradient(Vector3 r)
+        public float getRefractionIndex(Vector3 r)
         {
             throw new NotImplementedException();
         }
 
-        public float getRefractionIndex(Vector3 r)
+        public Vector3 getGradient(Vector3 r, float wavelength, float step = Space.COMPUTE_RESOLUTION)
+        {
+            throw new NotImplementedException();
+        }
+
+        public float getRefractionIndex(Vector3 r, float wavelength)
         {
             throw new NotImplementedException();
         }

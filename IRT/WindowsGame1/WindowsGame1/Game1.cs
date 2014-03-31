@@ -36,7 +36,12 @@ namespace WindowsGame1
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            this.IsMouseVisible = true;
+            this.IsFixedTimeStep = false;
+            graphics.SynchronizeWithVerticalRetrace = false;
+            graphics.PreferMultiSampling = true;
+            graphics.GraphicsDevice.PresentationParameters.MultiSampleCount = 4;
+            graphics.ApplyChanges();
             base.Initialize();
         }
 
@@ -48,7 +53,7 @@ namespace WindowsGame1
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            cylinder = Content.Load<Model>("Models\\cylinder");
+            cylinder = Content.Load<Model>("Models\\sphere");
             aspectRatio = graphics.GraphicsDevice.Viewport.AspectRatio;
 
             // TODO: use this.Content to load your game content here
@@ -87,7 +92,7 @@ namespace WindowsGame1
         float modelRotation = 0.0f;
 
         // Set the position of the camera in world space, for our view matrix.
-        Vector3 cameraPosition = new Vector3(0.0f, .5f, 5f);
+        Vector3 cameraPosition = new Vector3(0.0f, 0, 5);
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>

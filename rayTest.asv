@@ -3,15 +3,15 @@ close all
 baseY = 0;
 initialRayPosition = [0;0.5];
 initialRayDirection = [1;-0.5];
-n0 = 6;
+n0 = 1;
 stepSize = 0.001;
 
 bigStepSize = 0.01;
 
 v = -0:stepSize:1.1;
 [x,y] = meshgrid(v);
-n = @(x,y) n0 + y ;
-z = n0 + y;
+n = @(x,y) n0+ x + y ;
+z = n0 + x + y;
 [px,py]=gradient(z,stepSize,stepSize);
 initialRayDirection = initialRayDirection./norm(initialRayDirection);
 
@@ -28,7 +28,7 @@ for dl1 = 0: bigStepSize: 1
         xT = px(1+floor((r(1)+dirStep(1))/stepSize),1+floor((r(2)+dirStep(2))/stepSize));
         yT = py(1+floor((r(1)+dirStep(1))/stepSize),1+floor((r(2)+dirStep(2))/stepSize));
         grad = [xT;yT]
-        dr = grad*(stepSize)*n(r(1)+dirStep(1),r(2)+dirStep(2));
+        dr = grad*(stepSize)*n(r(1),r(2));
         doubleSum = doubleSum + sum;
         sum = sum + dr
     end

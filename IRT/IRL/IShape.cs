@@ -10,9 +10,9 @@ namespace IRT.Engine
     {
         bool isInside(Vector3 r);
 
-        Vector3 getGradient(Vector3 r);
+        Vector3 getGradient(Vector3 r, float wavelength, float step=Space.COMPUTE_RESOLUTION);
 
-        float getRefractionIndex(Vector3 r);
+        float getRefractionIndex(Vector3 r, float wavelength);
 
     }
 }
