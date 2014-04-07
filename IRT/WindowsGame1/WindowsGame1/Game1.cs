@@ -112,9 +112,8 @@ namespace WindowsGame1
                 {
                     effect.EnableDefaultLighting();
                     effect.World = transforms[mesh.ParentBone.Index] *
-                        Matrix.CreateRotationX((float)Math.PI / 2)*
-                        Matrix.CreateRotationY(modelRotation)
-                        * Matrix.CreateTranslation(modelPosition);
+                        Matrix.CreateRotationX((float)Math.PI / 2) *
+                        Matrix.CreateRotationY(modelRotation);
                     effect.View = Matrix.CreateLookAt(cameraPosition,
                         Vector3.Zero, Vector3.Up);
                     effect.Projection = Matrix.CreatePerspectiveFieldOfView(

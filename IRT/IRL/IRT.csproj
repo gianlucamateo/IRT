@@ -37,6 +37,7 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Cuboid.cs" />
     <Compile Include="IShape.cs" />
     <Compile Include="Inhomogeneity.cs" />
     <Compile Include="Shape.cs" />
