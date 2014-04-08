@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace IRT.Engine
 {
-    public abstract class Shape
+    public abstract class Shape : IShape
     {
         protected Inhomogeneity Inhomogeniety;
         protected Vector3 Center;
@@ -28,5 +28,9 @@ namespace IRT.Engine
         {
             return this.Inhomogeniety.Evaluate(r - this.Center);
         }
+
+        public abstract bool isInside(Vector3 r);
+
+        public abstract void interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, float outerRefractionIndex, float wavelength);
     }
 }

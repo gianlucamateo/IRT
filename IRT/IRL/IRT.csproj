@@ -40,6 +40,7 @@
     <Compile Include="Cuboid.cs" />
     <Compile Include="IShape.cs" />
     <Compile Include="Inhomogeneity.cs" />
+    <Compile Include="Ray.cs" />
     <Compile Include="Shape.cs" />
     <Compile Include="Space.cs" />
     <Compile Include="Sphere.cs" />
