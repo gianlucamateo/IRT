@@ -18,7 +18,7 @@ namespace IRT.Engine
             this.depthZ = depthZ;
         }
 
-        public bool isInside(Vector3 r)
+        public override bool isInside(Vector3 r)
         {
             float x = r.X;
             float y = r.Y;
@@ -34,10 +34,7 @@ namespace IRT.Engine
             return true;
         }
 
-
-
-
-        public void interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, float outerRefractionIndex, float wavelength)
+        public override void interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, float outerRefractionIndex, float wavelength)
         {
             throw new NotImplementedException();
         }

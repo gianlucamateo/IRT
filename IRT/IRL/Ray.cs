@@ -15,6 +15,7 @@ namespace IRT.Engine
         private Space space;
 
         public Ray(Vector3 startPosition, Vector3 direction, Space space){
+            this.segments = new List<Vector3>();
             this.currentPosition = startPosition;
             this.direction = direction;
             this.space = space;

@@ -15,6 +15,7 @@ namespace IRT.Engine
 
         public Space(float refractionIndex)
         {
+            this.shapes = new List<Shape>();
             this.refractionIndex = refractionIndex;
         }
 
