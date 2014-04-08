@@ -34,12 +34,10 @@ namespace IRT.Engine
             return true;
         }
 
-        public Vector3 getGradient(Vector3 r, float wavelength, float step = Space.COMPUTE_RESOLUTION)
-        {
-            throw new NotImplementedException();
-        }
 
-        public float getRefractionIndex(Microsoft.Xna.Framework.Vector3 r, float wavelength)
+
+
+        public void interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, float outerRefractionIndex, float wavelength)
         {
             throw new NotImplementedException();
         }

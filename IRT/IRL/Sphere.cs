@@ -28,14 +28,31 @@ namespace IRT.Engine
             throw new NotImplementedException();
         }
 
-        public Vector3 getGradient(Vector3 r, float wavelength, float step = Space.COMPUTE_RESOLUTION)
+        public void interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, float outerRefractionIndex, float wavelength)
         {
-            throw new NotImplementedException();
-        }
+            Vector3 normal = r - Center;
+            incident.Normalize();
+            normal.Normalize();
 
-        public float getRefractionIndex(Vector3 r, float wavelength)
-        {
-            throw new NotImplementedException();
+            Vector3.Reflect(ref incident, ref normal, out reflected);
+
+            bool flip = Vector3.Dot(incident, normal) > 0;
+            if (flip)
+            {
+                normal *= -1;
+            }
+
+            float thetaIn = (float)Math.Acos(Vector3.Dot(incident, normal));
+            float thetaOut = (float)Math.Asin((outerRefractionIndex / getRefractionIndex(r, wavelength)) * Math.Sin(thetaIn));
+
+            refracted = incident;
+            if (Math.Abs(thetaIn - (float)Math.PI / 2) > 0.01)
+            {
+                Vector3 axis = Vector3.Cross(incident, normal);
+                Matrix rot = Matrix.CreateFromAxisAngle(axis, thetaOut);
+                normal *= -1;
+                refracted = Vector3.Transform(normal, rot);
+            }
         }
     }
 }
