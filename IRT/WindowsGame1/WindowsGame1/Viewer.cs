@@ -52,12 +52,12 @@ namespace IRT.Viewer
             this.IsMouseVisible = true;
             this.IsFixedTimeStep = true;
             this.TargetElapsedTime = System.TimeSpan.FromMilliseconds(TIMEPERFRAME);
-            //graphics.IsFullScreen = true;
-            graphics.PreferredBackBufferHeight = 720;// GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            graphics.PreferredBackBufferWidth = 1280;// GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            graphics.IsFullScreen = true;
+            graphics.PreferredBackBufferHeight =  GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            graphics.PreferredBackBufferWidth =  GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.SynchronizeWithVerticalRetrace = false;
-            //graphics.PreferMultiSampling = true;
-            //graphics.GraphicsDevice.PresentationParameters.MultiSampleCount = 4;
+            graphics.PreferMultiSampling = true;
+            graphics.GraphicsDevice.PresentationParameters.MultiSampleCount = 4;
             graphics.ApplyChanges();
             base.Initialize();
         }
@@ -70,13 +70,13 @@ namespace IRT.Viewer
         {
             space = new Space(1f);
             rays = new List<IDrawable>();
-            Shape cuboid = new Sphere(Vector3.Zero, 1f, 0);
+            Shape cuboid = new Sphere(Vector3.Zero, 0.5f, 0);
             cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 1.33f, Vector3.Zero);
 
             space.addShape(cuboid);
-            space.spawnRay(Vector3.UnitY * 0.87f - Vector3.UnitX / (.5f), (Vector3.UnitX), 533f);
-            space.spawnRay(Vector3.UnitY * 0.87f - Vector3.UnitX / (.5f), (Vector3.UnitX), 400f);
-            space.spawnRay(Vector3.UnitY * 0.87f - Vector3.UnitX / (.5f), (Vector3.UnitX), 650f);
+            space.spawnRay(Vector3.UnitY * 0.43f - Vector3.UnitX / (.5f), (Vector3.UnitX), 533f);
+            space.spawnRay(Vector3.UnitY * 0.43f - Vector3.UnitX / (.5f), (Vector3.UnitX), 400f);
+            space.spawnRay(Vector3.UnitY * 0.43f - Vector3.UnitX / (.5f), (Vector3.UnitX), 650f);
 
             Model s = Content.Load<Model>("Models\\sphere");
             Model r = Content.Load<Model>("Models\\sphere");

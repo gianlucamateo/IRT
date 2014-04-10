@@ -38,6 +38,7 @@ namespace IRT.Viewer
                 foreach (BasicEffect effect in mm.Effects)
                 {
                     effect.EnableDefaultLighting();
+                    effect.PreferPerPixelLighting = true;
                     effect.World = transforms[mm.ParentBone.Index] * Matrix.CreateScale(this.dimensions) * Matrix.CreateTranslation(this.position);
                     effect.View = cam.ViewMatrix;//Matrix.CreateLookAt(new Vector3(0, 0, 10), Vector3.Zero, Vector3.Up);//cam.ViewMatrix;
                     effect.Projection = cam.ProjectionMatrix;//Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 16f / 9f, 1, 100);//cam.ProjectionMatrix;

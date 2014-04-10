@@ -22,7 +22,7 @@ namespace IRT.Viewer
 
         public RayDrawable(Model mesh, Ray ray, Camera camera)
         {
-            this.dimensions = 0.005f * Vector3.One;
+            this.dimensions = 0.007f * Vector3.One;
             this.mesh = mesh;
             this.cam = camera;
             this.ray = ray;
@@ -39,7 +39,7 @@ namespace IRT.Viewer
             Vector3[] positions = ray.segments.ToArray<Vector3>();
             for (int i = 0; i < positions.Length; i++)
             {
-                if (i % 3 == 0)
+                if (i % 10 == 0)
                 {
                     foreach (ModelMesh mm in mesh.Meshes)
                     {
@@ -48,10 +48,11 @@ namespace IRT.Viewer
                         foreach (BasicEffect effect in mm.Effects)
                         {
                             effect.EnableDefaultLighting();
+                            effect.LightingEnabled = false;
                             effect.World = transforms[mm.ParentBone.Index] * scale * Matrix.CreateTranslation(positions[i]);
                             effect.View = cam.ViewMatrix;//Matrix.CreateLookAt(new Vector3(0, 0, 10), Vector3.Zero, Vector3.Up);//cam.ViewMatrix;
                             effect.Projection = cam.ProjectionMatrix;//Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 16f / 9f, 1, 100);//cam.ProjectionMatrix;
-                            effect.Alpha = 0.5f;
+                            effect.Alpha = 1f;
                             effect.DiffuseColor = Vector3.UnitX;
                         }
                         // Draw the mesh, using the effects set above.
