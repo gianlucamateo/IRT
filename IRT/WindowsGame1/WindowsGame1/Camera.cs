@@ -149,7 +149,7 @@ namespace IRT.Viewer
 			int x = mouse.X;
 			int y = mouse.Y;
 
-			int move = mouse.RightButton == ButtonState.Pressed ? 1 : 0;
+			int move = mouse.LeftButton == ButtonState.Pressed ? 1 : 0;
 
 			int dx = x - mx;
 			int dy = y - my;

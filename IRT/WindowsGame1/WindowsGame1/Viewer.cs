@@ -74,7 +74,7 @@ namespace IRT.Viewer
             space.spawnRay(Vector3.Zero, Vector3.UnitX, 533f);
 
             Model s = Content.Load<Model>("Models\\cuboid");
-            Model r = Content.Load<Model>("Models\\cuboid");
+            Model r = Content.Load<Model>("Models\\sphere");
             drawCuboid = new Drawable(s, cuboid, cam);
             foreach (Ray ray in space.rays)
             {
