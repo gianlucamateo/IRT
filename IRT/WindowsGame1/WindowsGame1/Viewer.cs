@@ -67,13 +67,13 @@ namespace IRT.Viewer
         {
             space = new Space(1f);
             rays = new List<IDrawable>();
-            Shape cuboid = new Cuboid(Vector3.Zero, 10f, 10f, 10f, 0);
-            cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 1 * y + 1f, Vector3.Zero);
+            Shape cuboid = new Sphere(Vector3.Zero, 1f, 0);
+            cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 1 * y + 4f, Vector3.Zero);
 
             space.addShape(cuboid);
-            space.spawnRay(Vector3.Zero, Vector3.UnitX, 533f);
+            space.spawnRay(Vector3.UnitX/(2.1f), (Vector3.UnitY), 533f);
 
-            Model s = Content.Load<Model>("Models\\cuboid");
+            Model s = Content.Load<Model>("Models\\sphere");
             Model r = Content.Load<Model>("Models\\sphere");
             drawCuboid = new Drawable(s, cuboid, cam);
             foreach (Ray ray in space.rays)

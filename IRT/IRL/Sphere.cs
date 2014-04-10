@@ -10,9 +10,8 @@ namespace IRT.Engine
     {
         private float Radius;
 
-        public Sphere(Vector3 center, float radius, Inhomogeneity i, int zIndex = 0) : base(center, zIndex) 
+        public Sphere(Vector3 center, float radius, int zIndex = 0) : base(center, zIndex) 
         {
-            this.Inhomogeniety = i;
             this.Radius = radius;
         }
 
@@ -22,10 +21,6 @@ namespace IRT.Engine
             return diff.Length() <= Radius;
         }
 
-        public float getRefractionIndex(Vector3 r)
-        {
-            throw new NotImplementedException();
-        }
 
         public override void interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, float outerRefractionIndex, float wavelength)
         {

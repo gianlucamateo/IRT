@@ -12,31 +12,44 @@ namespace IRT.Engine
         public float refractionIndex;
         private List<Shape> shapes;
         public List<Ray> rays;
+        public List<Ray> newlySpawned;
+        private bool working = false;
 
         public Space(float refractionIndex)
         {
             this.shapes = new List<Shape>();
             this.rays = new List<Ray>();
+            this.newlySpawned = new List<Ray>();
             this.refractionIndex = refractionIndex;
         }
 
         public void spawnRay(Vector3 position, Vector3 direction, float wavelength)
-        {
-            this.rays.Add(new Ray(position, direction, this, wavelength)); 
+        {            
+            this.newlySpawned.Add(new Ray(position, direction, this, wavelength));           
         }
 
         public void Update(int count = 1)
         {
-            foreach (var ray in this.rays)
+            working = true;
+
+            do
             {
-                for (int i = 0; i < count; i++ )
-                    ray.propagate();
-            }
+                rays = newlySpawned;
+                newlySpawned = new List<Ray>();
+                for (int i = 0; i < count; i++)
+                {
+                    foreach (var ray in this.rays)
+                    {
+                        ray.propagate();
+                    }
+                }
+            } while (this.newlySpawned.Count > 0);
         }
 
         public Shape getMedium(Vector3 r)
         {
-            foreach(Shape s in this.shapes){
+            foreach (Shape s in this.shapes)
+            {
                 if (s.isInside(r))
                 {
                     return s;
@@ -48,7 +61,6 @@ namespace IRT.Engine
         public void addShape(Shape shape)
         {
             this.shapes.Add(shape);
-
         }
     }
 

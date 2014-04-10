@@ -10,7 +10,7 @@ namespace IRT.Engine
     {
         float heightY, widthX, depthZ;
 
-        public Cuboid(Vector3 center, float heightY, float widthX, float depthZ, int zIndex = 0) : base(center, zIndex)
+        public Cuboid(Vector3 center, float widthX, float heightY, float depthZ, int zIndex = 0) : base(center, zIndex)
         {
             this.heightY = heightY;
             this.widthX = widthX;

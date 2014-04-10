@@ -20,6 +20,7 @@ namespace IRT.Engine
             this.segments = new List<Vector3>();
             this.position = startPosition;
             this.direction = direction;
+            direction.Normalize();
             this.space = space;
             this.medium = space.getMedium(position);
             this.wavelength = wavelength;
@@ -34,32 +35,53 @@ namespace IRT.Engine
             // Check for medium change
             if (nextMedium != medium)
             {
+                Vector3 reflected, refracted;
+                if (nextMedium == null)
+                {
+                    medium.interact(position, direction, out reflected, out refracted, space.refractionIndex, wavelength);
+                }
+                else
+                {
+                    nextMedium.interact(position, direction, out reflected, out refracted, medium.getRefractionIndex(position,wavelength), wavelength);
+                }
+                this.space.spawnRay(position, reflected, wavelength);
+                this.space.spawnRay(predictedPosition, refracted, wavelength);
+
                 //Console.WriteLine("Encountered medium change, refracting and reflecting...");
                 return;
             }
-
-            Vector3 rayDir = direction, dirStep = Vector3.Zero;
-            Vector3 sum = Vector3.Zero, doubleSum = Vector3.Zero;
-
-            for (float dl = 0f; dl < Space.RAY_RESOLUTION; dl += Space.COMPUTE_RESOLUTION)
+            else
             {
-                dirStep = dl * rayDir;
-                Vector3 gradient = medium.getGradient(position + dirStep, wavelength);
-                //Console.WriteLine(gradient);
-                Vector3 dr = gradient * Space.COMPUTE_RESOLUTION * medium.getRefractionIndex(position + dirStep, wavelength);
-                sum += dr;
-                doubleSum += sum * Space.COMPUTE_RESOLUTION;
+                if (medium == null)
+                {
+                    this.position = predictedPosition;
+                    this.segments.Add(position);
+                    Console.WriteLine(position);
+
+                    return;
+                }
+                Vector3 rayDir = direction, dirStep = Vector3.Zero;
+                Vector3 sum = Vector3.Zero, doubleSum = Vector3.Zero;
+
+                for (float dl = 0f; dl < Space.RAY_RESOLUTION; dl += Space.COMPUTE_RESOLUTION)
+                {
+                    dirStep = dl * rayDir;
+                    Vector3 gradient = medium.getGradient(position + dirStep, wavelength);
+                    //Console.WriteLine(gradient);
+                    Vector3 dr = gradient * Space.COMPUTE_RESOLUTION * medium.getRefractionIndex(position + dirStep, wavelength);
+                    sum += dr;
+                    doubleSum += sum * Space.COMPUTE_RESOLUTION;
+                }
+
+                rayDir += doubleSum;
+                rayDir.Normalize();
+
+                this.position += rayDir * Space.RAY_RESOLUTION;
+                this.direction = rayDir;
             }
-
-            rayDir += doubleSum;
-            rayDir.Normalize();
-
-            this.position += rayDir * Space.RAY_RESOLUTION;
-            this.direction = rayDir;
-
             this.segments.Add(position);
 
-            //Console.WriteLine(position);
+            Console.WriteLine(position);
         }
     }
 }
