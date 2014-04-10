@@ -28,12 +28,16 @@ namespace IRT.Viewer
 
 		private float _fov, _aspect;
 
+		public float Speed { get; set; }
+
 		public Camera (Vector3 position, float aspect = 16f/9f, float fov = MathHelper.PiOver4)
 		{
 			this.Position = position;
 
 			this._fov = fov;
 			this._aspect = aspect;
+
+			Speed = 0.01f;
 
 			UpdateProperties ();
 
@@ -43,7 +47,7 @@ namespace IRT.Viewer
 
 		private void UpdateProperties ()
 		{
-			this.ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView (_fov, _aspect, 0.1f, 100f);
+			this.ProjectionMatrix = Matrix.CreatePerspectiveFieldOfView (_fov, _aspect, 0.01f, 100f);
 		}
 
 		public void Pitch (float amount)
@@ -124,26 +128,26 @@ namespace IRT.Viewer
 			}
 			if (keyboard.IsKeyDown(Keys.W))
 			{
-				Move (-0.1f * speedModifier);
+				Move (-Speed * speedModifier);
 			}
 			if (keyboard.IsKeyDown(Keys.A)) {
-				SideStep (-0.1f * speedModifier);
+				SideStep (-Speed * speedModifier);
 			}
 			if (keyboard.IsKeyDown(Keys.S))
 			{
-				Move (0.1f * speedModifier);
+				Move (Speed * speedModifier);
 			}
 			if (keyboard.IsKeyDown(Keys.D))
 			{
-				SideStep (0.1f * speedModifier);
+				SideStep (Speed * speedModifier);
 			}
 			if (keyboard.IsKeyDown(Keys.Q))
 			{
-				Elevate (0.1f * speedModifier);
+				Elevate (Speed * speedModifier);
 			}
 			if (keyboard.IsKeyDown(Keys.Y))
 			{
-				Elevate (-0.1f * speedModifier);
+				Elevate (-Speed * speedModifier);
 			}
 
 			int x = mouse.X;

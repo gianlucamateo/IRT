@@ -29,7 +29,7 @@ namespace IRT.Engine
             this.newlySpawned.Add(new Ray(position, direction, this, wavelength));           
         }
 
-        public void Update(int count = 1)
+        public void Update(int maxSpawns = 4, int count = 1)
         {
             int iterations = 0;
            
@@ -50,7 +50,7 @@ namespace IRT.Engine
                     finishedRays.Add(ray);
                 }
                 iterations++;
-            } while (this.newlySpawned.Count > 0 && iterations <4);
+            } while (this.newlySpawned.Count > 0 && iterations < maxSpawns);
         }
 
         public Shape getMedium(Vector3 r)

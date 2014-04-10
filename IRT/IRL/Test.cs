@@ -6,24 +6,24 @@ using Microsoft.Xna.Framework;
 
 namespace IRT.Engine
 {
-    class Test
-    {
-        public static void Main()
-        {
-            Space space = new Space(1f);
+	class Test
+	{
+		public static void Main()
+		{
+			Space space = new Space(1f);
 
-            Shape cuboid = new Cuboid(Vector3.Zero, 10f, 10f, 10f, 0);
-            cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 1*y + 1f, Vector3.Zero);
-            
-            space.addShape(cuboid);
-            space.spawnRay(Vector3.Zero, Vector3.UnitX, 533f);
+			Shape cuboid = new Cuboid(Vector3.Zero, 10f, 10f, 10f, 0);
+			cuboid.Inhomogeniety = new Inhomogeneity ((x, y, z) => 1 * y + 1f, Vector3.Zero);
+			
+			space.addShape(cuboid);
+			space.spawnRay(Vector3.Zero, Vector3.UnitX, 533f);
 
-            for (int i = 0; i < 1000; i++)
-            {
-                space.Update();
-            }
+			for (int i = 0; i < 1000; i++)
+			{
+				space.Update();
+			}
 
-            Console.Read();
-        }
-    }
+			Console.Read();
+		}
+	}
 }
