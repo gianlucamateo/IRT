@@ -11,11 +11,26 @@ namespace IRT.Engine
         public const float RAY_RESOLUTION = 0.001f, COMPUTE_RESOLUTION = 0.0001f;
         public float refractionIndex;
         private List<Shape> shapes;
+        private List<Ray> rays;
 
         public Space(float refractionIndex)
         {
             this.shapes = new List<Shape>();
+            this.rays = new List<Ray>();
             this.refractionIndex = refractionIndex;
+        }
+
+        public void spawnRay(Vector3 position, Vector3 direction, float wavelength)
+        {
+            this.rays.Add(new Ray(position, direction, this, wavelength)); 
+        }
+
+        public void Update(Object input)
+        {
+            foreach (var ray in this.rays)
+            {
+                ray.propagate();
+            }
         }
 
         public Shape getMedium(Vector3 r)

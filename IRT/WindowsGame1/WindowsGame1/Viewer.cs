@@ -9,6 +9,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using System.Threading;
+
+using IRT.Engine;
+
 namespace IRT.Viewer
 {
     /// <summary>
@@ -17,13 +21,16 @@ namespace IRT.Viewer
     public class IRTViewer : Game
     {
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        Model cylinder;
-        float aspectRatio;
+
+        Camera cam;
+        Space space;
+
+        IDrawable drawCuboid;
 
         public IRTViewer()
         {
             graphics = new GraphicsDeviceManager(this);
+            cam = new Camera(10f * Vector3.UnitZ);
             Content.RootDirectory = "Content";
         }
 
@@ -51,12 +58,16 @@ namespace IRT.Viewer
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            cylinder = Content.Load<Model>("Models\\sphere");
-            aspectRatio = graphics.GraphicsDevice.Viewport.AspectRatio;
+            space = new Space(1f);
 
-            // TODO: use this.Content to load your game content here
+            Shape cuboid = new Cuboid(Vector3.Zero, 10f, 10f, 10f, 0);
+            cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 1*y + 1f, Vector3.Zero);
+            
+            space.addShape(cuboid);
+            space.spawnRay(Vector3.Zero, Vector3.UnitX, 533f);
+
+            Model s = Content.Load<Model>("Models\\cuboid");
+            drawCuboid = new Drawable(s, cuboid, cam);      
         }
 
         /// <summary>
@@ -76,23 +87,15 @@ namespace IRT.Viewer
         protected override void Update(GameTime gameTime)
         {
             // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
 
-
-            modelRotation += (float)gameTime.ElapsedGameTime.TotalMilliseconds *
-            MathHelper.ToRadians(0.1f);
-            // TODO: Add your update logic here
+            System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(space.Update));
+            cam.Update(Keyboard.GetState(), Mouse.GetState());
 
             base.Update(gameTime);
         }
 
-
-        Vector3 modelPosition = Vector3.Zero;
-        float modelRotation = 0.0f;
-
-        // Set the position of the camera in world space, for our view matrix.
-        Vector3 cameraPosition = new Vector3(0.0f, 0, 5);
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
@@ -100,29 +103,11 @@ namespace IRT.Viewer
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            Matrix[] transforms = new Matrix[cylinder.Bones.Count];
-            cylinder.CopyAbsoluteBoneTransformsTo(transforms);
 
-            // Draw the model. A model can have multiple meshes, so loop.
-            foreach (ModelMesh mesh in cylinder.Meshes)
-            {
-                // This is where the mesh orientation is set, as well 
-                // as our camera and projection.
-                foreach (BasicEffect effect in mesh.Effects)
-                {
-                    effect.EnableDefaultLighting();
-                    effect.World = transforms[mesh.ParentBone.Index] *
-                        Matrix.CreateRotationX((float)Math.PI / 2) *
-                        Matrix.CreateRotationY(modelRotation);
-                    effect.View = Matrix.CreateLookAt(cameraPosition,
-                        Vector3.Zero, Vector3.Up);
-                    effect.Projection = Matrix.CreatePerspectiveFieldOfView(
-                        MathHelper.ToRadians(45.0f), aspectRatio,
-                        1.0f, 10000.0f);
-                }
-                // Draw the mesh, using the effects set above.
-                mesh.Draw();
-            }
+            GraphicsDevice.DepthStencilState = DepthStencilState.None;
+            GraphicsDevice.BlendState = BlendState.AlphaBlend;
+
+            drawCuboid.Draw();
 
             base.Draw(gameTime);
         }

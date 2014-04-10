@@ -14,13 +14,13 @@ namespace IRT.Engine
 
             Shape cuboid = new Cuboid(Vector3.Zero, 10f, 10f, 10f, 0);
             cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 1*y + 1f, Vector3.Zero);
+            
             space.addShape(cuboid);
-
-            Ray ray = new Ray(Vector3.Zero, Vector3.UnitX, space, 533f);
+            space.spawnRay(Vector3.Zero, Vector3.UnitX, 533f);
 
             for (int i = 0; i < 1000; i++)
             {
-                ray.propagate();
+                space.Update(new Object());
             }
 
             Console.Read();

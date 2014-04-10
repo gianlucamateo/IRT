@@ -15,11 +15,14 @@ namespace IRT.Viewer
         private Vector3 dimensions, position;
         private Model mesh;
 
-        public Drawable(Model mesh, IShape shape)
+        private Camera cam;
+
+        public Drawable(Model mesh, IShape shape, Camera camera)
         {
             this.dimensions = shape.Dimensions;
             this.position = shape.Position;
             this.mesh = mesh;
+            this.cam = camera;
         }
 
         public void Draw()
@@ -36,11 +39,9 @@ namespace IRT.Viewer
                 {
                     effect.EnableDefaultLighting();
                     effect.World = transforms[mm.ParentBone.Index] * Matrix.CreateScale(this.dimensions) * Matrix.CreateTranslation(this.position);
-                    effect.View = Matrix.CreateLookAt(cameraPosition,
-                        Vector3.Zero, Vector3.Up);
-                    effect.Projection = Matrix.CreatePerspectiveFieldOfView(
-                        MathHelper.ToRadians(45.0f), 16f / 9f,
-                        1.0f, 10000.0f);
+                    effect.View = cam.ViewMatrix;//Matrix.CreateLookAt(new Vector3(0, 0, 10), Vector3.Zero, Vector3.Up);//cam.ViewMatrix;
+                    effect.Projection = cam.ProjectionMatrix;//Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 16f / 9f, 1, 100);//cam.ProjectionMatrix;
+                    effect.Alpha = 0.5f;
                 }
                 // Draw the mesh, using the effects set above.
                 mm.Draw();

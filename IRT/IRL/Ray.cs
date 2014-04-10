@@ -33,7 +33,7 @@ namespace IRT.Engine
             // Check for medium change
             if (nextMedium != medium)
             {
-                Console.WriteLine("Encountered medium change, refracting and reflecting...");
+                //Console.WriteLine("Encountered medium change, refracting and reflecting...");
                 return;
             }
 
@@ -57,7 +57,7 @@ namespace IRT.Engine
             this.direction = rayDir;
 
             this.segments.Add(position);
-            Console.WriteLine(position);
+            //Console.WriteLine(position);
         }
     }
 }
