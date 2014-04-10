@@ -33,26 +33,30 @@ namespace IRT.Viewer
             Matrix[] transforms = new Matrix[this.mesh.Bones.Count];
             this.mesh.CopyAbsoluteBoneTransformsTo(transforms);
 
-
             // Draw the model. A model can have multiple meshes, so loop.
 
             Matrix scale = Matrix.CreateScale(this.dimensions);
-            foreach (Vector3 pos in ray.segments)
+            Vector3[] positions = ray.segments.ToArray<Vector3>();
+            for (int i = 0; i < positions.Length; i++)
             {
-                foreach (ModelMesh mm in mesh.Meshes)
+                if (i % 3 == 0)
                 {
-                    // This is where the mesh orientation is set, as well 
-                    // as our camera and projection.
-                    foreach (BasicEffect effect in mm.Effects)
+                    foreach (ModelMesh mm in mesh.Meshes)
                     {
-                        effect.EnableDefaultLighting();
-                        effect.World = transforms[mm.ParentBone.Index] * scale * Matrix.CreateTranslation(pos);
-                        effect.View = cam.ViewMatrix;//Matrix.CreateLookAt(new Vector3(0, 0, 10), Vector3.Zero, Vector3.Up);//cam.ViewMatrix;
-                        effect.Projection = cam.ProjectionMatrix;//Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 16f / 9f, 1, 100);//cam.ProjectionMatrix;
-                        effect.Alpha = 0.5f;
+                        // This is where the mesh orientation is set, as well 
+                        // as our camera and projection.
+                        foreach (BasicEffect effect in mm.Effects)
+                        {
+                            effect.EnableDefaultLighting();
+                            effect.World = transforms[mm.ParentBone.Index] * scale * Matrix.CreateTranslation(positions[i]);
+                            effect.View = cam.ViewMatrix;//Matrix.CreateLookAt(new Vector3(0, 0, 10), Vector3.Zero, Vector3.Up);//cam.ViewMatrix;
+                            effect.Projection = cam.ProjectionMatrix;//Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 16f / 9f, 1, 100);//cam.ProjectionMatrix;
+                            effect.Alpha = 0.5f;
+                            effect.DiffuseColor = Vector3.UnitX;
+                        }
+                        // Draw the mesh, using the effects set above.
+                        mm.Draw();
                     }
-                    // Draw the mesh, using the effects set above.
-                    mm.Draw();
                 }
             }
 

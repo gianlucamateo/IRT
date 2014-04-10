@@ -33,13 +33,15 @@ namespace IRT.Engine
 
             // Flip normal if incident ray direction is coming from the inside
             bool flip = Vector3.Dot(incident, normal) > 0;
+            //flip = false;
             if (flip)
             {
                 normal *= -1;
             }
 
             // Compute incoming and outgoing angles according to Snell's Law
-            float thetaIn = (float)Math.Acos(Vector3.Dot(incident, normal));
+            Vector3 tempIncident =  -incident;
+            float thetaIn = (float)Math.Acos(Vector3.Dot(tempIncident, normal));
             float thetaOut = (float)Math.Asin((outerRefractionIndex / getRefractionIndex(r, wavelength)) * Math.Sin(thetaIn));
 
             refracted = incident;
@@ -47,15 +49,19 @@ namespace IRT.Engine
             {
                 // Rotate reversed normal by outgoing angle
                 Vector3 axis = Vector3.Cross(incident, normal);
+                if (flip)
+                    thetaOut = (float)MathHelper.PiOver2 - thetaOut;
                 Matrix rot = Matrix.CreateFromAxisAngle(axis, thetaOut);
                 normal *= -1;
+                
+                    
                 refracted = Vector3.Transform(normal, rot);
             }
         }
 
         public override Vector3 Dimensions
         {
-            get { return Vector3.One * this.Radius; }
+            get { return Vector3.One * this.Radius*2; }
         }
     }
 }

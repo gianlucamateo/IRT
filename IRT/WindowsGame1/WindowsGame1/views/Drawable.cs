@@ -42,6 +42,7 @@ namespace IRT.Viewer
                     effect.View = cam.ViewMatrix;//Matrix.CreateLookAt(new Vector3(0, 0, 10), Vector3.Zero, Vector3.Up);//cam.ViewMatrix;
                     effect.Projection = cam.ProjectionMatrix;//Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 16f / 9f, 1, 100);//cam.ProjectionMatrix;
                     effect.Alpha = 0.5f;
+                    effect.DiffuseColor = Vector3.One;
                 }
                 // Draw the mesh, using the effects set above.
                 mm.Draw();

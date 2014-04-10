@@ -13,12 +13,13 @@ namespace IRT.Engine
         private List<Shape> shapes;
         public List<Ray> rays;
         public List<Ray> newlySpawned;
-        private bool working = false;
+        public List<Ray> finishedRays;
 
         public Space(float refractionIndex)
         {
             this.shapes = new List<Shape>();
             this.rays = new List<Ray>();
+            this.finishedRays = new List<Ray>();
             this.newlySpawned = new List<Ray>();
             this.refractionIndex = refractionIndex;
         }
@@ -30,12 +31,13 @@ namespace IRT.Engine
 
         public void Update(int count = 1)
         {
-            working = true;
-
+            int iterations = 0;
+           
             do
             {
                 rays = newlySpawned;
                 newlySpawned = new List<Ray>();
+                Console.WriteLine(rays.Count);
                 for (int i = 0; i < count; i++)
                 {
                     foreach (var ray in this.rays)
@@ -43,7 +45,12 @@ namespace IRT.Engine
                         ray.propagate();
                     }
                 }
-            } while (this.newlySpawned.Count > 0);
+                foreach (var ray in this.rays)
+                {
+                    finishedRays.Add(ray);
+                }
+                iterations++;
+            } while (this.newlySpawned.Count > 0 && iterations <4);
         }
 
         public Shape getMedium(Vector3 r)

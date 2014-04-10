@@ -34,17 +34,17 @@ namespace IRT.Engine
             this.Origin = origin;
         }
 
-        public float Evaluate(Vector3 r){
+        public float Evaluate(Vector3 r, float wavelength){
             if (this.Type == InhomogeneityType.XYZ)
             {
                 r -= Origin;
-                return XYZInhomogeneity(r.X, r.Y, r.Z);
+                return XYZInhomogeneity(r.X, r.Y, r.Z);//+ (wavelength-600)/1000;
             }
             else
             {
                 Vector3 relativePosition = r - Origin;
                 float rDist = relativePosition.Length();
-                return RadialInhomogeneity(rDist);
+                return RadialInhomogeneity(rDist);//* Math.Abs(wavelength - 500) / 1000;
             }
         }
     }

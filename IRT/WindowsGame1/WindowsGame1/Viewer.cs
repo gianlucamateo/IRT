@@ -52,6 +52,9 @@ namespace IRT.Viewer
             this.IsMouseVisible = true;
             this.IsFixedTimeStep = true;
             this.TargetElapsedTime = System.TimeSpan.FromMilliseconds(TIMEPERFRAME);
+            graphics.PreferredBackBufferHeight = 1080;
+            graphics.PreferredBackBufferWidth = 1920;
+            graphics.IsFullScreen = true;
             graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferMultiSampling = true;
             graphics.GraphicsDevice.PresentationParameters.MultiSampleCount = 4;
@@ -68,22 +71,26 @@ namespace IRT.Viewer
             space = new Space(1f);
             rays = new List<IDrawable>();
             Shape cuboid = new Sphere(Vector3.Zero, 1f, 0);
-            cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 1 * y + 4f, Vector3.Zero);
+            cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 1.33f, Vector3.Zero);
 
             space.addShape(cuboid);
-            space.spawnRay(Vector3.UnitX/(2.1f), (Vector3.UnitY), 533f);
+            space.spawnRay(Vector3.UnitY * 0.87f - Vector3.UnitX / (.5f), (Vector3.UnitX), 533f);
+            space.spawnRay(Vector3.UnitY * 0.87f - Vector3.UnitX / (.5f), (Vector3.UnitX), 400f);
+            space.spawnRay(Vector3.UnitY * 0.87f - Vector3.UnitX / (.5f), (Vector3.UnitX), 650f);
 
             Model s = Content.Load<Model>("Models\\sphere");
             Model r = Content.Load<Model>("Models\\sphere");
             drawCuboid = new Drawable(s, cuboid, cam);
-            foreach (Ray ray in space.rays)
+
+
+
+            space.Update(2000);
+
+            foreach (Ray ray in space.finishedRays)
             {
                 rays.Add(new RayDrawable(r, ray, this.cam));
             }
 
-            
-            space.Update(10000);
-            
         }
 
         /// <summary>

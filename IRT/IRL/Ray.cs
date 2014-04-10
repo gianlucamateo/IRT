@@ -14,9 +14,11 @@ namespace IRT.Engine
         private Vector3 direction;
         private Shape medium;
         private Space space;
+        private bool dead;
 
         public Ray(Vector3 startPosition, Vector3 direction, Space space, float wavelength)
         {
+            this.dead = false;
             this.segments = new List<Vector3>();
             this.position = startPosition;
             this.direction = direction;
@@ -28,6 +30,10 @@ namespace IRT.Engine
 
         public void propagate()
         {
+            if (dead)
+            {
+                return;
+            }
             Vector3 predictedPosition = position + direction * Space.RAY_RESOLUTION;
 
             Shape nextMedium = space.getMedium(predictedPosition);
@@ -42,11 +48,12 @@ namespace IRT.Engine
                 }
                 else
                 {
-                    nextMedium.interact(position, direction, out reflected, out refracted, medium.getRefractionIndex(position,wavelength), wavelength);
+                    float previousRefrac = medium == null ? space.refractionIndex : medium.getRefractionIndex(position,wavelength);
+                    nextMedium.interact(position, direction, out reflected, out refracted, previousRefrac, wavelength);
                 }
                 this.space.spawnRay(position, reflected, wavelength);
                 this.space.spawnRay(predictedPosition, refracted, wavelength);
-
+                this.dead = true;
                 //Console.WriteLine("Encountered medium change, refracting and reflecting...");
                 return;
             }
@@ -56,7 +63,7 @@ namespace IRT.Engine
                 {
                     this.position = predictedPosition;
                     this.segments.Add(position);
-                    Console.WriteLine(position);
+                    //Console.WriteLine(position);
 
                     return;
                 }
@@ -81,7 +88,7 @@ namespace IRT.Engine
             }
             this.segments.Add(position);
 
-            Console.WriteLine(position);
+            //Console.WriteLine(position);
         }
     }
 }
