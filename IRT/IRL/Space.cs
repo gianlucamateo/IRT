@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework;
 
 namespace IRT.Engine
 {
-    
     class Space
     {
         public const float RAY_RESOLUTION = 0.001f, COMPUTE_RESOLUTION = 0.0001f;
@@ -28,6 +27,12 @@ namespace IRT.Engine
                 }
             }
             return null;
+        }
+
+        public void addShape(Shape shape)
+        {
+            this.shapes.Add(shape);
+
         }
     }
 

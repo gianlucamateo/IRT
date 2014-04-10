@@ -8,8 +8,15 @@ namespace IRT.Engine
 {
     public abstract class Shape : IShape
     {
-        protected Inhomogeneity Inhomogeniety;
+        public Inhomogeneity Inhomogeniety;
         protected Vector3 Center;
+        protected int zIndex;
+
+        public Shape(Vector3 center, int zIndex = 0)
+        {
+            this.Center = center;
+            this.zIndex = zIndex;
+        }
 
         public Vector3 getGradient(Vector3 r, float wavelength, float step = Space.COMPUTE_RESOLUTION)
         {

@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{44E29DE0-AAD5-46A9-AFDF-5BBB464DA4CA}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IRT</RootNamespace>
     <AssemblyName>IRT</AssemblyName>
@@ -44,6 +44,7 @@
     <Compile Include="Shape.cs" />
     <Compile Include="Space.cs" />
     <Compile Include="Sphere.cs" />
+    <Compile Include="Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />

@@ -32,6 +32,7 @@ namespace IRT.Engine
             this.Type = InhomogeneityType.RADIAL;
             this.Origin = origin;
         }
+
         public float Evaluate(Vector3 r){
             if (this.Type == InhomogeneityType.XYZ)
             {

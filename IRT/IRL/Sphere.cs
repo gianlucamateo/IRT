@@ -10,9 +10,8 @@ namespace IRT.Engine
     {
         private float Radius;
 
-        public Sphere(Vector3 center, float radius, Inhomogeneity i)
+        public Sphere(Vector3 center, float radius, Inhomogeneity i, int zIndex = 0) : base(center, zIndex) 
         {
-            this.Center = center;
             this.Inhomogeniety = i;
             this.Radius = radius;
         }
@@ -49,7 +48,7 @@ namespace IRT.Engine
             float thetaOut = (float)Math.Asin((outerRefractionIndex / getRefractionIndex(r, wavelength)) * Math.Sin(thetaIn));
 
             refracted = incident;
-            if (Math.Abs(thetaIn - (float)Math.PI / 2) > 0.01)
+            if (Math.Abs(thetaIn) > 0.01)
             {
                 // Rotate reversed normal by outgoing angle
                 Vector3 axis = Vector3.Cross(incident, normal);
