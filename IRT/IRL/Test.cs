@@ -20,7 +20,7 @@ namespace IRT.Engine
 
             for (int i = 0; i < 1000; i++)
             {
-                space.Update(new Object());
+                space.Update();
             }
 
             Console.Read();

@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Media;
 using System.Threading;
 
 using IRT.Engine;
+using Ray = IRT.Engine.Ray;
 
 namespace IRT.Viewer
 {
@@ -26,6 +27,11 @@ namespace IRT.Viewer
         Space space;
 
         IDrawable drawCuboid;
+        List<IDrawable> rays;
+
+        const float TARGETFRAMERATE = 250;
+
+        const float TIMEPERFRAME = 1000f / TARGETFRAMERATE;
 
         public IRTViewer()
         {
@@ -44,7 +50,8 @@ namespace IRT.Viewer
         {
             // TODO: Add your initialization logic here
             this.IsMouseVisible = true;
-            this.IsFixedTimeStep = false;
+            this.IsFixedTimeStep = true;
+            this.TargetElapsedTime = System.TimeSpan.FromMilliseconds(TIMEPERFRAME);
             graphics.SynchronizeWithVerticalRetrace = false;
             graphics.PreferMultiSampling = true;
             graphics.GraphicsDevice.PresentationParameters.MultiSampleCount = 4;
@@ -59,15 +66,24 @@ namespace IRT.Viewer
         protected override void LoadContent()
         {
             space = new Space(1f);
-
+            rays = new List<IDrawable>();
             Shape cuboid = new Cuboid(Vector3.Zero, 10f, 10f, 10f, 0);
-            cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 1*y + 1f, Vector3.Zero);
-            
+            cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 1 * y + 1f, Vector3.Zero);
+
             space.addShape(cuboid);
             space.spawnRay(Vector3.Zero, Vector3.UnitX, 533f);
 
             Model s = Content.Load<Model>("Models\\cuboid");
-            drawCuboid = new Drawable(s, cuboid, cam);      
+            Model r = Content.Load<Model>("Models\\cuboid");
+            drawCuboid = new Drawable(s, cuboid, cam);
+            foreach (Ray ray in space.rays)
+            {
+                rays.Add(new RayDrawable(r, ray, this.cam));
+            }
+
+            
+            space.Update(10000);
+            
         }
 
         /// <summary>
@@ -89,8 +105,6 @@ namespace IRT.Viewer
             // Allows the game to exit
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 this.Exit();
-
-            System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(space.Update));
             cam.Update(Keyboard.GetState(), Mouse.GetState());
 
             base.Update(gameTime);
@@ -108,6 +122,10 @@ namespace IRT.Viewer
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
 
             drawCuboid.Draw();
+            foreach (IDrawable d in rays)
+            {
+                d.Draw();
+            }
 
             base.Draw(gameTime);
         }

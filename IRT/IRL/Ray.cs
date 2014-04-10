@@ -8,14 +8,15 @@ namespace IRT.Engine
 {
     public class Ray
     {
-        private List<Vector3> segments;
+        public List<Vector3> segments;
         private float wavelength;
         private Vector3 position;
         private Vector3 direction;
         private Shape medium;
         private Space space;
 
-        public Ray(Vector3 startPosition, Vector3 direction, Space space, float wavelength){
+        public Ray(Vector3 startPosition, Vector3 direction, Space space, float wavelength)
+        {
             this.segments = new List<Vector3>();
             this.position = startPosition;
             this.direction = direction;
@@ -29,7 +30,7 @@ namespace IRT.Engine
             Vector3 predictedPosition = position + direction * Space.RAY_RESOLUTION;
 
             Shape nextMedium = space.getMedium(predictedPosition);
-            
+
             // Check for medium change
             if (nextMedium != medium)
             {
@@ -44,10 +45,10 @@ namespace IRT.Engine
             {
                 dirStep = dl * rayDir;
                 Vector3 gradient = medium.getGradient(position + dirStep, wavelength);
-                Console.WriteLine(gradient);
+                //Console.WriteLine(gradient);
                 Vector3 dr = gradient * Space.COMPUTE_RESOLUTION * medium.getRefractionIndex(position + dirStep, wavelength);
                 sum += dr;
-                doubleSum += sum * Space.COMPUTE_RESOLUTION;                
+                doubleSum += sum * Space.COMPUTE_RESOLUTION;
             }
 
             rayDir += doubleSum;
@@ -57,6 +58,7 @@ namespace IRT.Engine
             this.direction = rayDir;
 
             this.segments.Add(position);
+
             //Console.WriteLine(position);
         }
     }

@@ -11,7 +11,7 @@ namespace IRT.Engine
         public const float RAY_RESOLUTION = 0.001f, COMPUTE_RESOLUTION = 0.0001f;
         public float refractionIndex;
         private List<Shape> shapes;
-        private List<Ray> rays;
+        public List<Ray> rays;
 
         public Space(float refractionIndex)
         {
@@ -25,11 +25,12 @@ namespace IRT.Engine
             this.rays.Add(new Ray(position, direction, this, wavelength)); 
         }
 
-        public void Update(Object input)
+        public void Update(int count = 1)
         {
             foreach (var ray in this.rays)
             {
-                ray.propagate();
+                for (int i = 0; i < count; i++ )
+                    ray.propagate();
             }
         }
 

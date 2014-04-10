@@ -37,8 +37,8 @@ namespace IRT.Viewer
 
 			UpdateProperties ();
 
-			this._camMatrix = Matrix.CreateLookAt (position, Vector3.UnitY, Vector3.UnitY);
-            Matrix.Invert(ref _camMatrix, out _camMatrix);
+			this._camMatrix = Matrix.CreateLookAt (position, Vector3.Zero, Vector3.UnitY);
+			Matrix.Invert(ref _camMatrix, out _camMatrix);
 		}
 
 		private void UpdateProperties ()
@@ -58,7 +58,7 @@ namespace IRT.Viewer
 			Matrix rot = Matrix.CreateFromAxisAngle (xAxis, amount);
 			Matrix.Multiply (ref _camMatrix, ref rot, out _camMatrix);
 
-            Matrix.Invert(ref trans, out trans);
+			Matrix.Invert(ref trans, out trans);
 			Matrix.Multiply (ref _camMatrix, ref trans, out _camMatrix);
 		}
 
@@ -68,10 +68,10 @@ namespace IRT.Viewer
 			Matrix.Multiply (ref _camMatrix, ref trans, out _camMatrix);
 
 			Matrix rot = Matrix.CreateRotationY (amount);
-            Matrix.Multiply(ref _camMatrix, ref rot, out _camMatrix);
+			Matrix.Multiply(ref _camMatrix, ref rot, out _camMatrix);
 
 			Matrix.Invert(ref trans, out trans);
-            Matrix.Multiply(ref _camMatrix, ref trans, out _camMatrix);
+			Matrix.Multiply(ref _camMatrix, ref trans, out _camMatrix);
 		}
 
 		public void Zoom (float amount)
@@ -106,59 +106,59 @@ namespace IRT.Viewer
 
 		private void ToCamSpace (ref Vector3 axis)
 		{
-            Vector3.TransformNormal(ref axis, ref _camMatrix, out axis);
+			Vector3.TransformNormal(ref axis, ref _camMatrix, out axis);
 		}
 
-        private int mx, my;
+		private int mx, my;
 		public void Update (KeyboardState keyboard, MouseState mouse)
 		{
 			float speedModifier = 1.0f;
 
-            if (keyboard.IsKeyDown(Keys.LeftControl))
-            {
+			if (keyboard.IsKeyDown(Keys.LeftControl))
+			{
 				speedModifier *= 0.1f;
 			}
-            if (keyboard.IsKeyDown(Keys.LeftShift))
-            {
+			if (keyboard.IsKeyDown(Keys.LeftShift))
+			{
 				speedModifier *= 5f;
 			}
-            if (keyboard.IsKeyDown(Keys.W))
-            {
+			if (keyboard.IsKeyDown(Keys.W))
+			{
 				Move (-0.1f * speedModifier);
 			}
 			if (keyboard.IsKeyDown(Keys.A)) {
 				SideStep (-0.1f * speedModifier);
 			}
-            if (keyboard.IsKeyDown(Keys.S))
-            {
+			if (keyboard.IsKeyDown(Keys.S))
+			{
 				Move (0.1f * speedModifier);
 			}
-            if (keyboard.IsKeyDown(Keys.D))
-            {
+			if (keyboard.IsKeyDown(Keys.D))
+			{
 				SideStep (0.1f * speedModifier);
 			}
-            if (keyboard.IsKeyDown(Keys.Q))
-            {
+			if (keyboard.IsKeyDown(Keys.Q))
+			{
 				Elevate (0.1f * speedModifier);
 			}
-            if (keyboard.IsKeyDown(Keys.Y))
-            {
+			if (keyboard.IsKeyDown(Keys.Y))
+			{
 				Elevate (-0.1f * speedModifier);
 			}
 
-            int x = mouse.X;
-            int y = mouse.Y;
+			int x = mouse.X;
+			int y = mouse.Y;
 
-            int move = mouse.RightButton == ButtonState.Pressed ? 1 : 0;
+			int move = mouse.RightButton == ButtonState.Pressed ? 1 : 0;
 
-            int dx = x - mx;
-            int dy = y - my;
+			int dx = x - mx;
+			int dy = y - my;
 
-            Yaw(-dx / 300f * move);
-            Pitch(-dy / 300f * move);
+			Yaw(-dx / 300f * move);
+			Pitch(-dy / 300f * move);
 
-            mx = x;
-            my = y;
+			mx = x;
+			my = y;
 		}
 	}
 }
