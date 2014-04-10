@@ -6,8 +6,11 @@ using Microsoft.Xna.Framework;
 
 namespace IRT.Engine
 {
-    interface IShape
+    public interface IShape
     {
+        Vector3 Position { get; }
+        Vector3 Dimensions { get; }
+
         bool isInside(Vector3 r);
 
         Vector3 getGradient(Vector3 r, float wavelength, float step=Space.COMPUTE_RESOLUTION);

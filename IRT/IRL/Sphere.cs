@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace IRT.Engine
 {
-    class Sphere : Shape, IShape
+    public class Sphere : Shape, IShape
     {
         private float Radius;
 
@@ -56,6 +56,11 @@ namespace IRT.Engine
                 normal *= -1;
                 refracted = Vector3.Transform(normal, rot);
             }
+        }
+
+        public override Vector3 Dimensions
+        {
+            get { return Vector3.One * this.Radius; }
         }
     }
 }

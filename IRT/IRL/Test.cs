@@ -13,12 +13,12 @@ namespace IRT.Engine
             Space space = new Space(1f);
 
             Shape cuboid = new Cuboid(Vector3.Zero, 10f, 10f, 10f, 0);
-            cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => y + 3.5f, Vector3.Zero);
+            cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 1*y + 1f, Vector3.Zero);
             space.addShape(cuboid);
 
-            Ray ray = new Ray(Vector3.Zero, Vector3.UnitX, space);
+            Ray ray = new Ray(Vector3.Zero, Vector3.UnitX, space, 533f);
 
-            for (int i = 0; i < 5000; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 ray.propagate();
             }

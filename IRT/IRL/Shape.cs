@@ -43,5 +43,12 @@ namespace IRT.Engine
         public abstract bool isInside(Vector3 r);
 
         public abstract void interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, float outerRefractionIndex, float wavelength);
+
+        public Vector3 Position
+        {
+            get { return this.Center; }
+        }
+
+        public abstract Vector3 Dimensions { get; }
     }
 }

@@ -9,19 +9,19 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace WindowsGame1
+namespace IRT.Viewer
 {
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class IRTViewer : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Model cylinder;
         float aspectRatio;
 
-        public Game1()
+        public IRTViewer()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -123,8 +123,6 @@ namespace WindowsGame1
                 // Draw the mesh, using the effects set above.
                 mesh.Draw();
             }
-            base.Draw(gameTime);
-            // TODO: Add your drawing code here
 
             base.Draw(gameTime);
         }

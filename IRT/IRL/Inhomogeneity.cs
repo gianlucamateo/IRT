@@ -10,6 +10,7 @@ namespace IRT.Engine
     {
         RADIAL, XYZ
     };
+    
     public struct Inhomogeneity
     {
         private Func<float, float, float, float> XYZInhomogeneity;

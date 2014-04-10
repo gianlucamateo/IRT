@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace IRT.Engine
 {
-    class Ray
+    public class Ray
     {
         private List<Vector3> segments;
         private float wavelength;
@@ -15,12 +15,13 @@ namespace IRT.Engine
         private Shape medium;
         private Space space;
 
-        public Ray(Vector3 startPosition, Vector3 direction, Space space){
+        public Ray(Vector3 startPosition, Vector3 direction, Space space, float wavelength){
             this.segments = new List<Vector3>();
             this.position = startPosition;
             this.direction = direction;
             this.space = space;
             this.medium = space.getMedium(position);
+            this.wavelength = wavelength;
         }
 
         public void propagate()
@@ -43,6 +44,7 @@ namespace IRT.Engine
             {
                 dirStep = dl * rayDir;
                 Vector3 gradient = medium.getGradient(position + dirStep, wavelength);
+                Console.WriteLine(gradient);
                 Vector3 dr = gradient * Space.COMPUTE_RESOLUTION * medium.getRefractionIndex(position + dirStep, wavelength);
                 sum += dr;
                 doubleSum += sum * Space.COMPUTE_RESOLUTION;                

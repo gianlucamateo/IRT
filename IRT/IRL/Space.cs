@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace IRT.Engine
 {
-    class Space
+    public class Space
     {
         public const float RAY_RESOLUTION = 0.001f, COMPUTE_RESOLUTION = 0.0001f;
         public float refractionIndex;

@@ -1,6 +1,6 @@
 using System;
 
-namespace WindowsGame1
+namespace IRT.Viewer
 {
 #if WINDOWS || XBOX
     static class Program
@@ -10,7 +10,7 @@ namespace WindowsGame1
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            using (IRTViewer game = new IRTViewer())
             {
                 game.Run();
             }

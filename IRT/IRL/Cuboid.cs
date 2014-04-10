@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace IRT.Engine
 {
-    class Cuboid : Shape, IShape
+    public class Cuboid : Shape, IShape
     {
         float heightY, widthX, depthZ;
 
@@ -36,6 +36,11 @@ namespace IRT.Engine
         public override void interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, float outerRefractionIndex, float wavelength)
         {
             throw new NotImplementedException();
+        }
+
+        public override Vector3 Dimensions
+        {
+            get { return new Vector3(this.widthX, this.heightY, this.depthZ); }
         }
     }
 }
