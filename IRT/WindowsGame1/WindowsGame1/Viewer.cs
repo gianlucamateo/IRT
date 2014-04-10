@@ -52,12 +52,12 @@ namespace IRT.Viewer
             this.IsMouseVisible = true;
             this.IsFixedTimeStep = true;
             this.TargetElapsedTime = System.TimeSpan.FromMilliseconds(TIMEPERFRAME);
-            graphics.PreferredBackBufferHeight = 1080;
-            graphics.PreferredBackBufferWidth = 1920;
-            graphics.IsFullScreen = true;
+            //graphics.IsFullScreen = true;
+            graphics.PreferredBackBufferHeight = 720;// GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            graphics.PreferredBackBufferWidth = 1280;// GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.SynchronizeWithVerticalRetrace = false;
-            graphics.PreferMultiSampling = true;
-            graphics.GraphicsDevice.PresentationParameters.MultiSampleCount = 4;
+            //graphics.PreferMultiSampling = true;
+            //graphics.GraphicsDevice.PresentationParameters.MultiSampleCount = 4;
             graphics.ApplyChanges();
             base.Initialize();
         }
@@ -123,16 +123,17 @@ namespace IRT.Viewer
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.MidnightBlue);
 
-            GraphicsDevice.DepthStencilState = DepthStencilState.None;
+            //GraphicsDevice.DepthStencilState = DepthStencilState.None;
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
 
-            drawCuboid.Draw();
             foreach (IDrawable d in rays)
             {
                 d.Draw();
             }
+
+            drawCuboid.Draw();
 
             base.Draw(gameTime);
         }
