@@ -84,12 +84,12 @@ namespace IRT.Viewer
             space.addShape(sphere);
 
             Shape cuboid = new Cuboid(Vector3.UnitX * 2 - Vector3.UnitY, 1, 1, 1, 0);
-            cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 15 * z + 1f,
+            cuboid.Inhomogeniety = new Inhomogeneity(r=> 5 * r,
                 lambda => 1.7f,
                 cuboid.Position);
             space.addShape(cuboid);
 
-            Vector3 spawnPoint = Vector3.UnitY * 0.33f - Vector3.UnitX;
+            Vector3 spawnPoint = Vector3.UnitY * 0.33f - Vector3.UnitX + 0.03f*Vector3.UnitZ;
             Vector3 spawnDirection = Vector3.UnitX;
             space.spawnRay(spawnPoint, spawnDirection, 520f, 1);
             space.spawnRay(spawnPoint, spawnDirection, 475f, 1);
@@ -99,7 +99,7 @@ namespace IRT.Viewer
             space.spawnRay(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 475f, 2);
             space.spawnRay(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 650f, 2);
 
-            space.spawnRay(spawnPoint - (1.5f * Vector3.UnitY) + 2 * Vector3.UnitX, spawnDirection + Vector3.UnitY * 0.4f, 650f, 1);
+            space.spawnRay(spawnPoint - (1.5f * Vector3.UnitY) + 2 * Vector3.UnitX + 0.2f*Vector3.UnitZ, spawnDirection + Vector3.UnitY * 0.4f, 650f, 1);
 
             Model c = Content.Load<Model>("Models\\cuboid");
             Model s = Content.Load<Model>("Models\\sphere");
@@ -112,7 +112,7 @@ namespace IRT.Viewer
             drawers.Add(drawSphere);
             drawers.Add(drawCuboid);
 
-            space.Update(count: 2000, maxSpawns: 5);
+            space.Update(count: 1200, maxSpawns: 5);
 
             foreach (Ray ray in space.finishedRays)
             {
