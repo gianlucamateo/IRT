@@ -36,7 +36,7 @@ namespace IRT.Viewer
 		public IRTViewer()
 		{
 			graphics = new GraphicsDeviceManager(this);
-			cam = new Camera(5f * Vector3.UnitZ, 16f/10f);
+			
 			Content.RootDirectory = "Content";
 		}
 
@@ -56,13 +56,14 @@ namespace IRT.Viewer
 			graphics.IsFullScreen = true;
 			graphics.PreferredBackBufferHeight =  GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 			graphics.PreferredBackBufferWidth =  GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-
+            
 			graphics.SynchronizeWithVerticalRetrace = false;
 
 			graphics.PreferMultiSampling = true;
 			graphics.GraphicsDevice.PresentationParameters.MultiSampleCount = 4;
 
 			graphics.ApplyChanges();
+            cam = new Camera(5f * Vector3.UnitZ, (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
 
 			base.Initialize();
 		}
@@ -77,20 +78,22 @@ namespace IRT.Viewer
 			rays = new List<IDrawable>();
 			
 			Shape cuboid = new Sphere(Vector3.Zero, 0.5f, 0);
-			cuboid.Inhomogeniety = new Inhomogeneity ((x, y, z) => 80f * z + 1.33f, Vector3.Zero);
+			cuboid.Inhomogeniety = new Inhomogeneity ((x, y, z) => 1f,
+                lambda => -0.013f / 400f * lambda + 1.353f,
+                Vector3.Zero);
 			space.addShape(cuboid);
 
 			Vector3 spawnPoint = Vector3.UnitY * 0.43f - Vector3.UnitX / (.5f);
 			Vector3 spawnDirection = Vector3.UnitX;
-			space.spawnRay(spawnPoint, spawnDirection, 533f);
-			space.spawnRay(spawnPoint, spawnDirection, 400f);
+			space.spawnRay(spawnPoint, spawnDirection, 520f);
+			space.spawnRay(spawnPoint, spawnDirection, 475f);
 			space.spawnRay(spawnPoint, spawnDirection, 650f);
 
 			Model s = Content.Load<Model>("Models\\sphere");
 			Model r = Content.Load<Model>("Models\\sphere");
 			drawCuboid = new Drawable(s, cuboid, cam);
 
-			space.Update(count: 2000, maxSpawns: 4);
+			space.Update(count: 2000, maxSpawns: 5);
 
 			foreach (Ray ray in space.finishedRays)
 			{
@@ -128,10 +131,10 @@ namespace IRT.Viewer
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Draw(GameTime gameTime)
 		{
-			GraphicsDevice.Clear(Color.CornflowerBlue);
+			GraphicsDevice.Clear(Color.Black);
 
 			GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-			GraphicsDevice.BlendState = BlendState.Opaque;
+			GraphicsDevice.BlendState = BlendState.Additive;
 			//GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
 
 			foreach (IDrawable d in rays)

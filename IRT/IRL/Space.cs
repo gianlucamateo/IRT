@@ -24,15 +24,15 @@ namespace IRT.Engine
             this.refractionIndex = refractionIndex;
         }
 
-        public void spawnRay(Vector3 position, Vector3 direction, float wavelength)
-        {            
-            this.newlySpawned.Add(new Ray(position, direction, this, wavelength));           
+        public void spawnRay(Vector3 position, Vector3 direction, float wavelength, float intensity = 1)
+        {
+            this.newlySpawned.Add(new Ray(position, direction, this, wavelength, intensity));
         }
 
         public void Update(int maxSpawns = 4, int count = 1)
         {
             int iterations = 0;
-           
+
             do
             {
                 rays = newlySpawned;

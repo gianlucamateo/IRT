@@ -27,9 +27,11 @@ namespace IRT.Engine
             Vector3 zDiff = new Vector3(0, 0, step);
 
             // Calculate differentials
-            dx = (getRefractionIndex(r + xDiff, wavelength) - getRefractionIndex(r, wavelength)) / step;
-            dy = (getRefractionIndex(r + yDiff, wavelength) - getRefractionIndex(r, wavelength)) / step;
-            dz = (getRefractionIndex(r + zDiff, wavelength) - getRefractionIndex(r, wavelength)) / step;
+            dx = (getRefractionIndex(r + xDiff, wavelength) - getRefractionIndex(r - xDiff, wavelength)) / (2 * step);
+            dy = (getRefractionIndex(r + yDiff, wavelength) - getRefractionIndex(r - yDiff, wavelength)) / (2 * step);
+            dz = (getRefractionIndex(r + zDiff, wavelength) - getRefractionIndex(r - zDiff, wavelength)) / (2 * step);
+            /*dy = (getRefractionIndex(r + yDiff, wavelength) - getRefractionIndex(r, wavelength)) / step;
+            dz = (getRefractionIndex(r + zDiff, wavelength) - getRefractionIndex(r, wavelength)) / step;*/
 
             Vector3 gradient = new Vector3(dx, dy, dz);
             return gradient;

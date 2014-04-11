@@ -52,7 +52,7 @@ namespace IRT.Viewer
 							effect.World = transforms[mm.ParentBone.Index] * scale * Matrix.CreateTranslation(positions[i]);
 							effect.View = cam.ViewMatrix;
 							effect.Projection = cam.ProjectionMatrix;
-							effect.Alpha = 1f;
+							effect.Alpha = ray.intensity;
 							effect.DiffuseColor = rayColor.ToVector3 ();
 						}
 						// Draw the mesh, using the effects set above.

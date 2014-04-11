@@ -15,10 +15,11 @@ namespace IRT.Engine
 		private Shape medium;
 		private Space space;
 		private bool dead;
+        public float intensity;
 
 		public float Wavelength { get { return this.wavelength; } }
 
-		public Ray(Vector3 startPosition, Vector3 direction, Space space, float wavelength)
+		public Ray(Vector3 startPosition, Vector3 direction, Space space, float wavelength, float intensity = 1f)
 		{
 			this.dead = false;
 			this.segments = new List<Vector3>();
@@ -28,6 +29,7 @@ namespace IRT.Engine
 			this.space = space;
 			this.medium = space.getMedium(position);
 			this.wavelength = wavelength;
+            this.intensity = intensity;
 		}
 
 		public void propagate()
@@ -54,8 +56,8 @@ namespace IRT.Engine
 					nextMedium.interact(position, direction, out reflected, out refracted, previousRefrac, wavelength);
 				}
 
-				this.space.spawnRay(position, reflected, wavelength);
-				this.space.spawnRay(predictedPosition, refracted, wavelength);
+				this.space.spawnRay(position, reflected, wavelength, this.intensity/2);
+                this.space.spawnRay(predictedPosition, refracted, wavelength, this.intensity / 2);
 				this.dead = true;
 
 				return;
