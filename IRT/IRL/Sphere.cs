@@ -22,46 +22,16 @@ namespace IRT.Engine
         }
 
 
-        public override void interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, float outerRefractionIndex, float wavelength)
-        {
-            Vector3 normal = r - Center;
-            incident.Normalize();
-            normal.Normalize();
-
-            // Compute and return reflected vector
-            Vector3.Reflect(ref incident, ref normal, out reflected);
-
-            // Flip normal if incident ray direction is coming from the inside
-            bool flip = Vector3.Dot(incident, normal) > 0;
-            //flip = false;
-            if (flip)
-            {
-                normal *= -1;
-            }
-
-            // Compute incoming and outgoing angles according to Snell's Law
-            Vector3 tempIncident =  -incident;
-            float thetaIn = (float)Math.Acos(Vector3.Dot(tempIncident, normal));
-            float thetaOut = (float)Math.Asin((outerRefractionIndex / getRefractionIndex(r, wavelength)) * Math.Sin(thetaIn));
-
-            refracted = incident;
-            if (Math.Abs(thetaIn) > 0.01)
-            {
-                // Rotate reversed normal by outgoing angle
-                Vector3 axis = Vector3.Cross(incident, normal);
-                if (flip)
-                    thetaOut = (float)MathHelper.PiOver2 - thetaOut;
-                Matrix rot = Matrix.CreateFromAxisAngle(axis, thetaOut);
-                normal *= -1;
-                
-                    
-                refracted = Vector3.Transform(normal, rot);
-            }
-        }
-
         public override Vector3 Dimensions
         {
             get { return Vector3.One * this.Radius*2; }
+        }
+
+        public override Vector3 getNormal(Vector3 r)
+        {
+            Vector3 normal = (r - Center);
+            normal.Normalize();
+            return normal;
         }
     }
 }

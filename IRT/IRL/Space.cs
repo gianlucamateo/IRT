@@ -26,7 +26,10 @@ namespace IRT.Engine
 
         public void spawnRay(Vector3 position, Vector3 direction, float wavelength, float intensity = 1)
         {
-            this.newlySpawned.Add(new Ray(position, direction, this, wavelength, intensity));
+            if (intensity > 0.0001)
+            {
+                this.newlySpawned.Add(new Ray(position, direction, this, wavelength, intensity));
+            }
         }
 
         public void Update(int maxSpawns = 4, int count = 1)

@@ -25,7 +25,7 @@ namespace IRT.Engine
 			this.segments = new List<Vector3>();
 			this.position = startPosition;
 			this.direction = direction;
-			direction.Normalize();
+			this.direction.Normalize();
 			this.space = space;
 			this.medium = space.getMedium(position);
 			this.wavelength = wavelength;
@@ -45,19 +45,20 @@ namespace IRT.Engine
 			// Check for medium change
 			if (nextMedium != medium)
 			{
+                float reflectance;
 				Vector3 reflected, refracted;
 				if (nextMedium == null)
 				{
-					medium.interact(position, direction, out reflected, out refracted, space.refractionIndex, wavelength);
+					medium.interact(position, direction, out reflected, out refracted, out reflectance, space.refractionIndex, wavelength);
 				}
 				else
 				{
 					float previousRefrac = medium == null ? space.refractionIndex : medium.getRefractionIndex(position,wavelength);
-					nextMedium.interact(position, direction, out reflected, out refracted, previousRefrac, wavelength);
+					nextMedium.interact(position, direction, out reflected, out refracted, out reflectance, previousRefrac, wavelength);
 				}
 
-				this.space.spawnRay(position, reflected, wavelength, this.intensity/2);
-                this.space.spawnRay(predictedPosition, refracted, wavelength, this.intensity / 2);
+				this.space.spawnRay(position, reflected, wavelength, this.intensity*(reflectance));
+                this.space.spawnRay(predictedPosition, refracted, wavelength, this.intensity*(1-reflectance));
 				this.dead = true;
 
 				return;

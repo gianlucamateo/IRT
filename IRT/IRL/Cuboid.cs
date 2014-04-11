@@ -10,7 +10,8 @@ namespace IRT.Engine
     {
         float heightY, widthX, depthZ;
 
-        public Cuboid(Vector3 center, float widthX, float heightY, float depthZ, int zIndex = 0) : base(center, zIndex)
+        public Cuboid(Vector3 center, float widthX, float heightY, float depthZ, int zIndex = 0)
+            : base(center, zIndex)
         {
             this.heightY = heightY;
             this.widthX = widthX;
@@ -33,14 +34,32 @@ namespace IRT.Engine
             return true;
         }
 
-        public override void interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, float outerRefractionIndex, float wavelength)
-        {
-            throw new NotImplementedException();
-        }
-
         public override Vector3 Dimensions
         {
             get { return new Vector3(this.widthX, this.heightY, this.depthZ); }
+        }
+
+        public override Vector3 getNormal(Vector3 r)
+        {
+            Vector3 pos = r - Center;
+            Vector3[] unitV = { Vector3.UnitX, -Vector3.UnitX, Vector3.UnitY, -Vector3.UnitY, Vector3.UnitZ, -Vector3.UnitZ };
+
+            int index = 0;
+
+            if (Math.Max(Math.Max(Math.Abs(pos.X), Math.Abs(pos.Y)), Math.Abs((pos.Z))) == Math.Abs(pos.X))
+            {
+                index = pos.X >= 0 ? 0 : 1;
+            }
+            else if (Math.Max(Math.Max(Math.Abs(pos.X), Math.Abs(pos.Y)), Math.Abs((pos.Z))) == Math.Abs(pos.Y))
+            {
+                index = pos.Y >= 0 ? 2 : 3;
+            }
+            else if (Math.Max(Math.Max(Math.Abs(pos.X), Math.Abs(pos.Y)), Math.Abs((pos.Z))) == Math.Abs(pos.Z))
+            {
+                index = pos.Z >= 0 ? 4 : 5;
+            }
+            //return -Vector3.UnitX;
+            return unitV[index];
         }
     }
 }

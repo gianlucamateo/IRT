@@ -17,7 +17,8 @@ namespace IRT.Engine
 
         float getRefractionIndex(Vector3 r, float wavelength);
 
-        void interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, float outerRefractionIndex, float wavelength);
+        void interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, out float reflectance , float outerRefractionIndex, float wavelength);
 
+        Vector3 getNormal(Vector3 r);
     }
 }
