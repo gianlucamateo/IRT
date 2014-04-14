@@ -18,7 +18,7 @@ namespace IRT.Engine
             this.depthZ = depthZ;
         }
 
-        public override bool isInside(Vector3 r)
+        public override bool IsInside(Vector3 r)
         {
             float x = r.X;
             float y = r.Y;
@@ -39,7 +39,7 @@ namespace IRT.Engine
             get { return new Vector3(this.widthX, this.heightY, this.depthZ); }
         }
 
-        public override Vector3 getNormal(Vector3 r)
+        public override Vector3 GetNormal(Vector3 r)
         {
             Vector3 pos = r - Center;
             Vector3[] unitV = { Vector3.UnitX, -Vector3.UnitX, Vector3.UnitY, -Vector3.UnitY, Vector3.UnitZ, -Vector3.UnitZ };

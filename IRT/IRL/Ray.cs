@@ -15,8 +15,8 @@ namespace IRT.Engine
 		private Shape medium;
 		private Space space;
 		private bool dead;
-		public float intensity;
 
+		public float Intensity { get; set; }
 		public float Wavelength { get { return this.wavelength; } }
 
 		public Ray(Vector3 startPosition, Vector3 direction, Space space, float wavelength, float intensity = 1f)
@@ -27,12 +27,12 @@ namespace IRT.Engine
 			this.direction = direction;
 			this.direction.Normalize();
 			this.space = space;
-			this.medium = space.getMedium(position);
+			this.medium = space.GetMedium(position);
 			this.wavelength = wavelength;
-			this.intensity = intensity;
+			this.Intensity = intensity;
 		}
 
-		public void propagate()
+		public void Propagate()
 		{
 			if (dead)
 			{
@@ -40,7 +40,7 @@ namespace IRT.Engine
 			}
 
 			Vector3 predictedPosition = position + direction * Space.RAY_RESOLUTION;
-			Shape nextMedium = space.getMedium(predictedPosition);
+			Shape nextMedium = space.GetMedium(predictedPosition);
 
 			// Check for medium change
 			if (nextMedium != medium)
@@ -49,16 +49,16 @@ namespace IRT.Engine
 				Vector3 reflected, refracted;
 				if (nextMedium == null)
 				{
-					medium.interact(position, direction, out reflected, out refracted, out reflectance, space.refractionIndex, wavelength);
+					medium.Interact(position, direction, out reflected, out refracted, out reflectance, space.refractionIndex, wavelength);
 				}
 				else
 				{
-					float previousRefrac = medium == null ? space.refractionIndex : medium.getRefractionIndex(position,wavelength);
-					nextMedium.interact(position, direction, out reflected, out refracted, out reflectance, previousRefrac, wavelength);
+					float previousRefrac = medium == null ? space.refractionIndex : medium.GetRefractionIndex(position,wavelength);
+					nextMedium.Interact(position, direction, out reflected, out refracted, out reflectance, previousRefrac, wavelength);
 				}
 				//TODO: maybe swap this
-				this.space.spawnRay(position, reflected, wavelength, this.intensity*(reflectance));
-				this.space.spawnRay(predictedPosition, refracted, wavelength, this.intensity*(1-reflectance));
+				this.space.SpawnRay(position, reflected, wavelength, this.Intensity*(reflectance));
+				this.space.SpawnRay(predictedPosition, refracted, wavelength, this.Intensity*(1-reflectance));
 				this.dead = true;
 
 				return;
@@ -79,9 +79,9 @@ namespace IRT.Engine
 				for (float dl = 0f; dl < Space.RAY_RESOLUTION; dl += Space.COMPUTE_RESOLUTION)
 				{
 					dirStep = dl * rayDir;
-					Vector3 gradient = medium.getGradient(position + dirStep, wavelength);
+					Vector3 gradient = medium.GetGradient(position + dirStep, wavelength);
 
-					Vector3 dr = gradient * Space.COMPUTE_RESOLUTION * medium.getRefractionIndex(position + dirStep, wavelength);
+					Vector3 dr = gradient * Space.COMPUTE_RESOLUTION * medium.GetRefractionIndex(position + dirStep, wavelength);
 					sum += dr;
 					doubleSum += sum * Space.COMPUTE_RESOLUTION;
 				}

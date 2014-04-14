@@ -17,7 +17,7 @@ namespace IRT.Engine
         private Func<float, float> RadialInhomogeneity;
         private Vector3 Origin;
         private InhomogeneityType Type;
-        public Func<float, float> slope;
+        public Func<float, float> Slope;
 
         public Inhomogeneity(Func<float, float, float, float> XYZ, Func<float, float> slope, Vector3 origin)
         {
@@ -25,7 +25,7 @@ namespace IRT.Engine
             this.RadialInhomogeneity = null;
             this.Type = InhomogeneityType.XYZ;
             this.Origin = origin;
-            this.slope = slope;
+            this.Slope = slope;
         }
 
         public Inhomogeneity(Func<float, float> radial, Func<float, float> slope, Vector3 origin)
@@ -34,7 +34,7 @@ namespace IRT.Engine
             this.RadialInhomogeneity = radial;
             this.Type = InhomogeneityType.RADIAL;
             this.Origin = origin;
-            this.slope = slope;
+            this.Slope = slope;
         }
 
 
@@ -43,13 +43,13 @@ namespace IRT.Engine
             if (this.Type == InhomogeneityType.XYZ)
             {
                 r -= Origin;
-                return XYZInhomogeneity(r.X, r.Y, r.Z) * slope(wavelength);//- (wavelength - 500) / 5000f;
+                return XYZInhomogeneity(r.X, r.Y, r.Z) * Slope(wavelength);//- (wavelength - 500) / 5000f;
             }
             else
             {
                 Vector3 relativePosition = r - Origin;
                 float rDist = relativePosition.Length();
-                return RadialInhomogeneity(rDist) * slope(wavelength); // *Math.Abs (wavelength - 500) / 1000;
+                return RadialInhomogeneity(rDist) * Slope(wavelength); // *Math.Abs (wavelength - 500) / 1000;
             }
         }
     }

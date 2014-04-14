@@ -24,7 +24,7 @@ namespace IRT.Engine
             this.refractionIndex = refractionIndex;
         }
 
-        public void spawnRay(Vector3 position, Vector3 direction, float wavelength, float intensity = 1)
+        public void SpawnRay(Vector3 position, Vector3 direction, float wavelength, float intensity = 1)
         {
             if (intensity > 0.0001)
             {
@@ -45,7 +45,7 @@ namespace IRT.Engine
                 {
                     foreach (var ray in this.rays)
                     {
-                        ray.propagate();
+                        ray.Propagate();
                     }
                 }
                 foreach (var ray in this.rays)
@@ -56,13 +56,13 @@ namespace IRT.Engine
             } while (this.newlySpawned.Count > 0 && iterations < maxSpawns);
         }
 
-        public Shape getMedium(Vector3 r)
+        public Shape GetMedium(Vector3 r)
         {
             int zIndex = -1;
             Shape currentShape = null;
             foreach (Shape s in this.shapes)
             {
-                if (s.isInside(r))
+                if (s.IsInside(r))
                 {
                     if (zIndex < s.zIndex)
                     {
@@ -77,7 +77,7 @@ namespace IRT.Engine
                 return currentShape;
         }
 
-        public void addShape(Shape shape)
+        public void AddShape(Shape shape)
         {
             this.shapes.Add(shape);
         }

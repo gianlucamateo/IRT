@@ -11,14 +11,14 @@ namespace IRT.Engine
         Vector3 Position { get; }
         Vector3 Dimensions { get; }
 
-        bool isInside(Vector3 r);
+        bool IsInside(Vector3 r);
 
-        Vector3 getGradient(Vector3 r, float wavelength, float step=Space.COMPUTE_RESOLUTION);
+        Vector3 GetGradient(Vector3 r, float wavelength, float step=Space.COMPUTE_RESOLUTION);
 
-        float getRefractionIndex(Vector3 r, float wavelength);
+        float GetRefractionIndex(Vector3 r, float wavelength);
 
-        void interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, out float reflectance , float outerRefractionIndex, float wavelength);
+        void Interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, out float reflectance , float outerRefractionIndex, float wavelength);
 
-        Vector3 getNormal(Vector3 r);
+        Vector3 GetNormal(Vector3 r);
     }
 }

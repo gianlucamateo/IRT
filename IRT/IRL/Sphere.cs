@@ -6,32 +6,32 @@ using Microsoft.Xna.Framework;
 
 namespace IRT.Engine
 {
-    public class Sphere : Shape, IShape
-    {
-        private float Radius;
+	public class Sphere : Shape, IShape
+	{
+		public float Radius { get; set; }
 
-        public Sphere(Vector3 center, float radius, int zIndex = 0) : base(center, zIndex) 
-        {
-            this.Radius = radius;
-        }
+		public Sphere(Vector3 center, float radius, int zIndex = 0) : base(center, zIndex) 
+		{
+			this.Radius = radius;
+		}
 
-        public override bool isInside(Vector3 r)
-        {
-            Vector3 diff = r - Center;
-            return diff.Length() <= Radius;
-        }
+		public override bool IsInside(Vector3 r)
+		{
+			Vector3 diff = r - Center;
+			return diff.Length() <= Radius;
+		}
 
 
-        public override Vector3 Dimensions
-        {
-            get { return Vector3.One * this.Radius*2; }
-        }
+		public override Vector3 Dimensions
+		{
+			get { return Vector3.One * this.Radius * 2; }
+		}
 
-        public override Vector3 getNormal(Vector3 r)
-        {
-            Vector3 normal = (r - Center);
-            normal.Normalize();
-            return normal;
-        }
-    }
+		public override Vector3 GetNormal(Vector3 r)
+		{
+			Vector3 normal = (r - Center);
+			normal.Normalize();
+			return normal;
+		}
+	}
 }

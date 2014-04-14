@@ -18,7 +18,7 @@ namespace IRT.Engine
             this.zIndex = zIndex;
         }
 
-        public Vector3 getGradient(Vector3 r, float wavelength, float step = Space.COMPUTE_RESOLUTION)
+        public Vector3 GetGradient(Vector3 r, float wavelength, float step = Space.COMPUTE_RESOLUTION)
         {
             float dx = 0, dy = 0, dz = 0;
 
@@ -27,9 +27,9 @@ namespace IRT.Engine
             Vector3 zDiff = new Vector3(0, 0, step);
 
             // Calculate differentials
-            dx = (getRefractionIndex(r + xDiff, wavelength) - getRefractionIndex(r - xDiff, wavelength)) / (2 * step);
-            dy = (getRefractionIndex(r + yDiff, wavelength) - getRefractionIndex(r - yDiff, wavelength)) / (2 * step);
-            dz = (getRefractionIndex(r + zDiff, wavelength) - getRefractionIndex(r - zDiff, wavelength)) / (2 * step);
+            dx = (GetRefractionIndex(r + xDiff, wavelength) - GetRefractionIndex(r - xDiff, wavelength)) / (2 * step);
+            dy = (GetRefractionIndex(r + yDiff, wavelength) - GetRefractionIndex(r - yDiff, wavelength)) / (2 * step);
+            dz = (GetRefractionIndex(r + zDiff, wavelength) - GetRefractionIndex(r - zDiff, wavelength)) / (2 * step);
             /*dy = (getRefractionIndex(r + yDiff, wavelength) - getRefractionIndex(r, wavelength)) / step;
             dz = (getRefractionIndex(r + zDiff, wavelength) - getRefractionIndex(r, wavelength)) / step;*/
 
@@ -37,16 +37,16 @@ namespace IRT.Engine
             return gradient;
         }
 
-        public float getRefractionIndex(Vector3 r, float wavelength)
+        public float GetRefractionIndex(Vector3 r, float wavelength)
         {
             return this.Inhomogeniety.Evaluate(r - this.Center, wavelength);
         }
 
-        public abstract bool isInside(Vector3 r);
+        public abstract bool IsInside(Vector3 r);
 
-        public void interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, out float refl, float outerRefractionIndex, float wavelength)
+        public void Interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, out float refl, float outerRefractionIndex, float wavelength)
         {
-            Vector3 normal = getNormal(r);
+            Vector3 normal = GetNormal(r);
             incident.Normalize();
             normal.Normalize();
 
@@ -60,7 +60,7 @@ namespace IRT.Engine
 
             // Compute incoming and outgoing angles according to Snell's Law
             Vector3 tempIncident = incident;
-            float nIn = getRefractionIndex(r, wavelength);
+            float nIn = GetRefractionIndex(r, wavelength);
 
 
             if (!fromInside)
@@ -130,7 +130,7 @@ namespace IRT.Engine
         public abstract Vector3 Dimensions { get; }
 
 
-        public abstract Vector3 getNormal(Vector3 r);
+        public abstract Vector3 GetNormal(Vector3 r);
 
     }
 }

@@ -89,25 +89,25 @@ namespace IRT.Viewer
                 Vector3.Zero);
             Shape innersphere = new Sphere(Vector3.Zero, 0.3f, 1);
             innersphere.Inhomogeniety = new Inhomogeneity((x, y, z) => 1.5f, lambda => 1f, innersphere.Position);
-            space.addShape(sphere);
-            space.addShape(innersphere);
+            space.AddShape(sphere);
+            space.AddShape(innersphere);
             Shape cuboid = new Cuboid(Vector3.UnitX * 2 - Vector3.UnitY, 1, 1, 1, 0);
             cuboid.Inhomogeniety = new Inhomogeneity(r => 5 * r,
                 lambda => 1.7f,
                 cuboid.Position);
-            space.addShape(cuboid);
+            space.AddShape(cuboid);
 
             Vector3 spawnPoint = Vector3.UnitY * 0.33f - Vector3.UnitX + 0.03f * Vector3.UnitZ;
             Vector3 spawnDirection = Vector3.UnitX;
-            space.spawnRay(spawnPoint, spawnDirection, 520f, 1);
-            space.spawnRay(spawnPoint, spawnDirection, 475f, 1);
-            space.spawnRay(spawnPoint, spawnDirection, 650f, 1);
+            space.SpawnRay(spawnPoint, spawnDirection, 520f, 1);
+            space.SpawnRay(spawnPoint, spawnDirection, 475f, 1);
+            space.SpawnRay(spawnPoint, spawnDirection, 650f, 1);
 
-            space.spawnRay(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 520f, 2);
-            space.spawnRay(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 475f, 2);
-            space.spawnRay(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 650f, 2);
+            space.SpawnRay(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 520f, 2);
+            space.SpawnRay(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 475f, 2);
+            space.SpawnRay(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 650f, 2);
 
-            space.spawnRay(spawnPoint - (1.5f * Vector3.UnitY) + 2 * Vector3.UnitX + 0.2f * Vector3.UnitZ, spawnDirection + Vector3.UnitY * 0.4f, 650f, 1);
+            space.SpawnRay(spawnPoint - (1.5f * Vector3.UnitY) + 2 * Vector3.UnitX + 0.2f * Vector3.UnitZ, spawnDirection + Vector3.UnitY * 0.4f, 650f, 1);
 
             Model c = Content.Load<Model>("Models\\cuboid");
             Model s = Content.Load<Model>("Models\\sphere");
