@@ -11,6 +11,8 @@ using Microsoft.Xna.Framework.Media;
 
 using System.Threading;
 
+using System.Collections;
+
 using IRT.Engine;
 using Ray = IRT.Engine.Ray;
 
@@ -26,8 +28,12 @@ namespace IRT.Viewer
         Camera cam;
         Space space;
 
+        //List<IDrawable> drawers;
+        Hashtable drawersHash;
         List<IDrawable> drawers;
         List<IDrawable> rays;
+
+        int[] keyArr;
 
         const float TARGETFRAMERATE = 250;
 
@@ -81,36 +87,43 @@ namespace IRT.Viewer
             sphere.Inhomogeniety = new Inhomogeneity((x, y, z) => 1f,
                 lambda => -0.013f / 400f * lambda + 1.353f,
                 Vector3.Zero);
+            Shape innersphere = new Sphere(Vector3.Zero, 0.3f, 1);
+            innersphere.Inhomogeniety = new Inhomogeneity((x, y, z) => 1.5f, lambda => 1f, innersphere.Position);
             space.addShape(sphere);
-
+            space.addShape(innersphere);
             Shape cuboid = new Cuboid(Vector3.UnitX * 2 - Vector3.UnitY, 1, 1, 1, 0);
-            cuboid.Inhomogeniety = new Inhomogeneity(r=> 5 * r,
+            cuboid.Inhomogeniety = new Inhomogeneity(r => 5 * r,
                 lambda => 1.7f,
                 cuboid.Position);
             space.addShape(cuboid);
 
-            Vector3 spawnPoint = Vector3.UnitY * 0.33f - Vector3.UnitX + 0.03f*Vector3.UnitZ;
+            Vector3 spawnPoint = Vector3.UnitY * 0.33f - Vector3.UnitX + 0.03f * Vector3.UnitZ;
             Vector3 spawnDirection = Vector3.UnitX;
             space.spawnRay(spawnPoint, spawnDirection, 520f, 1);
             space.spawnRay(spawnPoint, spawnDirection, 475f, 1);
             space.spawnRay(spawnPoint, spawnDirection, 650f, 1);
 
-            space.spawnRay(spawnPoint-Vector3.UnitY*.7f, spawnDirection, 520f, 2);
+            space.spawnRay(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 520f, 2);
             space.spawnRay(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 475f, 2);
             space.spawnRay(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 650f, 2);
 
-            space.spawnRay(spawnPoint - (1.5f * Vector3.UnitY) + 2 * Vector3.UnitX + 0.2f*Vector3.UnitZ, spawnDirection + Vector3.UnitY * 0.4f, 650f, 1);
+            space.spawnRay(spawnPoint - (1.5f * Vector3.UnitY) + 2 * Vector3.UnitX + 0.2f * Vector3.UnitZ, spawnDirection + Vector3.UnitY * 0.4f, 650f, 1);
 
             Model c = Content.Load<Model>("Models\\cuboid");
             Model s = Content.Load<Model>("Models\\sphere");
 
+
+
             Drawable drawSphere = new Drawable(s, sphere, cam);
+            Drawable drawInnerSphere = new Drawable(s, innersphere, cam);
             Drawable drawCuboid = new Drawable(c, cuboid, cam);
 
+            drawersHash = new Hashtable();
             drawers = new List<IDrawable>();
 
             drawers.Add(drawSphere);
             drawers.Add(drawCuboid);
+            drawers.Add(drawInnerSphere);
 
             space.Update(count: 1200, maxSpawns: 5);
 
@@ -118,6 +131,22 @@ namespace IRT.Viewer
             {
                 rays.Add(new RayDrawable(s, ray, this.cam));
             }
+            generateHash(drawers);
+        }
+
+        private void generateHash(List<IDrawable> drawers)
+        {
+            foreach (IDrawable d in drawers)
+            {
+                if (!this.drawersHash.Contains(d.getZ()))
+                    this.drawersHash.Add(d.getZ(), new List<IDrawable>());
+                List<IDrawable> list = (List<IDrawable>)this.drawersHash[d.getZ()];
+                list.Add(d);
+            }
+            this.drawersHash.Keys.Cast<int>();
+            keyArr = new int[this.drawersHash.Keys.Count];
+            this.drawersHash.Keys.CopyTo(keyArr, 0);
+            Array.Sort(keyArr);
         }
 
         /// <summary>
@@ -148,6 +177,7 @@ namespace IRT.Viewer
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        bool done = false;
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
@@ -164,11 +194,19 @@ namespace IRT.Viewer
             GraphicsDevice.DepthStencilState = DepthStencilState.None;
             GraphicsDevice.BlendState = BlendState.AlphaBlend;
             //GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
-            foreach (Drawable d in drawers)
+            /*foreach (Drawable d in drawers)
             {
                 d.Draw();
-            }
+            }*/
 
+            for (int z = 0; z < keyArr.Length; z++)
+            {
+                List<IDrawable> drawables = (List<IDrawable>)drawersHash[z];
+                foreach (IDrawable d in drawables)
+                {
+                    d.Draw();
+                }
+            }
 
             base.Draw(gameTime);
         }

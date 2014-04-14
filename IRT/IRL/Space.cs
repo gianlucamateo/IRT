@@ -58,14 +58,23 @@ namespace IRT.Engine
 
         public Shape getMedium(Vector3 r)
         {
+            int zIndex = -1;
+            Shape currentShape = null;
             foreach (Shape s in this.shapes)
             {
                 if (s.isInside(r))
                 {
-                    return s;
+                    if (zIndex < s.zIndex)
+                    {
+                        zIndex = s.zIndex;
+                        currentShape = s;
+                    }
                 }
             }
-            return null;
+            if (zIndex == -1)
+                return null;
+            else
+                return currentShape;
         }
 
         public void addShape(Shape shape)

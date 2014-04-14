@@ -8,5 +8,6 @@ namespace IRT.Viewer
     interface IDrawable
     {
         void Draw();
+        int getZ();
     }
 }

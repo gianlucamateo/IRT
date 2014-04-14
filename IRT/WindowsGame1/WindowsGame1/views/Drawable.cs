@@ -14,7 +14,7 @@ namespace IRT.Viewer
     {
         private Vector3 dimensions, position;
         private Model mesh;
-
+        private IShape shape;
         private Camera cam;
 
         public Drawable(Model mesh, IShape shape, Camera camera)
@@ -23,6 +23,7 @@ namespace IRT.Viewer
             this.position = shape.Position;
             this.mesh = mesh;
             this.cam = camera;
+            this.shape = shape;
         }
 
         public void Draw()
@@ -42,12 +43,19 @@ namespace IRT.Viewer
                     effect.World = transforms[mm.ParentBone.Index] * Matrix.CreateScale(this.dimensions) * Matrix.CreateTranslation(this.position);
                     effect.View = cam.ViewMatrix;//Matrix.CreateLookAt(new Vector3(0, 0, 10), Vector3.Zero, Vector3.Up);//cam.ViewMatrix;
                     effect.Projection = cam.ProjectionMatrix;//Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 16f / 9f, 1, 100);//cam.ProjectionMatrix;
-                    effect.Alpha = 0.5f;
+                    effect.Alpha = 0.3f;
                     effect.DiffuseColor = Vector3.One;
                 }
                 // Draw the mesh, using the effects set above.
                 mm.Draw();
             }
+        }
+
+
+        public int getZ()
+        {
+            Shape s = (Shape)(this.shape);
+            return s.zIndex;
         }
     }
 }

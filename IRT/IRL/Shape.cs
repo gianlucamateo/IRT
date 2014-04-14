@@ -10,7 +10,7 @@ namespace IRT.Engine
     {
         public Inhomogeneity Inhomogeniety;
         protected Vector3 Center;
-        protected int zIndex;
+        public int zIndex;
 
         public Shape(Vector3 center, int zIndex = 0)
         {
@@ -70,7 +70,7 @@ namespace IRT.Engine
                 float thetaIn = (float)Math.Acos(Vector3.Dot(tempIncident, normal));
                 float thetaOut = (float)Math.Asin((outerRefractionIndex / nIn) * Math.Sin(thetaIn));
 
-                Console.WriteLine("Entering: " + MathHelper.ToDegrees(thetaIn) + "," + MathHelper.ToDegrees(thetaOut) + ", normal: " + -normal + ", incident: " + tempIncident);
+                //Console.WriteLine("Entering: " + MathHelper.ToDegrees(thetaIn) + "," + MathHelper.ToDegrees(thetaOut) + ", normal: " + -normal + ", incident: " + tempIncident);
                 refracted = incident;
 
                 // Rotate reversed normal by outgoing angle
@@ -82,7 +82,7 @@ namespace IRT.Engine
 
                 refracted = Vector3.Transform(normal, rot);
 
-                Console.WriteLine(refracted);
+                //Console.WriteLine(refracted);
    
                 refl = reflectance(thetaIn, nIn, outerRefractionIndex);
                 

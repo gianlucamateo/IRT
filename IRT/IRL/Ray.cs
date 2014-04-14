@@ -15,7 +15,7 @@ namespace IRT.Engine
 		private Shape medium;
 		private Space space;
 		private bool dead;
-        public float intensity;
+		public float intensity;
 
 		public float Wavelength { get { return this.wavelength; } }
 
@@ -29,7 +29,7 @@ namespace IRT.Engine
 			this.space = space;
 			this.medium = space.getMedium(position);
 			this.wavelength = wavelength;
-            this.intensity = intensity;
+			this.intensity = intensity;
 		}
 
 		public void propagate()
@@ -45,7 +45,7 @@ namespace IRT.Engine
 			// Check for medium change
 			if (nextMedium != medium)
 			{
-                float reflectance;
+				float reflectance;
 				Vector3 reflected, refracted;
 				if (nextMedium == null)
 				{
@@ -56,9 +56,9 @@ namespace IRT.Engine
 					float previousRefrac = medium == null ? space.refractionIndex : medium.getRefractionIndex(position,wavelength);
 					nextMedium.interact(position, direction, out reflected, out refracted, out reflectance, previousRefrac, wavelength);
 				}
-
+				//TODO: maybe swap this
 				this.space.spawnRay(position, reflected, wavelength, this.intensity*(reflectance));
-                this.space.spawnRay(predictedPosition, refracted, wavelength, this.intensity*(1-reflectance));
+				this.space.spawnRay(predictedPosition, refracted, wavelength, this.intensity*(1-reflectance));
 				this.dead = true;
 
 				return;
