@@ -20,16 +20,14 @@ namespace IRT.Engine
 
 		public Vector3 GetGradient(Vector3 r, float wavelength, float step = Space.COMPUTE_RESOLUTION)
 		{
-			float dx = 0, dy = 0, dz = 0;
-
 			Vector3 xDiff = new Vector3(step, 0, 0);
 			Vector3 yDiff = new Vector3(0, step, 0);
 			Vector3 zDiff = new Vector3(0, 0, step);
 
 			// Calculate differentials
-			dx = (GetRefractionIndex(r + xDiff, wavelength) - GetRefractionIndex(r - xDiff, wavelength)) / (2 * step);
-			dy = (GetRefractionIndex(r + yDiff, wavelength) - GetRefractionIndex(r - yDiff, wavelength)) / (2 * step);
-			dz = (GetRefractionIndex(r + zDiff, wavelength) - GetRefractionIndex(r - zDiff, wavelength)) / (2 * step);
+			float dx = (GetRefractionIndex(r + xDiff, wavelength) - GetRefractionIndex(r - xDiff, wavelength)) / (2f * step);
+			float dy = (GetRefractionIndex(r + yDiff, wavelength) - GetRefractionIndex(r - yDiff, wavelength)) / (2f * step);
+			float dz = (GetRefractionIndex(r + zDiff, wavelength) - GetRefractionIndex(r - zDiff, wavelength)) / (2f * step);
 
 			Vector3 gradient = new Vector3(dx, dy, dz);
 			return gradient;
@@ -71,6 +69,8 @@ namespace IRT.Engine
 				Matrix rot = Matrix.CreateFromAxisAngle(axis, thetaOut);
 				refracted = Vector3.Transform(normal, rot);
 
+				Console.WriteLine ("Refracted: {0}", refracted);
+				// TODO: handle TIR
 				refl = reflectance(thetaIn, nIn, outerRefractionIndex);
 				
 				// Compute and return reflected vector
@@ -106,7 +106,7 @@ namespace IRT.Engine
 			float theta = thetaIn;
 			float R0 = (n1 - n2) / (n1 + n2);
 			R0 *= R0;
-			float R = R0 + (1f - R0) * (1f - (float)Math.Pow(Math.Cos(theta), 5));
+			float R = R0 + (1f - R0) * (float)Math.Pow((1f - Math.Cos(theta)), 5);
 			return R;
 		}
 

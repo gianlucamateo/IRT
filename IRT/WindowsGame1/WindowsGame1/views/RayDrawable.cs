@@ -20,7 +20,7 @@ namespace IRT.Viewer
 
 		private Camera cam;
 
-		public RayDrawable(Model mesh, Ray ray, Camera camera)
+		public RayDrawable (Model mesh, Ray ray, Camera camera)
 		{
 			this.dimensions = 0.007f * Vector3.One;
 			this.mesh = mesh;
@@ -28,35 +28,31 @@ namespace IRT.Viewer
 			this.ray = ray;
 		}
 
-		public void Draw()
+		public void Draw ()
 		{
 			Matrix[] transforms = new Matrix[this.mesh.Bones.Count];
-			this.mesh.CopyAbsoluteBoneTransformsTo(transforms);
+			this.mesh.CopyAbsoluteBoneTransformsTo (transforms);
 
-			Matrix scale = Matrix.CreateScale(this.dimensions);
-			Vector3[] positions = ray.segments.ToArray<Vector3>();
+			Matrix scale = Matrix.CreateScale (this.dimensions);
+			Vector3[] positions = ray.segments.ToArray<Vector3> ();
 
 			Color rayColor = WavelengthToColor (ray.Wavelength);
-			for (int i = 0; i < positions.Length; i++)
-			{
-				if (i % 10 == 0)
-				{
-					foreach (ModelMesh mm in mesh.Meshes)
-					{
+			for (int i = 0; i < positions.Length; i++) {
+				if (i % 10 == 0) {
+					foreach (ModelMesh mm in mesh.Meshes) {
 						// This is where the mesh orientation is set, as well 
 						// as our camera and projection.
-						foreach (BasicEffect effect in mm.Effects)
-						{
-							effect.EnableDefaultLighting();
+						foreach (BasicEffect effect in mm.Effects) {
+							effect.EnableDefaultLighting ();
 							effect.LightingEnabled = false;
-							effect.World = transforms[mm.ParentBone.Index] * scale * Matrix.CreateTranslation(positions[i]);
+							effect.World = transforms[mm.ParentBone.Index] * scale * Matrix.CreateTranslation (positions[i]);
 							effect.View = cam.ViewMatrix;
 							effect.Projection = cam.ProjectionMatrix;
-							effect.Alpha = Math.Min((float)Math.Pow(ray.Intensity - 1, 13) + 1f,1f);//ray.intensity*(float)Math.E*(float)Math.Exp(-ray.intensity);
+							effect.Alpha = ray.Intensity + 0.4f;//Math.Min ((float)Math.Pow (ray.Intensity - 1, 33) + 1f, 1f);
 							effect.DiffuseColor = rayColor.ToVector3 ();
 						}
 						// Draw the mesh, using the effects set above.
-						mm.Draw();
+						mm.Draw ();
 					}
 				}
 			}
@@ -121,9 +117,9 @@ namespace IRT.Viewer
 		}
 
 
-        public int getZ()
-        {
-            throw new NotImplementedException();
-        }
-    }
+		public int getZ ()
+		{
+			throw new NotImplementedException ();
+		}
+	}
 }
