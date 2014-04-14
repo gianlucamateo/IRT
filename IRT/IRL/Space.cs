@@ -40,7 +40,7 @@ namespace IRT.Engine
             {
                 rays = newlySpawned;
                 newlySpawned = new List<Ray>();
-                Console.WriteLine(rays.Count);
+ 
                 for (int i = 0; i < count; i++)
                 {
                     foreach (var ray in this.rays)

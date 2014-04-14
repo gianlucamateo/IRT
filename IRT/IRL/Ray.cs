@@ -53,12 +53,14 @@ namespace IRT.Engine
 				}
 				else
 				{
-					float previousRefrac = medium == null ? space.refractionIndex : medium.GetRefractionIndex(position,wavelength);
-					nextMedium.Interact(position, direction, out reflected, out refracted, out reflectance, previousRefrac, wavelength);
+					float previousRefrac = medium == null ? space.refractionIndex : medium.GetRefractionIndex (position, wavelength);
+					nextMedium.Interact (position, direction, out reflected, out refracted, out reflectance, previousRefrac, wavelength);
 				}
 				//TODO: maybe swap this
-				this.space.SpawnRay(position, reflected, wavelength, this.Intensity*(reflectance));
-				this.space.SpawnRay(predictedPosition, refracted, wavelength, this.Intensity*(1-reflectance));
+				this.space.SpawnRay (position, reflected, wavelength, this.Intensity * (reflectance));
+				this.space.SpawnRay (predictedPosition, refracted, wavelength, this.Intensity * (1f - reflectance));
+				
+				// Kill ray after spawning children
 				this.dead = true;
 
 				return;

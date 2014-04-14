@@ -58,7 +58,7 @@ namespace IRT.Engine
             {
                 index = pos.Z >= 0 ? 4 : 5;
             }
-            //return -Vector3.UnitX;
+
             return unitV[index];
         }
     }
