@@ -111,9 +111,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Viewer.cs" />
+    <Compile Include="views\IScene.cs" />
+    <Compile Include="views\Rainbow.cs" />
     <Compile Include="views\RayDrawable.cs" />
     <Compile Include="views\IDrawable.cs" />
     <Compile Include="views\Drawable.cs" />
+    <Compile Include="views\Scene.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

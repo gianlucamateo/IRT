@@ -24,9 +24,7 @@ namespace IRT.Viewer
 	public class IRTViewer : Game
 	{
 		GraphicsDeviceManager graphics;
-
 		Camera cam;
-		Space space;
 
 		//List<IDrawable> drawers;
 		Hashtable drawersHash;
@@ -80,54 +78,20 @@ namespace IRT.Viewer
 		/// </summary>
 		protected override void LoadContent ()
 		{
-			space = new Space (1f);
-			rays = new List<IDrawable> ();
+            IScene rainbow = new Rainbow(Content, cam);
 
-			Shape sphere = new Sphere (Vector3.Zero, 0.5f, 0);
-			sphere.Inhomogeniety = new Inhomogeneity ((x, y, z) => 1f,
-				lambda => -0.013f / 400f * lambda + 1.353f,
-				Vector3.Zero);
-            space.AddShape(sphere);
+            drawers = new List<IDrawable>();
+            rays = new List<IDrawable>();
 
-			Shape cuboid = new Cuboid (Vector3.UnitX * 2 - Vector3.UnitY, 1, 1, 1, 0);
-			cuboid.Inhomogeniety = new Inhomogeneity (
-                r => 1.5f,
-				lambda => 1f,
-				cuboid.Position);
-			space.AddShape (cuboid);
-
-            Vector3 spawnPoint = new Vector3(-1f, 0.31f, 0f);
-			Vector3 spawnDirection = Vector3.UnitX;
-
-            space.SpawnCluster(spawnPoint, spawnDirection, 475f, 650f, 7);
-
-            space.SpawnCluster(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 475f, 650f, 7);
-			
-            space.SpawnRay (spawnPoint - (1.5f * Vector3.UnitY) + 2.45f * Vector3.UnitX + 0.2f * Vector3.UnitZ, spawnDirection + Vector3.UnitY * 10f, 650f);
-
-			Model c = Content.Load<Model> ("Models\\cuboid");
-			Model s = Content.Load<Model> ("Models\\sphere");
-
-			Drawable drawSphere = new Drawable (s, sphere, cam);
-			Drawable drawCuboid = new Drawable (c, cuboid, cam);
-
-			drawersHash = new Hashtable ();
-			drawers = new List<IDrawable> ();
-
-			drawers.Add (drawSphere);
-			drawers.Add (drawCuboid);
-
-			space.Update (count: 1200, maxSpawns: 5);
-
-			foreach (Ray ray in space.finishedRays) {
-				rays.Add (new RayDrawable (s, ray, this.cam));
-			}
+            rainbow.Load(rays, drawers);
+            rainbow.Run();
 
 			generateHash (drawers);
 		}
 
 		private void generateHash (List<IDrawable> drawers)
 		{
+            drawersHash = new Hashtable();
 			foreach (IDrawable d in drawers) {
 				if (!this.drawersHash.Contains (d.getZ ()))
 					this.drawersHash.Add (d.getZ (), new List<IDrawable> ());
