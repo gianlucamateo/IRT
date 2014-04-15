@@ -87,42 +87,28 @@ namespace IRT.Viewer
 			sphere.Inhomogeniety = new Inhomogeneity ((x, y, z) => 1f,
 				lambda => -0.013f / 400f * lambda + 1.353f,
 				Vector3.Zero);
-
-			Shape innersphere = new Sphere (Vector3.Zero, 0.3f, 1);
-			innersphere.Inhomogeniety = new Inhomogeneity ((x, y, z) => 1f,
-				lambda => -0.013f / 400f * lambda + 1.353f,
-				innersphere.Position);
-			space.AddShape (sphere);
-			//space.AddShape(innersphere);
+            space.AddShape(sphere);
 
 			Shape cuboid = new Cuboid (Vector3.UnitX * 2 - Vector3.UnitY, 1, 1, 1, 0);
-			cuboid.Inhomogeniety = new Inhomogeneity (r => 1.5f,
+			cuboid.Inhomogeniety = new Inhomogeneity (
+                r => 1.5f,
 				lambda => 1f,
 				cuboid.Position);
 			space.AddShape (cuboid);
 
             Vector3 spawnPoint = new Vector3(-1f, 0.31f, 0f);
 			Vector3 spawnDirection = Vector3.UnitX;
-			space.SpawnRay (spawnPoint, spawnDirection, 475f, 1);
-            space.SpawnRay(spawnPoint, spawnDirection, 500f, 1);
-            space.SpawnRay(spawnPoint, spawnDirection, 525f, 1);
-            space.SpawnRay(spawnPoint, spawnDirection, 550f, 1);
-            space.SpawnRay(spawnPoint, spawnDirection, 575f, 1);
-            space.SpawnRay(spawnPoint, spawnDirection, 600f, 1);
-            space.SpawnRay(spawnPoint, spawnDirection, 625f, 1);
-			space.SpawnRay (spawnPoint, spawnDirection, 650f, 1);
 
-			space.SpawnRay (spawnPoint - Vector3.UnitY * .7f, spawnDirection, 520f, 1);
-			space.SpawnRay (spawnPoint - Vector3.UnitY * .7f, spawnDirection, 475f, 1);
-			space.SpawnRay (spawnPoint - Vector3.UnitY * .7f, spawnDirection, 650f, 1);
-            
-			space.SpawnRay (spawnPoint - (1.5f * Vector3.UnitY) + 2.45f * Vector3.UnitX + 0.2f * Vector3.UnitZ, spawnDirection + Vector3.UnitY * 10f, 650f, 1);
+            space.SpawnCluster(spawnPoint, spawnDirection, 475f, 650f, 7);
+
+            space.SpawnCluster(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 475f, 650f, 7);
+			
+            space.SpawnRay (spawnPoint - (1.5f * Vector3.UnitY) + 2.45f * Vector3.UnitX + 0.2f * Vector3.UnitZ, spawnDirection + Vector3.UnitY * 10f, 650f);
 
 			Model c = Content.Load<Model> ("Models\\cuboid");
 			Model s = Content.Load<Model> ("Models\\sphere");
 
 			Drawable drawSphere = new Drawable (s, sphere, cam);
-			Drawable drawInnerSphere = new Drawable (s, innersphere, cam);
 			Drawable drawCuboid = new Drawable (c, cuboid, cam);
 
 			drawersHash = new Hashtable ();
@@ -130,13 +116,13 @@ namespace IRT.Viewer
 
 			drawers.Add (drawSphere);
 			drawers.Add (drawCuboid);
-			//drawers.Add(drawInnerSphere);
 
 			space.Update (count: 1200, maxSpawns: 5);
 
 			foreach (Ray ray in space.finishedRays) {
 				rays.Add (new RayDrawable (s, ray, this.cam));
 			}
+
 			generateHash (drawers);
 		}
 
@@ -182,13 +168,12 @@ namespace IRT.Viewer
 		/// This is called when the game should draw itself.
 		/// </summary>
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
-		bool done = false;
 		protected override void Draw (GameTime gameTime)
 		{
 			GraphicsDevice.Clear (Color.Black);
 
 			GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-			GraphicsDevice.BlendState = BlendState.Opaque;
+			GraphicsDevice.BlendState = BlendState.Additive;
 
 			foreach (IDrawable d in rays) {
 				d.Draw ();
@@ -199,6 +184,7 @@ namespace IRT.Viewer
 			
 			for (int z = 0; z < keyArr.Length; z++) {
 				List<IDrawable> drawables = (List<IDrawable>)drawersHash[z];
+                
 				foreach (IDrawable d in drawables) {
 					d.Draw ();
 				}

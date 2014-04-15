@@ -24,11 +24,20 @@ namespace IRT.Engine
             this.refractionIndex = refractionIndex;
         }
 
-        public void SpawnRay(Vector3 position, Vector3 direction, float wavelength, float intensity = 1)
+        public void SpawnRay(Vector3 position, Vector3 direction, float wavelength, float intensity = 1f)
         {
             if (intensity > 0)
             {
                 this.newlySpawned.Add(new Ray(position, direction, this, wavelength, intensity));
+            }
+        }
+
+        public void SpawnCluster(Vector3 position, Vector3 direction, float begin, float end, int numRays, float intensity = 1f)
+        {
+            for (int i = 0; i < numRays; i++)
+            {
+                float wl = MathHelper.Lerp(begin, end, i / (float)numRays);
+                SpawnRay(position, direction, wl, intensity);
             }
         }
 
