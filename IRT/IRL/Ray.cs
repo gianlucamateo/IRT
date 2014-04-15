@@ -42,6 +42,8 @@ namespace IRT.Engine
 			Vector3 predictedPosition = position + direction * Space.RAY_RESOLUTION;
 			Shape nextMedium = space.GetMedium(predictedPosition);
 
+            bool spawnRefl, spawnRefr;
+
 			// Check for medium change
 			if (nextMedium != medium)
 			{
@@ -49,16 +51,24 @@ namespace IRT.Engine
 				Vector3 reflected, refracted;
 				if (nextMedium == null)
 				{
-					medium.Interact(position, direction, out reflected, out refracted, out reflectance, space.refractionIndex, wavelength);
+					medium.Interact(position, direction, out reflected, out refracted, out reflectance, space.refractionIndex, wavelength, out spawnRefl, out spawnRefr);
 				}
 				else
 				{
 					float previousRefrac = medium == null ? space.refractionIndex : medium.GetRefractionIndex (position, wavelength);
-					nextMedium.Interact (position, direction, out reflected, out refracted, out reflectance, previousRefrac, wavelength);
+                    nextMedium.Interact(position, direction, out reflected, out refracted, out reflectance, previousRefrac, wavelength, out spawnRefl, out spawnRefr);
 				}
-				//TODO: maybe swap this
-				this.space.SpawnRay (position, reflected, wavelength, this.Intensity * (reflectance));
-				this.space.SpawnRay (predictedPosition, refracted, wavelength, this.Intensity * (1f - reflectance));
+
+                if (spawnRefl)
+                {
+                    Console.WriteLine("spawning refl");
+                    this.space.SpawnRay(position, reflected, wavelength, this.Intensity * (reflectance));
+                }
+                if (spawnRefr)
+                {
+                    Console.WriteLine("spawning refr");
+                    this.space.SpawnRay(predictedPosition, refracted, wavelength, this.Intensity * (1f - reflectance));
+                }
 				
 				// Kill ray after spawning children
 				this.dead = true;

@@ -89,29 +89,34 @@ namespace IRT.Viewer
 				Vector3.Zero);
 
 			Shape innersphere = new Sphere (Vector3.Zero, 0.3f, 1);
-			innersphere.Inhomogeniety = new Inhomogeneity ((x, y, z) => 1.33f,
+			innersphere.Inhomogeniety = new Inhomogeneity ((x, y, z) => 1f,
 				lambda => -0.013f / 400f * lambda + 1.353f,
 				innersphere.Position);
 			space.AddShape (sphere);
 			//space.AddShape(innersphere);
 
 			Shape cuboid = new Cuboid (Vector3.UnitX * 2 - Vector3.UnitY, 1, 1, 1, 0);
-			cuboid.Inhomogeniety = new Inhomogeneity (r => 5 * r + 1.7f,
+			cuboid.Inhomogeniety = new Inhomogeneity (r => 1.5f,
 				lambda => 1f,
 				cuboid.Position);
 			space.AddShape (cuboid);
 
-			Vector3 spawnPoint = Vector3.UnitY * 0.33f - Vector3.UnitX + 0.03f * Vector3.UnitZ;
+            Vector3 spawnPoint = new Vector3(-1f, 0.31f, 0f);
 			Vector3 spawnDirection = Vector3.UnitX;
-			space.SpawnRay (spawnPoint, spawnDirection, 520f, 1);
 			space.SpawnRay (spawnPoint, spawnDirection, 475f, 1);
+            space.SpawnRay(spawnPoint, spawnDirection, 500f, 1);
+            space.SpawnRay(spawnPoint, spawnDirection, 525f, 1);
+            space.SpawnRay(spawnPoint, spawnDirection, 550f, 1);
+            space.SpawnRay(spawnPoint, spawnDirection, 575f, 1);
+            space.SpawnRay(spawnPoint, spawnDirection, 600f, 1);
+            space.SpawnRay(spawnPoint, spawnDirection, 625f, 1);
 			space.SpawnRay (spawnPoint, spawnDirection, 650f, 1);
 
 			space.SpawnRay (spawnPoint - Vector3.UnitY * .7f, spawnDirection, 520f, 1);
 			space.SpawnRay (spawnPoint - Vector3.UnitY * .7f, spawnDirection, 475f, 1);
 			space.SpawnRay (spawnPoint - Vector3.UnitY * .7f, spawnDirection, 650f, 1);
-
-			space.SpawnRay (spawnPoint - (1.5f * Vector3.UnitY) + 2 * Vector3.UnitX + 0.2f * Vector3.UnitZ, spawnDirection + Vector3.UnitY * 0.4f, 650f, 1);
+            
+			space.SpawnRay (spawnPoint - (1.5f * Vector3.UnitY) + 2.45f * Vector3.UnitX + 0.2f * Vector3.UnitZ, spawnDirection + Vector3.UnitY * 10f, 650f, 1);
 
 			Model c = Content.Load<Model> ("Models\\cuboid");
 			Model s = Content.Load<Model> ("Models\\sphere");
@@ -183,7 +188,7 @@ namespace IRT.Viewer
 			GraphicsDevice.Clear (Color.Black);
 
 			GraphicsDevice.DepthStencilState = DepthStencilState.Default;
-			GraphicsDevice.BlendState = BlendState.Additive;
+			GraphicsDevice.BlendState = BlendState.Opaque;
 
 			foreach (IDrawable d in rays) {
 				d.Draw ();
