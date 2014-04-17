@@ -78,20 +78,22 @@ namespace IRT.Viewer
 		/// </summary>
 		protected override void LoadContent ()
 		{
-            IScene rainbow = new Rainbow(Content, cam);
+			IScene scene;
+			//scene = new Rainbow(Content, cam);
+			scene = new InhomoCube(Content, cam);
 
-            drawers = new List<IDrawable>();
-            rays = new List<IDrawable>();
+			drawers = new List<IDrawable>();
+			rays = new List<IDrawable>();
 
-            rainbow.Load(rays, drawers);
-            rainbow.Run();
+			scene.Load(rays, drawers);
+			scene.Run();
 
 			generateHash (drawers);
 		}
 
 		private void generateHash (List<IDrawable> drawers)
 		{
-            drawersHash = new Hashtable();
+			drawersHash = new Hashtable();
 			foreach (IDrawable d in drawers) {
 				if (!this.drawersHash.Contains (d.getZ ()))
 					this.drawersHash.Add (d.getZ (), new List<IDrawable> ());
@@ -148,7 +150,7 @@ namespace IRT.Viewer
 			
 			for (int z = 0; z < keyArr.Length; z++) {
 				List<IDrawable> drawables = (List<IDrawable>)drawersHash[z];
-                
+				
 				foreach (IDrawable d in drawables) {
 					d.Draw ();
 				}

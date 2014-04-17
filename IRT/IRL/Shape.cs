@@ -46,8 +46,8 @@ namespace IRT.Engine
 			incident.Normalize();
 			normal.Normalize();
 
-            spawnRefl = true;
-            spawnRefr=true;
+			spawnRefl = true;
+			spawnRefr=true;
 
 			// Flip normal if incident ray direction is coming from the inside
 			bool fromInside = Vector3.Dot(normal, incident) > 0;
@@ -67,25 +67,37 @@ namespace IRT.Engine
 				// Rotate reversed normal by outgoing angle
 				Vector3 axis = Vector3.Cross(normal, incident);
 
-				axis.Normalize();
+				// Cross product of axis and thetain not defined: perpendicular incident vector
+				if (thetaIn == 0f)
+				{
+					refracted = incident;
+					spawnRefl = false;
+				}
+				else
+				{
+					axis.Normalize();
 
-				Matrix rot = Matrix.CreateFromAxisAngle(axis, thetaOut);
-				refracted = Vector3.Transform(normal, rot);
+					Matrix rot = Matrix.CreateFromAxisAngle(axis, thetaOut);
+					refracted = Vector3.Transform(normal, rot);
+				}
+
+				
 
 				Console.WriteLine ("Refracted: {0}", refracted);
 				// TODO: handle TIR
 
-                if (Math.Abs(nIn - outerRefractionIndex) < 0.02)
-                {
-                    spawnRefl = false;
-                    
-                }
+				if (Math.Abs(nIn - outerRefractionIndex) < 0.02)
+				{
+					spawnRefl = false;
+					
+				}
 				
 				refl = reflectance(thetaIn, nIn, outerRefractionIndex);
-                
+				
 				// Compute and return reflected vector
 				normal *= -1;
 				Vector3.Reflect(ref incident, ref normal, out reflected);
+				Console.WriteLine("Thetain: {0}, ThetaOut: {1}", thetaIn, thetaOut);
 			}
 			else
 			{
@@ -104,17 +116,17 @@ namespace IRT.Engine
 				Matrix rot = Matrix.CreateFromAxisAngle(axis, thetaOut);
 				//TIR
 
-                if (Math.Abs(nIn - outerRefractionIndex) < Space.COMPUTE_RESOLUTION)
-                {
-                    spawnRefl = false;
-                }
+				if (Math.Abs(nIn - outerRefractionIndex) < Space.COMPUTE_RESOLUTION)
+				{
+					spawnRefl = false;
+				}
 
 				float critAngle = (float)Math.Asin(nIn / outerRefractionIndex);
 				if (thetaIn>=critAngle)//(thetaOut >= MathHelper.PiOver2 || float.IsNaN(thetaOut))
 				{
-                    refl = 1f;
-                    spawnRefr = false;
-                    refracted = Vector3.Zero;
+					refl = 1f;
+					spawnRefr = false;
+					refracted = Vector3.Zero;
 				}
 				else
 				{
@@ -124,8 +136,10 @@ namespace IRT.Engine
 				// Compute and return reflected vector
 				normal *= -1;
 				Vector3.Reflect(ref incident, ref normal, out reflected);
+				Console.WriteLine("Thetain: {0}, ThetaOut: {1}", thetaIn, thetaOut);
 			}
-            
+			
+			
 
 		}
 
@@ -135,7 +149,7 @@ namespace IRT.Engine
 			
 			if (n1 < n2)
 			{
-                float critAngle = (float)Math.Asin(n1 / n2);
+				float critAngle = (float)Math.Asin(n1 / n2);
 				scaling = critAngle / MathHelper.PiOver2;
 			}
 			float theta = thetaIn;
