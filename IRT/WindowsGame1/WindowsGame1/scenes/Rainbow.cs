@@ -14,7 +14,10 @@ namespace IRT.Viewer
 {
     class Rainbow : Scene
     {
-        public Rainbow(ContentManager cm, Camera cam) : base(cm, cam) { }
+        public Rainbow(ContentManager cm, Camera cam) : base(cm, cam) {
+			this.maxCount = 1200;
+			this.maxSpawns = 5;
+		}
 
         public override void Load(List<IDrawable> rays, List<IDrawable> shapes)
         {
@@ -26,20 +29,15 @@ namespace IRT.Viewer
                 Vector3.Zero);
             space.AddShape(sphere);
 
-            
-
             Vector3 spawnPoint = new Vector3(-1f, 0.31f, 0f);
             Vector3 spawnDirection = Vector3.UnitX;
 
             space.SpawnCluster(spawnPoint, spawnDirection, 475f, 650f, 7);
             space.SpawnCluster(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 475f, 650f, 7);
-            //space.SpawnRay(spawnPoint - (1.5f * Vector3.UnitY) + 2.45f * Vector3.UnitX + 0.2f * Vector3.UnitZ, spawnDirection + Vector3.UnitY * 10f, 650f);
 
-            Drawable drawSphere = new Drawable(s, sphere, cam);
-            //Drawable drawCuboid = new Drawable(c, cuboid, cam);
+            Drawable drawSphere = new Drawable(sphereModel, sphere, cam);
 
             shapes.Add(drawSphere);
-            //shapes.Add(drawCuboid);
         }
     }
 }

@@ -18,10 +18,12 @@ namespace IRT.Viewer
         protected Camera cam;
         protected Space space;
 
+		protected int maxCount, maxSpawns;
+
         protected List<IDrawable> rays;
 
-        protected Model c = null;
-        protected Model s = null;
+        protected Model cubeModel = null;
+        protected Model sphereModel = null;
 
         public Scene(ContentManager cm, Camera cam)
         {
@@ -31,19 +33,22 @@ namespace IRT.Viewer
             this.space = new Space(1.0f);
             this.rays = null;
 
-            c = Content.Load<Model>("Models\\cuboid");
-            s = Content.Load<Model>("Models\\sphere");
+            cubeModel = Content.Load<Model>("Models\\cuboid");
+            sphereModel = Content.Load<Model>("Models\\sphere");
+
+			this.maxCount = 1200;
+			this.maxSpawns = 5;
         }
 
         public abstract void Load(List<IDrawable> rays, List<IDrawable> shapes);
 
         public void Run()
         {
-            this.space.Update(count: 1200, maxSpawns: 5);
+            this.space.Update(count: this.maxCount, maxSpawns: this.maxSpawns);
 
             foreach (Ray ray in this.space.finishedRays)
             {
-                rays.Add(new RayDrawable(s, ray, this.cam));
+                rays.Add(new RayDrawable(sphereModel, ray, this.cam));
             }
         }
     }

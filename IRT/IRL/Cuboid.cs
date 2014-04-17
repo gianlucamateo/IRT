@@ -42,6 +42,8 @@ namespace IRT.Engine
         public override Vector3 GetNormal(Vector3 r)
         {
             Vector3 pos = r - Center;
+			pos /= this.Dimensions;
+
             Vector3[] unitV = { Vector3.UnitX, -Vector3.UnitX, Vector3.UnitY, -Vector3.UnitY, Vector3.UnitZ, -Vector3.UnitZ };
 
             int index = 0;
