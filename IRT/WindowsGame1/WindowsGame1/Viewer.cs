@@ -57,7 +57,7 @@ namespace IRT.Viewer
 			this.IsFixedTimeStep = true;
 			this.TargetElapsedTime = System.TimeSpan.FromMilliseconds (TIMEPERFRAME);
 
-			graphics.IsFullScreen = true;
+			graphics.IsFullScreen = false;
 			graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 			graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
 
@@ -140,20 +140,38 @@ namespace IRT.Viewer
 			GraphicsDevice.Clear (Color.Black);
 
 			GraphicsDevice.DepthStencilState = DepthStencilState.Default;
+			GraphicsDevice.BlendState = BlendState.Opaque;
+
+			// Draw opaque meshes first
+			for (int z = 0; z < keyArr.Length; z++)
+			{
+				List<IDrawable> drawables = (List<IDrawable>)drawersHash[keyArr[z]];
+
+				foreach (IDrawable d in drawables)
+				{
+					if (d.Transparency == 0.0f)
+						d.Draw();
+				}
+			}
+
+			GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 			GraphicsDevice.BlendState = BlendState.Additive;
 
+			// Draw ray segments
 			foreach (IDrawable d in rays) {
 				d.Draw ();
 			}
 
-			GraphicsDevice.DepthStencilState = DepthStencilState.None;
+			GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
 			GraphicsDevice.BlendState = BlendState.AlphaBlend;
 			
+			// Draw transparent shapes
 			for (int z = 0; z < keyArr.Length; z++) {
 				List<IDrawable> drawables = (List<IDrawable>)drawersHash[keyArr[z]];
 				
 				foreach (IDrawable d in drawables) {
-					d.Draw ();
+					if (d.Transparency > 0.0f)
+						d.Draw ();
 				}
 			}
 

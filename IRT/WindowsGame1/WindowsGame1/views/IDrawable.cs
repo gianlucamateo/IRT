@@ -9,5 +9,6 @@ namespace IRT.Viewer
     {
         void Draw();
         int getZ();
+		float Transparency { get; set; }
     }
 }

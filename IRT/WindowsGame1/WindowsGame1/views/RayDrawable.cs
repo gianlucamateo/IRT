@@ -121,5 +121,18 @@ namespace IRT.Viewer
 		{
 			throw new NotImplementedException ();
 		}
+
+
+		public float Transparency
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+			set
+			{
+				throw new NotImplementedException();
+			}
+		}
 	}
 }
