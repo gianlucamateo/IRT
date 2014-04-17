@@ -57,7 +57,7 @@ namespace IRT.Viewer
 			this.IsFixedTimeStep = true;
 			this.TargetElapsedTime = System.TimeSpan.FromMilliseconds (TIMEPERFRAME);
 
-			graphics.IsFullScreen = true;
+			graphics.IsFullScreen = false;
 			graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 			graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
 
@@ -80,8 +80,8 @@ namespace IRT.Viewer
 		{
 			IScene scene;
 			//scene = new Rainbow(Content, cam);
-			//scene = new RadioPropagation(Content, cam);
-			scene = new InhomoCube(Content, cam);
+			scene = new RadioPropagation(Content, cam);
+			//scene = new InhomoCube(Content, cam);
 
 			drawers = new List<IDrawable>();
 			rays = new List<IDrawable>();
@@ -150,7 +150,7 @@ namespace IRT.Viewer
 			GraphicsDevice.BlendState = BlendState.AlphaBlend;
 			
 			for (int z = 0; z < keyArr.Length; z++) {
-				List<IDrawable> drawables = (List<IDrawable>)drawersHash[z];
+				List<IDrawable> drawables = (List<IDrawable>)drawersHash[keyArr[z]];
 				
 				foreach (IDrawable d in drawables) {
 					d.Draw ();
