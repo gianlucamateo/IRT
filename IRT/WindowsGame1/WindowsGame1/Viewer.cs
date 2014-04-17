@@ -57,7 +57,7 @@ namespace IRT.Viewer
 			this.IsFixedTimeStep = true;
 			this.TargetElapsedTime = System.TimeSpan.FromMilliseconds (TIMEPERFRAME);
 
-			graphics.IsFullScreen = false;
+			graphics.IsFullScreen = true;
 			graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 			graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
 
