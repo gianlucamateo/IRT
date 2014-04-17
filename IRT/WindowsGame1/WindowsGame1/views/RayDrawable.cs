@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using IRT.Engine;
 using Ray = IRT.Engine.Ray;
+using RaySegment = IRT.Engine.RaySegment;
 
 namespace IRT.Viewer
 {
@@ -28,31 +29,36 @@ namespace IRT.Viewer
 			this.ray = ray;
 		}
 
-		public void Draw ()
+		public void Draw (int timestamp)
 		{
 			Matrix[] transforms = new Matrix[this.mesh.Bones.Count];
 			this.mesh.CopyAbsoluteBoneTransformsTo (transforms);
 
 			Matrix scale = Matrix.CreateScale (this.dimensions);
-			Vector3[] positions = ray.segments.ToArray<Vector3> ();
+			RaySegment[] positions = ray.segments.ToArray<RaySegment> ();
 
 			Color rayColor = WavelengthToColor (ray.Wavelength);
 			for (int i = 0; i < positions.Length; i++) {
 				if (i % 10 == 0) {
-					foreach (ModelMesh mm in mesh.Meshes) {
-						// This is where the mesh orientation is set, as well 
-						// as our camera and projection.
-						foreach (BasicEffect effect in mm.Effects) {
-							effect.EnableDefaultLighting ();
-							effect.LightingEnabled = false;
-							effect.World = transforms[mm.ParentBone.Index] * scale * Matrix.CreateTranslation (positions[i]);
-							effect.View = cam.ViewMatrix;
-							effect.Projection = cam.ProjectionMatrix;
-							effect.Alpha = ray.Intensity + 0.4f;//Math.Min ((float)Math.Pow (ray.Intensity - 1, 33) + 1f, 1f);
-							effect.DiffuseColor = rayColor.ToVector3 ();
+					if (timestamp > positions[i].timeStamp)
+					{
+						foreach (ModelMesh mm in mesh.Meshes)
+						{
+							// This is where the mesh orientation is set, as well 
+							// as our camera and projection.
+							foreach (BasicEffect effect in mm.Effects)
+							{
+								effect.EnableDefaultLighting();
+								effect.LightingEnabled = false;
+								effect.World = transforms[mm.ParentBone.Index] * scale * Matrix.CreateTranslation(positions[i].position);
+								effect.View = cam.ViewMatrix;
+								effect.Projection = cam.ProjectionMatrix;
+								effect.Alpha = ray.Intensity + 0.4f;//Math.Min ((float)Math.Pow (ray.Intensity - 1, 33) + 1f, 1f);
+								effect.DiffuseColor = rayColor.ToVector3();
+							}
+							// Draw the mesh, using the effects set above.
+							mm.Draw();
 						}
-						// Draw the mesh, using the effects set above.
-						mm.Draw ();
 					}
 				}
 			}

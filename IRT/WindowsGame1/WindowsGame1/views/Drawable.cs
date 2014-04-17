@@ -26,7 +26,7 @@ namespace IRT.Viewer
             this.shape = shape;
         }
 
-        public void Draw()
+        public void Draw(int timestamp)
         {
             Matrix[] transforms = new Matrix[this.mesh.Bones.Count];
             this.mesh.CopyAbsoluteBoneTransformsTo(transforms);

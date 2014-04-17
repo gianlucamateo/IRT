@@ -11,11 +11,13 @@ namespace IRT.Engine
 		public Inhomogeneity Inhomogeniety;
 		protected Vector3 Center;
 		public int zIndex;
+		private float attenuation;
 
-		public Shape(Vector3 center, int zIndex = 0)
+		public Shape(Vector3 center, int zIndex = 0, float attenuation = 1f)
 		{
 			this.Center = center;
 			this.zIndex = zIndex;
+			this.attenuation = attenuation;
 		}
 
 		public Vector3 GetGradient(Vector3 r, float wavelength, float step = Space.COMPUTE_RESOLUTION)
@@ -162,6 +164,11 @@ namespace IRT.Engine
 		public Vector3 Position
 		{
 			get { return this.Center; }
+		}
+
+		public float getAttenuation()
+		{
+			return this.attenuation;
 		}
 
 		public abstract Vector3 Dimensions { get; }
