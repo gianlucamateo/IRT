@@ -31,6 +31,7 @@ namespace IRT.Viewer
 		List<IDrawable> drawers;
 		List<IDrawable> rays;
 		private int timestamp;
+		private bool run;
 
 		int[] keyArr;
 
@@ -38,10 +39,11 @@ namespace IRT.Viewer
 
 		const float TIMEPERFRAME = 1000f / TARGETFRAMERATE;
 
-		public IRTViewer ()
+		public IRTViewer()
 		{
 			this.timestamp = 0;
-			graphics = new GraphicsDeviceManager (this);
+			this.run = true;
+			graphics = new GraphicsDeviceManager(this);
 
 			Content.RootDirectory = "Content";
 		}
@@ -52,12 +54,12 @@ namespace IRT.Viewer
 		/// related content.  Calling base.Initialize will enumerate through any components
 		/// and initialize them as well.
 		/// </summary>
-		protected override void Initialize ()
+		protected override void Initialize()
 		{
 			// TODO: Add your initialization logic here
 			this.IsMouseVisible = true;
 			this.IsFixedTimeStep = true;
-			this.TargetElapsedTime = System.TimeSpan.FromMilliseconds (TIMEPERFRAME);
+			this.TargetElapsedTime = System.TimeSpan.FromMilliseconds(TIMEPERFRAME);
 
 			graphics.IsFullScreen = false;
 			graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
@@ -68,17 +70,17 @@ namespace IRT.Viewer
 			graphics.PreferMultiSampling = true;
 			graphics.GraphicsDevice.PresentationParameters.MultiSampleCount = 4;
 
-			graphics.ApplyChanges ();
-			cam = new Camera (5f * Vector3.UnitZ, (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+			graphics.ApplyChanges();
+			cam = new Camera(5f * Vector3.UnitZ, (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
 
-			base.Initialize ();
+			base.Initialize();
 		}
 
 		/// <summary>
 		/// LoadContent will be called once per game and is the place to load
 		/// all of your content.
 		/// </summary>
-		protected override void LoadContent ()
+		protected override void LoadContent()
 		{
 			IScene scene;
 			scene = new Rainbow(Content, cam);
@@ -91,29 +93,30 @@ namespace IRT.Viewer
 			scene.Load(rays, drawers);
 			scene.Run();
 
-			generateHash (drawers);
+			generateHash(drawers);
 		}
 
-		private void generateHash (List<IDrawable> drawers)
+		private void generateHash(List<IDrawable> drawers)
 		{
 			drawersHash = new Hashtable();
-			foreach (IDrawable d in drawers) {
-				if (!this.drawersHash.Contains (d.getZ ()))
-					this.drawersHash.Add (d.getZ (), new List<IDrawable> ());
-				List<IDrawable> list = (List<IDrawable>)this.drawersHash[d.getZ ()];
-				list.Add (d);
+			foreach (IDrawable d in drawers)
+			{
+				if (!this.drawersHash.Contains(d.getZ()))
+					this.drawersHash.Add(d.getZ(), new List<IDrawable>());
+				List<IDrawable> list = (List<IDrawable>)this.drawersHash[d.getZ()];
+				list.Add(d);
 			}
-			this.drawersHash.Keys.Cast<int> ();
+			this.drawersHash.Keys.Cast<int>();
 			keyArr = new int[this.drawersHash.Keys.Count];
-			this.drawersHash.Keys.CopyTo (keyArr, 0);
-			Array.Sort (keyArr);
+			this.drawersHash.Keys.CopyTo(keyArr, 0);
+			Array.Sort(keyArr);
 		}
 
 		/// <summary>
 		/// UnloadContent will be called once per game and is the place to unload
 		/// all content.
 		/// </summary>
-		protected override void UnloadContent ()
+		protected override void UnloadContent()
 		{
 			// TODO: Unload any non ContentManager content here
 		}
@@ -123,30 +126,42 @@ namespace IRT.Viewer
 		/// checking for collisions, gathering input, and playing audio.
 		/// </summary>
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
-		protected override void Update (GameTime gameTime)
+		protected override void Update(GameTime gameTime)
 		{
 			if (timestamp > 100000)
 			{
 				timestamp -= 1000;
 			}
-			timestamp+= STEPSIZE;
+			if (run)
+			{
+				timestamp += STEPSIZE;
+			}
 			// Allows the game to exit
-			if (Keyboard.GetState ().IsKeyDown (Keys.Escape))
-				this.Exit ();
+			if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+				this.Exit();
 			if (Keyboard.GetState().IsKeyDown(Keys.R))
 				this.timestamp = 0;
-			cam.Update (Keyboard.GetState (), Mouse.GetState ());
+			if (Keyboard.GetState().IsKeyDown(Keys.Space))
+			{
+				this.run = false;
+			}
+			if (Keyboard.GetState().IsKeyDown(Keys.LeftAlt))
+			{
+				this.run = true;
+			}
+			
+			cam.Update(Keyboard.GetState(), Mouse.GetState());
 
-			base.Update (gameTime);
+			base.Update(gameTime);
 		}
 
 		/// <summary>
 		/// This is called when the game should draw itself.
 		/// </summary>
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
-		protected override void Draw (GameTime gameTime)
+		protected override void Draw(GameTime gameTime)
 		{
-			GraphicsDevice.Clear (Color.Black);
+			GraphicsDevice.Clear(Color.Black);
 
 			GraphicsDevice.DepthStencilState = DepthStencilState.Default;
 			GraphicsDevice.BlendState = BlendState.Opaque;
@@ -167,26 +182,29 @@ namespace IRT.Viewer
 			GraphicsDevice.BlendState = BlendState.Additive;
 
 			// Draw ray segments
-			foreach (IDrawable d in rays) {
-				d.Draw (timestamp);
+			foreach (IDrawable d in rays)
+			{
+				d.Draw(timestamp);
 			}
 
 			GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
 			GraphicsDevice.BlendState = BlendState.AlphaBlend;
-			
+
 			// Draw transparent shapes
-			for (int z = 0; z < keyArr.Length; z++) {
+			for (int z = 0; z < keyArr.Length; z++)
+			{
 				List<IDrawable> drawables = (List<IDrawable>)drawersHash[keyArr[z]];
-				
-				foreach (IDrawable d in drawables) {
+
+				foreach (IDrawable d in drawables)
+				{
 
 					if (d.Transparency > 0.0f)
-						d.Draw (timestamp);
+						d.Draw(timestamp);
 
 				}
 			}
 
-			base.Draw (gameTime);
+			base.Draw(gameTime);
 		}
 	}
 }
