@@ -83,8 +83,8 @@ namespace IRT.Viewer
 		protected override void LoadContent()
 		{
 			IScene scene;
-			scene = new Rainbow(Content, cam);
-			//scene = new RadioPropagation(Content, cam);
+			//scene = new Rainbow(Content, cam);
+			scene = new RadioPropagation(Content, cam);
 			//scene = new InhomoCube(Content, cam);
 
 			drawers = new List<IDrawable>();

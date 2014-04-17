@@ -18,7 +18,7 @@ namespace IRT.Viewer
 			: base(cm, cam)
 		{
 			this.maxCount = 1200;
-			this.maxSpawns = 6;
+			this.maxSpawns = 40;
 		}
 
 		public override void Load(List<IDrawable> rays, List<IDrawable> shapes)
@@ -43,10 +43,10 @@ namespace IRT.Viewer
 			space.AddShape(troposphere);
 
 			// Ionosphere D-Layer
-			Sphere dLayer = new Sphere(Vector3.Zero, 1.3f, 3);
+			Sphere dLayer = new Sphere(Vector3.Zero, 1.3f, 3, 1f);
 			dLayer.Inhomogeniety = new Inhomogeneity(
 				r => 1f,
-				l => 1.2f,
+				l => 1f,
 				Vector3.Zero
 				);
 			space.AddShape(dLayer);
@@ -55,7 +55,7 @@ namespace IRT.Viewer
 			Sphere eLayer = new Sphere(Vector3.Zero, 1.4f, 2);
 			eLayer.Inhomogeniety = new Inhomogeneity(
 				r => 1f,
-				l => 1.4f,
+				l => 1f,
 				Vector3.Zero
 				);
 			space.AddShape(eLayer);

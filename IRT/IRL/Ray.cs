@@ -121,7 +121,7 @@ namespace IRT.Engine
 				this.position += rayDir * Space.RAY_RESOLUTION;
 				this.direction = rayDir;
 			}
-
+			
 			this.segments.Add(new RaySegment(this.timeStamp, position, this.Intensity));
 			timeStamp++;
 		}
