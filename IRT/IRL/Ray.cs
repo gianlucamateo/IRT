@@ -6,23 +6,38 @@ using Microsoft.Xna.Framework;
 
 namespace IRT.Engine
 {
+	public struct RaySegment
+	{
+		public int timeStamp;
+		public float intensity;
+		public Vector3 position;
+
+		public RaySegment(int timeStamp, Vector3 position, float intensity = 1)
+		{
+			this.timeStamp = timeStamp;
+			this.position = position;
+			this.intensity = intensity;
+		}
+	}
 	public class Ray
 	{
-		public List<Vector3> segments;
+		public List<RaySegment> segments;
 		private float wavelength;
 		private Vector3 position;
 		private Vector3 direction;
 		private Shape medium;
 		private Space space;
 		private bool dead;
+		private int timeStamp;
 
 		public float Intensity { get; set; }
 		public float Wavelength { get { return this.wavelength; } }
 
-		public Ray(Vector3 startPosition, Vector3 direction, Space space, float wavelength, float intensity = 1f)
+		public Ray(Vector3 startPosition, Vector3 direction, Space space, float wavelength, float intensity = 1f, int timeStamp = 0)
 		{
+			this.timeStamp = timeStamp;
 			this.dead = false;
-			this.segments = new List<Vector3>();
+			this.segments = new List<RaySegment>();
 			this.position = startPosition;
 			this.direction = direction;
 			this.direction.Normalize();
@@ -42,7 +57,7 @@ namespace IRT.Engine
 			Vector3 predictedPosition = position + direction * Space.RAY_RESOLUTION;
 			Shape nextMedium = space.GetMedium(predictedPosition);
 
-            bool spawnRefl, spawnRefr;
+			bool spawnRefl, spawnRefr;
 
 			// Check for medium change
 			if (nextMedium != medium)
@@ -56,19 +71,19 @@ namespace IRT.Engine
 				else
 				{
 					float previousRefrac = medium == null ? space.refractionIndex : medium.GetRefractionIndex (position, wavelength);
-                    nextMedium.Interact(position, direction, out reflected, out refracted, out reflectance, previousRefrac, wavelength, out spawnRefl, out spawnRefr);
+					nextMedium.Interact(position, direction, out reflected, out refracted, out reflectance, previousRefrac, wavelength, out spawnRefl, out spawnRefr);
 				}
 
-                if (spawnRefl)
-                {
-                    Console.WriteLine("spawning refl");
-                    this.space.SpawnRay(position, reflected, wavelength, this.Intensity * (reflectance));
-                }
-                if (spawnRefr)
-                {
-                    Console.WriteLine("spawning refr");
-                    this.space.SpawnRay(predictedPosition, refracted, wavelength, this.Intensity * (1f - reflectance));
-                }
+				if (spawnRefl)
+				{
+					Console.WriteLine("spawning refl");
+					this.space.SpawnRay(position, reflected, wavelength, this.Intensity * (reflectance), this.timeStamp+1);
+				}
+				if (spawnRefr)
+				{
+					Console.WriteLine("spawning refr");
+					this.space.SpawnRay(predictedPosition, refracted, wavelength, this.Intensity * (1f - reflectance), this.timeStamp + 1);
+				}
 				
 				// Kill ray after spawning children
 				this.dead = true;
@@ -80,7 +95,8 @@ namespace IRT.Engine
 				if (medium == null)
 				{
 					this.position = predictedPosition;
-					this.segments.Add(position);
+					this.segments.Add(new RaySegment(this.timeStamp,position,this.Intensity));
+					timeStamp++;
 
 					return;
 				}
@@ -97,6 +113,7 @@ namespace IRT.Engine
 					sum += dr;
 					doubleSum += sum * Space.COMPUTE_RESOLUTION;
 				}
+				this.Intensity *= medium.getAttenuation();
 
 				rayDir += doubleSum;
 				rayDir.Normalize();
@@ -105,7 +122,8 @@ namespace IRT.Engine
 				this.direction = rayDir;
 			}
 
-			this.segments.Add(position);
+			this.segments.Add(new RaySegment(this.timeStamp, position, this.Intensity));
+			timeStamp++;
 		}
 	}
 }

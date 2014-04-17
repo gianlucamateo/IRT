@@ -10,7 +10,7 @@ namespace IRT.Engine
 	{
 		public float Radius { get; set; }
 
-		public Sphere(Vector3 center, float radius, int zIndex = 0) : base(center, zIndex) 
+		public Sphere(Vector3 center, float radius, int zIndex = 0, float attenuation = 1f) : base(center, zIndex, attenuation) 
 		{
 			this.Radius = radius;
 		}

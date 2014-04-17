@@ -25,11 +25,12 @@ namespace IRT.Viewer
 	{
 		GraphicsDeviceManager graphics;
 		Camera cam;
-
+		private const int STEPSIZE = 5;
 		//List<IDrawable> drawers;
 		Hashtable drawersHash;
 		List<IDrawable> drawers;
 		List<IDrawable> rays;
+		private int timestamp;
 
 		int[] keyArr;
 
@@ -39,6 +40,7 @@ namespace IRT.Viewer
 
 		public IRTViewer ()
 		{
+			this.timestamp = 0;
 			graphics = new GraphicsDeviceManager (this);
 
 			Content.RootDirectory = "Content";
@@ -79,8 +81,8 @@ namespace IRT.Viewer
 		protected override void LoadContent ()
 		{
 			IScene scene;
-			//scene = new Rainbow(Content, cam);
-			scene = new RadioPropagation(Content, cam);
+			scene = new Rainbow(Content, cam);
+			//scene = new RadioPropagation(Content, cam);
 			//scene = new InhomoCube(Content, cam);
 
 			drawers = new List<IDrawable>();
@@ -123,9 +125,16 @@ namespace IRT.Viewer
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Update (GameTime gameTime)
 		{
+			if (timestamp > 100000)
+			{
+				timestamp -= 1000;
+			}
+			timestamp+= STEPSIZE;
 			// Allows the game to exit
 			if (Keyboard.GetState ().IsKeyDown (Keys.Escape))
 				this.Exit ();
+			if (Keyboard.GetState().IsKeyDown(Keys.R))
+				this.timestamp = 0;
 			cam.Update (Keyboard.GetState (), Mouse.GetState ());
 
 			base.Update (gameTime);
@@ -150,7 +159,7 @@ namespace IRT.Viewer
 				foreach (IDrawable d in drawables)
 				{
 					if (d.Transparency == 0.0f)
-						d.Draw();
+						d.Draw(timestamp);
 				}
 			}
 
@@ -159,7 +168,7 @@ namespace IRT.Viewer
 
 			// Draw ray segments
 			foreach (IDrawable d in rays) {
-				d.Draw ();
+				d.Draw (timestamp);
 			}
 
 			GraphicsDevice.DepthStencilState = DepthStencilState.DepthRead;
@@ -170,8 +179,10 @@ namespace IRT.Viewer
 				List<IDrawable> drawables = (List<IDrawable>)drawersHash[keyArr[z]];
 				
 				foreach (IDrawable d in drawables) {
+
 					if (d.Transparency > 0.0f)
-						d.Draw ();
+						d.Draw (timestamp);
+
 				}
 			}
 

@@ -19,6 +19,8 @@ namespace IRT.Engine
 
         void Interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, out float reflectance , float outerRefractionIndex, float wavelength, out bool spawnRefl, out bool spawnRefr);
 
+		float getAttenuation();
+
         Vector3 GetNormal(Vector3 r);
     }
 }

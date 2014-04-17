@@ -7,7 +7,7 @@ namespace IRT.Viewer
 {
     interface IDrawable
     {
-        void Draw();
+        void Draw(int timestamp);
         int getZ();
 		float Transparency { get; set; }
     }
