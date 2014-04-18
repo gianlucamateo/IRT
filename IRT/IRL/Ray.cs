@@ -74,6 +74,15 @@ namespace IRT.Engine
 					nextMedium.Interact(position, direction, out reflected, out refracted, out reflectance, previousRefrac, wavelength, out spawnRefl, out spawnRefr);
 				}
 
+				if (!spawnRefl)
+				{
+					reflectance = 0;
+				}
+				if (!spawnRefr)
+				{
+					reflectance = 1;
+				}
+
 				if (spawnRefl)
 				{
 					Console.WriteLine("spawning refl");
@@ -108,8 +117,9 @@ namespace IRT.Engine
 				{
 					dirStep = dl * rayDir;
 					Vector3 gradient = medium.GetGradient(position + dirStep, wavelength);
-
-					Vector3 dr = gradient * Space.COMPUTE_RESOLUTION * medium.GetRefractionIndex(position + dirStep, wavelength);
+					
+					//For very very weird reasons this seems to make sense (Math.Abs)
+					Vector3 dr = gradient * Space.COMPUTE_RESOLUTION * Math.Abs(medium.GetRefractionIndex(position + dirStep, wavelength));
 					sum += dr;
 					doubleSum += sum * Space.COMPUTE_RESOLUTION;
 				}

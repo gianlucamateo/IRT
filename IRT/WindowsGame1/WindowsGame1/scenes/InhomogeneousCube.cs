@@ -26,7 +26,7 @@ namespace IRT.Viewer
 			this.rays = rays;
 
 			Shape cuboid = new Cuboid(Vector3.Zero, 4f, 1f, 1f, 0, 1f);
-			cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => -10 * (y - 1f), lambda => 1f + 0.001f * lambda, Vector3.Zero);
+			cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 1+ 20 / (y + 1f), lambda => 1f + 0.001f * lambda, Vector3.Zero);
 
 			space.AddShape(cuboid);
 

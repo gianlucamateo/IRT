@@ -37,7 +37,7 @@ namespace IRT.Engine
 
 		public float GetRefractionIndex(Vector3 r, float wavelength)
 		{
-			return this.Inhomogeniety.Evaluate(r - this.Center, wavelength);
+			return this.Inhomogeniety.Evaluate(r, wavelength);
 		}
 
 		public abstract bool IsInside(Vector3 r);
