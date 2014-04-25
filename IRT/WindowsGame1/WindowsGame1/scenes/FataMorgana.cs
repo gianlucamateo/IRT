@@ -34,8 +34,8 @@ namespace IRT.Viewer
 			space.AddShape(warmAir);
 			space.AddShape(coldAir);
 
-			Vector3 spawnPoint = new Vector3(1.5f, 0f, 0f);
-			Vector3 spawnDirection = new Vector3(-1f, 0.1f, 0);
+			Vector3 spawnPoint = new Vector3(1.5f, 0.09f, 0f);
+			Vector3 spawnDirection = new Vector3(-1f, 0.01f, 0);
 
 			space.SpawnCluster(spawnPoint, spawnDirection, 475f, 650f, 1);
 
@@ -47,7 +47,9 @@ namespace IRT.Viewer
 		}
 		public float calc(float y)
 		{
-			return 1f;
+			float initial = 1.02f;
+			
+			return initial - 100f*(y-0.1f);
 		}
 	}
 }
