@@ -84,9 +84,9 @@ namespace IRT.Viewer
 		{
 			IScene scene;
 			//scene = new Rainbow(Content, cam);
-			//scene = new RadioPropagation(Content, cam);
+			scene = new RadioPropagation(Content, cam);
 			//scene = new InhomoCube(Content, cam);
-			scene = new FataMorgana(Content, cam);
+			//scene = new FataMorgana(Content, cam);
 
 			drawers = new List<IDrawable>();
 			rays = new List<IDrawable>();
