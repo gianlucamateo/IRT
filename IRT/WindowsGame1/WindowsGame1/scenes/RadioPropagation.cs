@@ -72,8 +72,10 @@ namespace IRT.Viewer
 			// Spawn radio waves
 			space.SpawnCluster(new Vector3(-1.05f, 0f, 0f), new Vector3(0f, 1f, 0f), 600f, 650f, 1);
 
+			Texture2D earthTexture = Content.Load<Texture2D>("Textures\\earth_texture");
+
 			// Add shapes to drawables
-			shapes.Add(new Drawable(sphereModel, earth, cam, 0f, color: Color.DarkGreen));
+			shapes.Add(new Drawable(sphereModel, earth, cam, 0f, color: Color.DarkGreen, texture: earthTexture));
 			shapes.Add(new Drawable(sphereModel, troposphere, cam));
 			shapes.Add(new Drawable(sphereModel, dLayer, cam));
 			shapes.Add(new Drawable(sphereModel, eLayer, cam));

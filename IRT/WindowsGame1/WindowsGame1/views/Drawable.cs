@@ -16,19 +16,21 @@ namespace IRT.Viewer
         private Model mesh;
         private IShape shape;
         private Camera cam;
+		private Texture2D texture;
 
 		public Color Color { get; set; }
 		public float Transparency { get; set; }
 
-        public Drawable(Model mesh, IShape shape, Camera camera, float transparency = 0.9f, Color? color = null)
+        public Drawable(Model mesh, IShape shape, Camera camera, float transparency = 0.95f, Color? color = null, Texture2D texture = null)
         {
             this.dimensions = shape.Dimensions;
             this.position = shape.Position;
             this.mesh = mesh;
             this.cam = camera;
             this.shape = shape;
-			this.Color = color == null ? Color.White : (Color)color;
+			this.Color = color == null ? Color.LightCyan : (Color)color;
 			this.Transparency = transparency;
+			this.texture = texture;
         }
 
         public void Draw(int timestamp)
@@ -50,6 +52,16 @@ namespace IRT.Viewer
                     effect.Projection = cam.ProjectionMatrix;//Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, 16f / 9f, 1, 100);//cam.ProjectionMatrix;
                     effect.Alpha = 1.0f - this.Transparency;
                     effect.DiffuseColor = this.Color.ToVector3();
+
+					if (this.texture != null)
+					{
+						effect.TextureEnabled = true;
+						effect.Texture = this.texture;
+					}
+					else
+					{
+						effect.TextureEnabled = false;
+					}
                 }
                 // Draw the mesh, using the effects set above.
                 mm.Draw();
