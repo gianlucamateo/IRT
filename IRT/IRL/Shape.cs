@@ -12,12 +12,14 @@ namespace IRT.Engine
 		protected Vector3 Center;
 		public int zIndex;
 		private float attenuation;
+		private bool interact;
 
-		public Shape(Vector3 center, int zIndex = 0, float attenuation = 1f)
+		public Shape(Vector3 center, int zIndex = 0, float attenuation = 1f, bool interact = true)
 		{
 			this.Center = center;
 			this.zIndex = zIndex;
 			this.attenuation = attenuation;
+			this.interact = interact;
 		}
 
 		public Vector3 GetGradient(Vector3 r, float wavelength, float step = Space.COMPUTE_RESOLUTION)
@@ -44,6 +46,16 @@ namespace IRT.Engine
 
 		public void Interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, out float refl, float outerRefractionIndex, float wavelength, out bool spawnRefl, out bool spawnRefr)
 		{
+			if (this.interact == false)
+			{
+				r = r + incident * Space.RAY_RESOLUTION;
+				reflected = Vector3.Zero;
+				refracted = incident;
+				refl = 0;
+				spawnRefl = false;
+				spawnRefr = true;
+				return;
+			}
 			Vector3 normal = GetNormal(r);
 			incident.Normalize();
 			normal.Normalize();
