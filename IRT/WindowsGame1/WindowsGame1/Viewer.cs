@@ -71,7 +71,7 @@ namespace IRT.Viewer
 			graphics.GraphicsDevice.PresentationParameters.MultiSampleCount = 4;
 
 			graphics.ApplyChanges();
-			cam = new Camera(5f * Vector3.UnitZ, (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+			cam = new Camera(new Vector3(0f, 0f, 10f), (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width / (float)GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
 
 			base.Initialize();
 		}

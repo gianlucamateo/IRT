@@ -13,7 +13,14 @@ namespace IRT.Viewer
 
 		private Matrix _camMatrix, _projectionMatrix;
 
-		public Vector3 Position { get; set; }
+		public Vector3 Position
+		{
+			get { return this._position; }
+			set {
+				this._position = value;
+				this._camMatrix.Translation = value;
+			} 
+		}
 
 		public float Fov
 		{
@@ -27,10 +34,11 @@ namespace IRT.Viewer
 		public float Aspect { get { return _aspect; } set { _aspect = value; UpdateProperties (); } }
 
 		private float _fov, _aspect;
+		private Vector3 _position;
 
 		public float Speed { get; set; }
 
-		public Camera (Vector3 position, float aspect = 16f/9f, float fov = MathHelper.PiOver4)
+		public Camera (Vector3 position, float aspect = 16f/9f, float fov = MathHelper.Pi / 10f)
 		{
 			this.Position = position;
 

@@ -53,7 +53,7 @@ namespace IRT.Viewer
 								effect.World = transforms[mm.ParentBone.Index] * scale * Matrix.CreateTranslation(positions[i].position);
 								effect.View = cam.ViewMatrix;
 								effect.Projection = cam.ProjectionMatrix;
-								effect.Alpha = positions[i].intensity+0.1f;//Math.Min ((float)Math.Pow (ray.Intensity - 1, 33) + 1f, 1f);
+								effect.Alpha = positions[i].intensity+0.2f;//Math.Min ((float)Math.Pow (ray.Intensity - 1, 33) + 1f, 1f);
 								effect.DiffuseColor = rayColor.ToVector3();
 								effect.TextureEnabled = false;
 							}
