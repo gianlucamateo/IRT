@@ -57,7 +57,6 @@ namespace IRT.Viewer
 					{
 						effect.TextureEnabled = true;
 						effect.Texture = this.texture;
-						
 					}
 					else
 					{

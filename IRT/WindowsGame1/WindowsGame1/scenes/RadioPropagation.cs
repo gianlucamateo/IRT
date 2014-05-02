@@ -18,7 +18,7 @@ namespace IRT.Viewer
 			: base(cm, cam)
 		{
 			this.maxCount = 2000;
-			this.maxSpawns = 20;
+			this.maxSpawns = 10;
 
 			cam.Position = new Vector3(0f, 0f, 18f);
 		}
@@ -34,6 +34,7 @@ namespace IRT.Viewer
 		private void InitDayConfig(List<IDrawable> shapes)
 		{
 			Vector3 dayPos = new Vector3(-2f, 0f, 0f);
+			Func<float, float> inhomo = r => 15f / r;
 
 			// Earth
 			Shape earth = new Sphere(dayPos, 1f, 5);
@@ -46,16 +47,16 @@ namespace IRT.Viewer
 			// Troposphere
 			Shape troposphere = new Sphere(dayPos, 1.2f, 4);
 			troposphere.Inhomogeniety = new Inhomogeneity(
-				r => 30f / r,
+				inhomo,
 				l => 1f,
 				dayPos
 				);
 			space.AddShape(troposphere);
 
 			// Ionosphere D-Layer
-			Shape dLayer = new Sphere(dayPos, 1.3f, 3, 0.997f);
+			Shape dLayer = new Sphere(dayPos, 1.3f, 3, 0.994f);
 			dLayer.Inhomogeniety = new Inhomogeneity(
-				r => 30f / r,
+				inhomo,
 				l => 1f,
 				dayPos
 				);
@@ -64,8 +65,8 @@ namespace IRT.Viewer
 			// Ionosphere E-Layer
 			Shape eLayer = new Sphere(dayPos, 1.4f, 2);
 			eLayer.Inhomogeniety = new Inhomogeneity(
-				r => 30f / r,
-				l => 1f,
+				inhomo,
+				l => 1.7f,
 				dayPos
 				);
 			space.AddShape(eLayer);
@@ -73,7 +74,7 @@ namespace IRT.Viewer
 			// Ionosphere F-Layer
 			Shape fLayer = new Sphere(dayPos, 1.6f, 1);
 			fLayer.Inhomogeniety = new Inhomogeneity(
-				r => 30f / r,
+				inhomo,
 				l => 1.7f,
 				dayPos
 				);
@@ -95,6 +96,7 @@ namespace IRT.Viewer
 		private void InitNightConfig(List<IDrawable> shapes)
 		{
 			Vector3 nightPos = new Vector3(2f, 0f, 0f);
+			Func<float, float> inhomo = r => 15f / r;
 
 			// Earth
 			Shape earth = new Sphere(nightPos, 1f, 5);
@@ -107,25 +109,18 @@ namespace IRT.Viewer
 			// Troposphere
 			Shape troposphere = new Sphere(nightPos, 1.2f, 4);
 			troposphere.Inhomogeniety = new Inhomogeneity(
-				r => 30f / r,
+				inhomo,
 				l => 1f,
 				nightPos
 				);
 			space.AddShape(troposphere);
 
-			// Ionosphere D-Layer
-			Shape dLayer = new Sphere(nightPos, 1.3f, 3, 0.997f);
-			dLayer.Inhomogeniety = new Inhomogeneity(
-				r => 30f / r,
-				l => 1f,
-				nightPos
-				);
-			space.AddShape(dLayer);
+			// No D-Layer at night
 
 			// Ionosphere E-Layer
-			Shape eLayer = new Sphere(nightPos, 1.4f, 2);
+			Shape eLayer = new Sphere(nightPos, 1.5f, 2, 0.9995f);
 			eLayer.Inhomogeniety = new Inhomogeneity(
-				r => 30f / r,
+				inhomo,
 				l => 1f,
 				nightPos
 				);
@@ -134,7 +129,7 @@ namespace IRT.Viewer
 			// Ionosphere F-Layer
 			Shape fLayer = new Sphere(nightPos, 1.6f, 1);
 			fLayer.Inhomogeniety = new Inhomogeneity(
-				r => 30f / r,
+				inhomo,
 				l => 1.7f,
 				nightPos
 				);
@@ -148,7 +143,6 @@ namespace IRT.Viewer
 			// Add shapes to drawables
 			shapes.Add(new Drawable(sphereModel, earth, cam, 0f, texture: earthTextureNight));
 			shapes.Add(new Drawable(sphereModel, troposphere, cam));
-			shapes.Add(new Drawable(sphereModel, dLayer, cam));
 			shapes.Add(new Drawable(sphereModel, eLayer, cam));
 			shapes.Add(new Drawable(sphereModel, fLayer, cam));
 		}
