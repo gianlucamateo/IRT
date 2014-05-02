@@ -152,9 +152,6 @@ namespace IRT.Engine
 				Vector3.Reflect(ref incident, ref normal, out reflected);
 				Console.WriteLine("Thetain: {0}, ThetaOut: {1}", thetaIn, thetaOut);
 			}
-			
-			
-
 		}
 
 		private float reflectance(float thetaIn, float n1, float n2)

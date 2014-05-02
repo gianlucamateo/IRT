@@ -46,6 +46,7 @@ namespace IRT.Viewer
 			graphics = new GraphicsDeviceManager(this);
 
 			Content.RootDirectory = "Content";
+			Window.Title = "IRT Viewer";
 		}
 
 		/// <summary>
