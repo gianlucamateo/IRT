@@ -17,6 +17,8 @@ namespace IRT.Viewer
         public Rainbow(ContentManager cm, Camera cam) : base(cm, cam) {
 			this.maxCount = 1200;
 			this.maxSpawns = 5;
+
+			cam.Position = new Vector3(0f, 0f, 6f);
 		}
 
         public override void Load(List<IDrawable> rays, List<IDrawable> shapes)
@@ -32,8 +34,8 @@ namespace IRT.Viewer
             Vector3 spawnPoint = new Vector3(-1f, 0.31f, 0f);
             Vector3 spawnDirection = Vector3.UnitX;
 
-            space.SpawnCluster(spawnPoint, spawnDirection, 475f, 650f, 7);
-            space.SpawnCluster(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 475f, 650f, 7);
+            space.SpawnCluster(spawnPoint, spawnDirection, 475f, 650f, 7, 4f);
+            space.SpawnCluster(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 475f, 650f, 7, 4f);
 
             Drawable drawSphere = new Drawable(sphereModel, sphere, cam);
 

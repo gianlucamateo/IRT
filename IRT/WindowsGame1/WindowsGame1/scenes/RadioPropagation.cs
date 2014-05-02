@@ -20,7 +20,7 @@ namespace IRT.Viewer
 			this.maxCount = 2000;
 			this.maxSpawns = 20;
 
-			cam.Position = new Vector3(0f, 0f, 15f);
+			cam.Position = new Vector3(0f, 0f, 18f);
 		}
 
 		public override void Load(List<IDrawable> rays, List<IDrawable> shapes)
