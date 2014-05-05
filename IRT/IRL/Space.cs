@@ -8,7 +8,7 @@ namespace IRT.Engine
 {
     public class Space
     {
-        public const float RAY_RESOLUTION = 0.001f, COMPUTE_RESOLUTION = 0.0001f;
+        public const float RAY_RESOLUTION = 0.001f, COMPUTE_RESOLUTION = 0.0001f, DEFAULT_MIN_INTENSITY = 0.1f;
         public float refractionIndex;
         private List<Shape> shapes;
         public List<Ray> rays;
@@ -24,20 +24,20 @@ namespace IRT.Engine
             this.refractionIndex = refractionIndex;
         }
 
-        public void SpawnRay(Vector3 position, Vector3 direction, float wavelength, float intensity = 1f, int timestamp = 0)
+        public void SpawnRay(Vector3 position, Vector3 direction, float wavelength, float intensity = 1f, int timestamp = 0, float minIntensity = Space.DEFAULT_MIN_INTENSITY)
         {
             if (intensity > 0)
             {
-                this.newlySpawned.Add(new Ray(position, direction, this, wavelength, intensity, timestamp));
+                this.newlySpawned.Add(new Ray(position, direction, this, wavelength, intensity, timestamp, minIntensity: minIntensity));
             }
         }
 
-        public void SpawnCluster(Vector3 position, Vector3 direction, float begin, float end, int numRays, float intensity = 1f)
+        public void SpawnCluster(Vector3 position, Vector3 direction, float begin, float end, int numRays, float intensity = 1f, float minInt = Space.DEFAULT_MIN_INTENSITY, int timestamp = 0)
         {
             for (int i = 0; i < numRays; i++)
             {
                 float wl = MathHelper.Lerp(begin, end, i / (float)numRays);
-                SpawnRay(position, direction, wl, intensity);
+                SpawnRay(position, direction, wl, intensity,timestamp, minIntensity: minInt);
             }
         }
 

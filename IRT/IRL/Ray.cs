@@ -29,11 +29,12 @@ namespace IRT.Engine
 		private Space space;
 		private bool dead;
 		private int timeStamp;
+		private float minIntensity;
 
 		public float Intensity { get; set; }
 		public float Wavelength { get { return this.wavelength; } }
 
-		public Ray(Vector3 startPosition, Vector3 direction, Space space, float wavelength, float intensity = 1f, int timeStamp = 0)
+		public Ray(Vector3 startPosition, Vector3 direction, Space space, float wavelength, float intensity = 1f, int timeStamp = 0, float minIntensity = Space.DEFAULT_MIN_INTENSITY)
 		{
 			this.timeStamp = timeStamp;
 			this.dead = false;
@@ -44,7 +45,20 @@ namespace IRT.Engine
 			this.space = space;
 			this.medium = space.GetMedium(position);
 			this.wavelength = wavelength;
-			this.Intensity = intensity;
+			this.minIntensity = minIntensity;
+			this.setIntensity(intensity);
+		}
+
+		public void setIntensity(float intensity)
+		{
+			if (intensity > this.minIntensity)
+			{
+				this.Intensity = intensity;
+			}
+			else
+			{
+				this.Intensity = this.minIntensity;
+			}
 		}
 
 		public void Propagate()
@@ -86,12 +100,12 @@ namespace IRT.Engine
 				if (spawnRefl)
 				{
 					Console.WriteLine("spawning refl");
-					this.space.SpawnRay(position, reflected, wavelength, this.Intensity * (reflectance), this.timeStamp+1);
+					this.space.SpawnRay(position, reflected, wavelength, this.Intensity * (reflectance), this.timeStamp+1, this.minIntensity);
 				}
 				if (spawnRefr)
 				{
 					Console.WriteLine("spawning refr");
-					this.space.SpawnRay(predictedPosition, refracted, wavelength, this.Intensity * (1f - reflectance), this.timeStamp + 1);
+					this.space.SpawnRay(predictedPosition, refracted, wavelength, this.Intensity * (1f - reflectance), this.timeStamp + 1,this.minIntensity);
 				}
 				
 				// Kill ray after spawning children
@@ -123,7 +137,7 @@ namespace IRT.Engine
 					sum += dr;
 					doubleSum += sum * Space.COMPUTE_RESOLUTION;
 				}
-				this.Intensity *= medium.getAttenuation();
+				this.setIntensity(this.Intensity * medium.getAttenuation());
 
 				rayDir += doubleSum;
 				rayDir.Normalize();

@@ -26,7 +26,7 @@ namespace IRT.Viewer
 			this.rays = rays;
 
 			Shape cuboid = new Cuboid(Vector3.Zero, 4f, 1f, 1f, 0, 1f);
-			cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 1+ 20 / (y + 1f), lambda => 1f + 0.001f * lambda, Vector3.Zero);
+			cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 1+ 20 / (y + 1f) + 5*z, lambda => 1f + 0.001f * lambda, Vector3.Zero);
 
 			space.AddShape(cuboid);
 
@@ -35,7 +35,7 @@ namespace IRT.Viewer
 
 			space.SpawnCluster(spawnPoint, spawnDirection, 475f, 650f, 5);
 
-			Drawable drawCuboid = new Drawable(cubeModel, cuboid, cam);
+			Drawable drawCuboid = new Drawable(cubeModel, cuboid, cam,transparency: 0.7f);
 
 			shapes.Add(drawCuboid);
 		}

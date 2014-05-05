@@ -14,7 +14,9 @@ namespace IRT.Viewer
 {
 	class Rainbow : Scene
 	{
-		public Rainbow(ContentManager cm, Camera cam) : base(cm, cam) {
+		public Rainbow(ContentManager cm, Camera cam)
+			: base(cm, cam)
+		{
 			this.maxCount = 1200;
 			this.maxSpawns = 5;
 
@@ -34,12 +36,12 @@ namespace IRT.Viewer
 			Vector3 spawnPoint = new Vector3(-1f, 0.31f, 0f);
 			Vector3 spawnDirection = Vector3.UnitX;
 
-			space.SpawnCluster(spawnPoint, spawnDirection, 475f, 650f, 7, 4f);
-			space.SpawnCluster(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 475f, 650f, 7, 4f);
+			space.SpawnCluster(spawnPoint, spawnDirection, 475f, 650f, 7, 1f, minInt: 0.4f);
+			space.SpawnCluster(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 475f, 650f, 7, 1f, minInt: 0.25f,timestamp:4000);
 
-			Drawable drawSphere = new Drawable(sphereModel, sphere, cam,transparency: 0.8f);
+			Drawable drawSphere = new Drawable(sphereModel, sphere, cam, transparency: 0.8f);
 
-			shapes.Add(drawSphere);	
+			shapes.Add(drawSphere);
 		}
 	}
 }
