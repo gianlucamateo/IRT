@@ -6,52 +6,52 @@ using Microsoft.Xna.Framework;
 
 namespace IRT.Engine
 {
-    public enum InhomogeneityType
-    {
-        RADIAL, XYZ
-    };
+	public enum InhomogeneityType
+	{
+		RADIAL, XYZ
+	};
 
-    public struct Inhomogeneity
-    {
-        private Func<float, float, float, float> XYZInhomogeneity;
-        private Func<float, float> RadialInhomogeneity;
-        private Vector3 Origin;
-        private InhomogeneityType Type;
-        public Func<float, float> Slope;
+	public struct Inhomogeneity
+	{
+		private Func<float, float, float, float> XYZInhomogeneity;
+		private Func<float, float> RadialInhomogeneity;
+		private Vector3 Origin;
+		private InhomogeneityType Type;
+		public Func<float, float> Slope;
 
-        public Inhomogeneity(Func<float, float, float, float> XYZ, Func<float, float> slope, Vector3 origin)
-        {
-            this.XYZInhomogeneity = XYZ;
-            this.RadialInhomogeneity = null;
-            this.Type = InhomogeneityType.XYZ;
-            this.Origin = origin;
-            this.Slope = slope;
-        }
+		public Inhomogeneity(Func<float, float, float, float> XYZ, Func<float, float> slope, Vector3 origin)
+		{
+			this.XYZInhomogeneity = XYZ;
+			this.RadialInhomogeneity = null;
+			this.Type = InhomogeneityType.XYZ;
+			this.Origin = origin;
+			this.Slope = slope;
+		}
 
-        public Inhomogeneity(Func<float, float> radial, Func<float, float> slope, Vector3 origin)
-        {
-            this.XYZInhomogeneity = null;
-            this.RadialInhomogeneity = radial;
-            this.Type = InhomogeneityType.RADIAL;
-            this.Origin = origin;
-            this.Slope = slope;
-        }
+		public Inhomogeneity(Func<float, float> radial, Func<float, float> slope, Vector3 origin)
+		{
+			this.XYZInhomogeneity = null;
+			this.RadialInhomogeneity = radial;
+			this.Type = InhomogeneityType.RADIAL;
+			this.Origin = origin;
+			this.Slope = slope;
+		}
 
 
-        public float Evaluate(Vector3 r, float wavelength)
-        {
-            if (this.Type == InhomogeneityType.XYZ)
-            {
-                r -= Origin;
-                return XYZInhomogeneity(r.X, r.Y, r.Z) * Slope(wavelength);//- (wavelength - 500) / 5000f;
-            }
-            else
-            {
-                Vector3 relativePosition = r - Origin;
-                float rDist = relativePosition.Length();
-                return RadialInhomogeneity(rDist) * Slope(wavelength); // *Math.Abs (wavelength - 500) / 1000;
-            }
-        }
-    }
+		public float Evaluate(Vector3 r, float wavelength)
+		{
+			if (this.Type == InhomogeneityType.XYZ)
+			{
+				r -= Origin;
+				return XYZInhomogeneity(r.X, r.Y, r.Z) * Slope(wavelength);//- (wavelength - 500) / 5000f;
+			}
+			else
+			{
+				Vector3 relativePosition = r - Origin;
+				float rDist = relativePosition.Length();
+				return RadialInhomogeneity(rDist) * Slope(wavelength); // *Math.Abs (wavelength - 500) / 1000;
+			}
+		}
+	}
 
 }

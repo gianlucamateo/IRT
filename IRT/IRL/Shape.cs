@@ -174,7 +174,7 @@ namespace IRT.Engine
 			float R = R0 + (1f - R0) * (float)Math.Pow((1f - Math.Cos(theta * scaling)), 5);
 			return R;
 		}
-		
+
 		public float getAttenuation()
 		{
 			return this.attenuation;

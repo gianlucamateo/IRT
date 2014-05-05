@@ -5,10 +5,10 @@ using System.Text;
 
 namespace IRT.Viewer
 {
-    interface IDrawable
-    {
-        void Draw(int timestamp);
-        int getZ();
+	interface IDrawable
+	{
+		void Draw(int timestamp);
+		int getZ();
 		float Transparency { get; set; }
-    }
+	}
 }

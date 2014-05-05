@@ -21,7 +21,7 @@ namespace IRT.Viewer
 
 		private Camera cam;
 
-		public RayDrawable (Model mesh, Ray ray, Camera camera)
+		public RayDrawable(Model mesh, Ray ray, Camera camera)
 		{
 			this.dimensions = 0.007f * Vector3.One;
 			this.mesh = mesh;
@@ -29,17 +29,19 @@ namespace IRT.Viewer
 			this.ray = ray;
 		}
 
-		public void Draw (int timestamp)
+		public void Draw(int timestamp)
 		{
 			Matrix[] transforms = new Matrix[this.mesh.Bones.Count];
-			this.mesh.CopyAbsoluteBoneTransformsTo (transforms);
+			this.mesh.CopyAbsoluteBoneTransformsTo(transforms);
 
-			Matrix scale = Matrix.CreateScale (this.dimensions);
-			RaySegment[] positions = ray.segments.ToArray<RaySegment> ();
+			Matrix scale = Matrix.CreateScale(this.dimensions);
+			RaySegment[] positions = ray.segments.ToArray<RaySegment>();
 
-			Color rayColor = WavelengthToColor (ray.Wavelength);
-			for (int i = 0; i < positions.Length; i++) {
-				if (i % 10 == 0) {
+			Color rayColor = WavelengthToColor(ray.Wavelength);
+			for (int i = 0; i < positions.Length; i++)
+			{
+				if (i % 10 == 0)
+				{
 					if (timestamp > positions[i].timeStamp)
 					{
 						foreach (ModelMesh mm in mesh.Meshes)
@@ -65,68 +67,79 @@ namespace IRT.Viewer
 			}
 		}
 
-		private static Color WavelengthToColor (float wavelength)
+		private static Color WavelengthToColor(float wavelength)
 		{
 			// takes wavelength in nm and returns an rgba value
 			float r, g, b, alpha, wl = wavelength;
 
-			if (wl >= 380f && wl < 440f) {
+			if (wl >= 380f && wl < 440f)
+			{
 				r = -1f * (wl - 440f) / (440 - 380f);
 				g = 0f;
 				b = 1f;
 			}
-			else if (wl >= 440f && wl < 490f) {
+			else if (wl >= 440f && wl < 490f)
+			{
 				r = 0;
 				g = (wl - 440f) / (490f - 440f);
 				b = 1f;
 			}
-			else if (wl >= 490f && wl < 510f) {
+			else if (wl >= 490f && wl < 510f)
+			{
 				r = 0f;
 				g = 1f;
 				b = -1 * (wl - 510f) / (510f - 490f);
 			}
-			else if (wl >= 510f && wl < 580f) {
+			else if (wl >= 510f && wl < 580f)
+			{
 				r = (wl - 510f) / (580f - 510f);
 				g = 1f;
 				b = 0f;
 			}
-			else if (wl >= 580f && wl < 645f) {
+			else if (wl >= 580f && wl < 645f)
+			{
 				r = 1f;
 				g = -1 * (wl - 645f) / (645f - 580f);
 				b = 0f;
 			}
-			else if (wl >= 645f && wl <= 780f) {
+			else if (wl >= 645f && wl <= 780f)
+			{
 				r = 1f;
 				g = 0f;
 				b = 0f;
 			}
-			else {
+			else
+			{
 				r = 0f;
 				g = 0f;
 				b = 0f;
 			}
 
 			// intensty is lower at the edges of the visible spectrum.
-			if (wl > 780 || wl < 380) {
+			if (wl > 780 || wl < 380)
+			{
 				alpha = 0;
 			}
-			else if (wl > 700) {
+			else if (wl > 700)
+			{
 				alpha = (780 - wl) / (780 - 700);
 			}
-			else if (wl < 420) {
+			else if (wl < 420)
+			{
 				alpha = (wl - 380) / (420 - 380);
 			}
-			else {
+			else
+			{
 				alpha = 1;
 			}
 
-			return new Color (r, g, b, alpha);
+			return new Color(r, g, b, alpha);
 		}
 
 
-		public int getZ ()
+		public int getZ()
 		{
-			throw new NotImplementedException ();
+			throw new NotImplementedException();
 		}
 
 

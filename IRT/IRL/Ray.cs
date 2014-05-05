@@ -84,7 +84,7 @@ namespace IRT.Engine
 				}
 				else
 				{
-					float previousRefrac = medium == null ? space.refractionIndex : medium.GetRefractionIndex (position, wavelength);
+					float previousRefrac = medium == null ? space.refractionIndex : medium.GetRefractionIndex(position, wavelength);
 					nextMedium.Interact(position, direction, out reflected, out refracted, out reflectance, previousRefrac, wavelength, out spawnRefl, out spawnRefr);
 				}
 
@@ -100,14 +100,14 @@ namespace IRT.Engine
 				if (spawnRefl)
 				{
 					Console.WriteLine("spawning refl");
-					this.space.SpawnRay(position, reflected, wavelength, this.Intensity * (reflectance), this.timeStamp+1, this.minIntensity);
+					this.space.SpawnRay(position, reflected, wavelength, this.Intensity * (reflectance), this.timeStamp + 1, this.minIntensity);
 				}
 				if (spawnRefr)
 				{
 					Console.WriteLine("spawning refr");
-					this.space.SpawnRay(predictedPosition, refracted, wavelength, this.Intensity * (1f - reflectance), this.timeStamp + 1,this.minIntensity);
+					this.space.SpawnRay(predictedPosition, refracted, wavelength, this.Intensity * (1f - reflectance), this.timeStamp + 1, this.minIntensity);
 				}
-				
+
 				// Kill ray after spawning children
 				this.dead = true;
 
@@ -118,7 +118,7 @@ namespace IRT.Engine
 				if (medium == null)
 				{
 					this.position = predictedPosition;
-					this.segments.Add(new RaySegment(this.timeStamp,position,this.Intensity));
+					this.segments.Add(new RaySegment(this.timeStamp, position, this.Intensity));
 					timeStamp++;
 
 					return;
@@ -131,9 +131,9 @@ namespace IRT.Engine
 				{
 					dirStep = dl * rayDir;
 					Vector3 gradient = medium.GetGradient(position + dirStep, wavelength);
-					
-					//For very very weird reasons this seems to make sense (Math.Abs)
-					Vector3 dr = gradient * Space.COMPUTE_RESOLUTION * Math.Abs(medium.GetRefractionIndex(position + dirStep, wavelength));
+					//Math.Abs to catch negative refractive indices
+					Vector3 dr = gradient * Space.COMPUTE_RESOLUTION * 
+						Math.Abs(medium.GetRefractionIndex(position + dirStep, wavelength));
 					sum += dr;
 					doubleSum += sum * Space.COMPUTE_RESOLUTION;
 				}
@@ -145,7 +145,7 @@ namespace IRT.Engine
 				this.position += rayDir * Space.RAY_RESOLUTION;
 				this.direction = rayDir;
 			}
-			
+
 			this.segments.Add(new RaySegment(this.timeStamp, position, this.Intensity));
 			timeStamp++;
 		}

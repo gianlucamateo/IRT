@@ -152,7 +152,7 @@ namespace IRT.Viewer
 			{
 				this.run = true;
 			}
-			
+
 			cam.Update(Keyboard.GetState(), Mouse.GetState());
 
 			base.Update(gameTime);

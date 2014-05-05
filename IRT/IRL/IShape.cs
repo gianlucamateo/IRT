@@ -13,11 +13,11 @@ namespace IRT.Engine
 
 		bool IsInside(Vector3 r);
 
-		Vector3 GetGradient(Vector3 r, float wavelength, float step=Space.COMPUTE_RESOLUTION);
+		Vector3 GetGradient(Vector3 r, float wavelength, float step = Space.COMPUTE_RESOLUTION);
 
 		float GetRefractionIndex(Vector3 r, float wavelength);
 
-		void Interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, out float reflectance , float outerRefractionIndex, float wavelength, out bool spawnRefl, out bool spawnRefr);
+		void Interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, out float reflectance, float outerRefractionIndex, float wavelength, out bool spawnRefl, out bool spawnRefr);
 
 		float getAttenuation();
 
