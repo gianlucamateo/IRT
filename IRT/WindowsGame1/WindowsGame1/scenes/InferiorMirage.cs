@@ -25,6 +25,7 @@ namespace IRT.Viewer
 
 		public override void Load(List<IDrawable> rays, List<IDrawable> shapes)
 		{
+			
 			this.rays = rays;
 
 			Shape coldAir = new Cuboid(Vector3.Zero, 8f, 0.2f, 1f, 0, 1f, interact:false);
@@ -39,21 +40,17 @@ namespace IRT.Viewer
 			Vector3 spawnPoint = new Vector3(3.9f, 0.05f, 0f);
 			Vector3 spawnDirection = new Vector3(-1f, -0.1f, 0);
 
-			space.SpawnCluster(spawnPoint, spawnDirection, 650f, 650f, 1);
-			space.SpawnCluster(spawnPoint, spawnDirection + new Vector3(0, 0.05f, 0),650f,650f,1);
-			space.SpawnCluster(spawnPoint -new Vector3(0,0.05f,0), spawnDirection, 500f, 500f, 1);
-			space.SpawnCluster(spawnPoint - new Vector3(0, 0.05f, 0), spawnDirection + new Vector3(0, 0.05f, 0), 500f, 500f, 1);
-
-			space.SpawnCluster(spawnPoint, spawnDirection, 650f, 650f, 1);
-			space.SpawnCluster(spawnPoint, spawnDirection + new Vector3(0, 0.03f, 0), 650f, 650f, 1);
-			space.SpawnCluster(spawnPoint - new Vector3(0, 0.05f, 0), spawnDirection, 500f, 500f, 1);
-			space.SpawnCluster(spawnPoint - new Vector3(0, 0.05f, 0), spawnDirection + new Vector3(0, 0.03f, 0), 500f, 500f, 1);
+			space.SpawnCluster(spawnPoint, spawnDirection, 650f, 650f, 1);			
+			space.SpawnCluster(spawnPoint - new Vector3(0, 0.05f, 0), spawnDirection+new Vector3(0,0.04f,0), 500f, 500f, 1);
+			
 
 			Drawable drawCold = new Drawable(cubeModel, coldAir, cam, transparency: 0.85f);
-			Drawable drawWarm = new Drawable(cubeModel, warmAir, cam, transparency: 0.85f,color:Color.Red); 
+			Drawable drawWarm = new Drawable(cubeModel, warmAir, cam, transparency: 0.85f,color:Color.Red);
+			Drawable stickM = new Drawable(stickMan, new Cuboid(new Vector3(-2.4f,-0.4f,0.08f), 0.00035f, 0.00035f, 0.00035f, 0, 1f, false), cam, transparency: 0.5f);
 
 			shapes.Add(drawCold);
 			shapes.Add(drawWarm);
+			shapes.Add(stickM);
 		}
 		public float calc(float y)
 		{

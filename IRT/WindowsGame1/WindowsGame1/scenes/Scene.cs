@@ -24,6 +24,7 @@ namespace IRT.Viewer
 
         protected Model cubeModel = null;
         protected Model sphereModel = null;
+		protected Model stickMan = null;
 
         public Scene(ContentManager cm, Camera cam)
         {
@@ -35,6 +36,8 @@ namespace IRT.Viewer
 
             cubeModel = Content.Load<Model>("Models\\cuboid");
             sphereModel = Content.Load<Model>("Models\\sphere");
+			stickMan = Content.Load<Model>("Models\\stickman");
+
 
 			this.maxCount = 1200;
 			this.maxSpawns = 5;
