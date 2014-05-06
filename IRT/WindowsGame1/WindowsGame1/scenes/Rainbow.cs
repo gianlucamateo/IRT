@@ -37,7 +37,7 @@ namespace IRT.Viewer
 			Vector3 spawnDirection = Vector3.UnitX;
 
 			space.SpawnCluster(spawnPoint, spawnDirection, 475f, 650f, 7, 1f, minInt: 0.4f);
-			space.SpawnCluster(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 475f, 650f, 7, 1f, minInt: 0.25f,timestamp:4000);
+			space.SpawnCluster(spawnPoint - Vector3.UnitY * .7f, spawnDirection, 475f, 650f, 7, 1f, minInt: 0.3f ,timestamp:4000);
 
 			Drawable drawSphere = new Drawable(sphereModel, sphere, cam, transparency: 0.8f);
 
