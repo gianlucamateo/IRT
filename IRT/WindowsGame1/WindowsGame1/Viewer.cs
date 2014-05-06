@@ -18,15 +18,11 @@ using Ray = IRT.Engine.Ray;
 
 namespace IRT.Viewer
 {
-	/// <summary>
-	/// This is the main type for your game
-	/// </summary>
 	public class IRTViewer : Game
 	{
 		GraphicsDeviceManager graphics;
 		Camera cam;
 		private const int STEPSIZE = 5;
-		//List<IDrawable> drawers;
 		Hashtable drawersHash;
 		List<IDrawable> drawers;
 		List<IDrawable> rays;
@@ -49,20 +45,14 @@ namespace IRT.Viewer
 			Window.Title = "IRT Viewer";
 		}
 
-		/// <summary>
-		/// Allows the game to perform any initialization it needs to before starting to run.
-		/// This is where it can query for any required services and load any non-graphic
-		/// related content.  Calling base.Initialize will enumerate through any components
-		/// and initialize them as well.
-		/// </summary>
+	
 		protected override void Initialize()
 		{
-			// TODO: Add your initialization logic here
 			this.IsMouseVisible = true;
 			this.IsFixedTimeStep = true;
 			this.TargetElapsedTime = System.TimeSpan.FromMilliseconds(TIMEPERFRAME);
 
-			graphics.IsFullScreen = false;
+			graphics.IsFullScreen = true;
 			graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 			graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
 
@@ -84,8 +74,8 @@ namespace IRT.Viewer
 		protected override void LoadContent()
 		{
 			IScene scene;
-			scene = new Rainbow(Content, cam);
-			//scene = new RadioPropagation(Content, cam);
+			//scene = new Rainbow(Content, cam);
+			scene = new RadioPropagation(Content, cam);
 			//scene = new InhomoCube(Content, cam);
 			//scene = new SuperiorMirage(Content, cam);
 			//scene = new InferiorMirage(Content, cam);

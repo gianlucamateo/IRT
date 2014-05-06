@@ -45,7 +45,8 @@ namespace IRT.Viewer
 				// as our camera and projection.
 				foreach (BasicEffect effect in mm.Effects)
 				{
-					//effect.EnableDefaultLighting();
+					effect.EnableDefaultLighting();
+					effect.SpecularColor = Vector3.One * 0.1f;
 					effect.PreferPerPixelLighting = true;
 					effect.World = transforms[mm.ParentBone.Index] * Matrix.CreateScale(this.dimensions) * Matrix.CreateTranslation(this.position);
 					effect.View = cam.ViewMatrix;
