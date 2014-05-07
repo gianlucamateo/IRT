@@ -20,6 +20,8 @@ namespace IRT.Viewer
 {
 	public class IRTViewer : Game
 	{
+		#region ugly code, programmer's eyes only
+		
 		GraphicsDeviceManager graphics;
 		Camera cam;
 		private const int STEPSIZE = 5;
@@ -45,7 +47,6 @@ namespace IRT.Viewer
 			Window.Title = "IRT Viewer";
 		}
 
-	
 		protected override void Initialize()
 		{
 			this.IsMouseVisible = true;
@@ -66,19 +67,16 @@ namespace IRT.Viewer
 
 			base.Initialize();
 		}
+		#endregion
 
-		/// <summary>
-		/// LoadContent will be called once per game and is the place to load
-		/// all of your content.
-		/// </summary>
 		protected override void LoadContent()
 		{
 			IScene scene;
-			//scene = new Rainbow(Content, cam);
-			//scene = new RadioPropagation(Content, cam);
-			scene = new InhomoCube(Content, cam);
-			//scene = new SuperiorMirage(Content, cam);
-			//scene = new InferiorMirage(Content, cam);
+			scene = new Rainbow (Content, cam);					// Show this first
+			//scene = new RadioPropagation (Content, cam);		// Show this next
+			//scene = new SuperiorMirage (Content, cam);		// ...
+			//scene = new InferiorMirage (Content, cam);		// ...
+			//scene = new InhomoCube (Content, cam);			// Show this last
 
 			drawers = new List<IDrawable>();
 			rays = new List<IDrawable>();
@@ -88,6 +86,9 @@ namespace IRT.Viewer
 
 			generateHash(drawers);
 		}
+
+		#region crappy code
+		
 
 		private void generateHash(List<IDrawable> drawers)
 		{
@@ -105,20 +106,11 @@ namespace IRT.Viewer
 			Array.Sort(keyArr);
 		}
 
-		/// <summary>
-		/// UnloadContent will be called once per game and is the place to unload
-		/// all content.
-		/// </summary>
 		protected override void UnloadContent()
 		{
 			// TODO: Unload any non ContentManager content here
 		}
 
-		/// <summary>
-		/// Allows the game to run logic such as updating the world,
-		/// checking for collisions, gathering input, and playing audio.
-		/// </summary>
-		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Update(GameTime gameTime)
 		{
 			if (timestamp > 100000)
@@ -148,10 +140,6 @@ namespace IRT.Viewer
 			base.Update(gameTime);
 		}
 
-		/// <summary>
-		/// This is called when the game should draw itself.
-		/// </summary>
-		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.Clear(Color.Black);
@@ -199,5 +187,6 @@ namespace IRT.Viewer
 
 			base.Draw(gameTime);
 		}
+		#endregion
 	}
 }

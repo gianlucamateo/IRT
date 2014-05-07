@@ -34,7 +34,7 @@ namespace IRT.Viewer
 		private void InitDayConfig(List<IDrawable> shapes)
 		{
 			Vector3 dayPos = new Vector3(-2f, 0f, 0f);
-			Func<float, float> inhomo = r => 15f / r;
+			Func<float, float> inhomo = r => 15f / (r * r);
 
 			// Earth
 			Shape earth = new Sphere(dayPos, 1f, 5);
@@ -96,7 +96,7 @@ namespace IRT.Viewer
 		private void InitNightConfig(List<IDrawable> shapes)
 		{
 			Vector3 nightPos = new Vector3(2f, 0f, 0f);
-			Func<float, float> inhomo = r => 15f / r;
+			Func<float, float> inhomo = r => 15f / (r*r);
 
 			// Earth
 			Shape earth = new Sphere(nightPos, 1f, 5);
