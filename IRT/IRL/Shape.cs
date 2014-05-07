@@ -116,7 +116,7 @@ namespace IRT.Engine
 				// Compute and return reflected vector
 				normal *= -1;
 				Vector3.Reflect(ref incident, ref normal, out reflected);
-				Console.WriteLine("Thetain: {0}, ThetaOut: {1}", thetaIn, thetaOut);
+				Console.WriteLine("Thetain: {0}, ThetaOut: {1}; nIn: {2}, nOut: {3}", thetaIn, thetaOut, nIn, outerRefractionIndex);
 			}
 			else
 			{
@@ -155,7 +155,7 @@ namespace IRT.Engine
 				// Compute and return reflected vector
 				normal *= -1;
 				Vector3.Reflect(ref incident, ref normal, out reflected);
-				Console.WriteLine("Thetain: {0}, ThetaOut: {1}", thetaIn, thetaOut);
+				Console.WriteLine ("Thetain: {0}, ThetaOut: {1}; nIn: {2}, nOut: {3}", thetaIn, thetaOut, nIn, outerRefractionIndex);
 			}
 		}
 

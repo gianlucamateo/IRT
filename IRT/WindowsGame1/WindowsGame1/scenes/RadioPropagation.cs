@@ -18,7 +18,7 @@ namespace IRT.Viewer
 			: base(cm, cam)
 		{
 			this.maxCount = 2000;
-			this.maxSpawns = 10;
+			this.maxSpawns = 8;
 
 			cam.Position = new Vector3(0f, 0f, 18f);
 		}
@@ -81,7 +81,10 @@ namespace IRT.Viewer
 			space.AddShape(fLayer);
 
 			// Spawn radio waves
-			space.SpawnCluster(dayPos + new Vector3(-1.06f, 0f, 0f), new Vector3(0f, 1f, 0f), 600f, 650f, 1);
+			space.SpawnCluster (dayPos + new Vector3 (-1.01f, 0f, 0f), new Vector3 (-0.5f, 1f, 0f), 600f, 650f, 1);
+			space.SpawnCluster (dayPos + new Vector3 (-1.01f, 0f, 0f), new Vector3 (-0.25f, 1f, 0f), 600f, 650f, 1);
+			space.SpawnCluster (dayPos + new Vector3 (-1.01f, 0f, 0f), new Vector3 (-0.75f, 1f, 0f), 600f, 650f, 1);
+
 
 			Texture2D earthTexture = Content.Load<Texture2D>("Textures\\earth_texture");
 
@@ -96,13 +99,13 @@ namespace IRT.Viewer
 		private void InitNightConfig(List<IDrawable> shapes)
 		{
 			Vector3 nightPos = new Vector3(2f, 0f, 0f);
-			Func<float, float> inhomo = r => 15f / (r*r);
+			Func<float, float> inhomo = r => 10f / (r*r);
 
 			// Earth
 			Shape earth = new Sphere(nightPos, 1f, 5);
 			earth.Inhomogeniety = new Inhomogeneity(
 				r => 1f,
-				l => 1000f,
+				l => 80f,
 				nightPos);
 			space.AddShape(earth);
 
@@ -130,13 +133,15 @@ namespace IRT.Viewer
 			Shape fLayer = new Sphere(nightPos, 1.6f, 1);
 			fLayer.Inhomogeniety = new Inhomogeneity(
 				inhomo,
-				l => 1.7f,
+				l => 20f,
 				nightPos
 				);
 			space.AddShape(fLayer);
 
 			// Spawn radio waves
-			space.SpawnCluster(nightPos + new Vector3(-1.06f, 0f, 0f), new Vector3(0f, 1f, 0f), 600f, 650f, 1);
+			space.SpawnCluster (nightPos + new Vector3 (-1.01f, 0f, 0f), new Vector3 (-0.5f, 1f, 0f), 600f, 650f, 1);
+			space.SpawnCluster (nightPos + new Vector3 (-1.01f, 0f, 0f), new Vector3 (-0.25f, 1f, 0f), 600f, 650f, 1);
+			space.SpawnCluster (nightPos + new Vector3 (-1.01f, 0f, 0f), new Vector3 (-0.75f, 1f, 0f), 600f, 650f, 1);
 
 			Texture2D earthTextureNight = Content.Load<Texture2D>("Textures\\earth_texture_night");
 
