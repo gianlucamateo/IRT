@@ -56,7 +56,7 @@ namespace IRT.Viewer
 		{
 			float initial = 1.02f;
 			
-			return initial - 30f*(y-0.1f);
+			return initial - 16.5f*(y-0.1f);
 		}
 	}
 }

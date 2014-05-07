@@ -17,7 +17,7 @@ namespace IRT.Viewer
 		public InhomoCube(ContentManager cm, Camera cam)
 			: base(cm, cam)
 		{
-			this.maxCount = 2000;
+			this.maxCount = 20000;
 			this.maxSpawns = 10;
 		}
 
@@ -25,13 +25,13 @@ namespace IRT.Viewer
 		{
 			this.rays = rays;
 
-			Shape cuboid = new Cuboid(Vector3.Zero, 4f, 1f, 1f, 0, 1f);
-			cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 1+ 20 / (y + 1f) + 5*z, lambda => 1f + 0.001f * lambda, Vector3.Zero);
+			Shape cuboid = new Cuboid(Vector3.Zero, 4f, 2f, 1f, 0, 1f);
+			cuboid.Inhomogeniety = new Inhomogeneity((x, y, z) => 1 + 30 * (float)Math.Sqrt(y + 4f) + 2 * z, lambda => 1f + 0.0003f * lambda, Vector3.Zero);
 
 			space.AddShape(cuboid);
 
-			Vector3 spawnPoint = new Vector3(-0.8f, 0.3f, 0f);
-			Vector3 spawnDirection = new Vector3(1f, 1f, 0);
+			Vector3 spawnPoint = new Vector3(-0.8f, -0.8f, 0f);
+			Vector3 spawnDirection = new Vector3(1f, 0, 0);
 
 			space.SpawnCluster(spawnPoint, spawnDirection, 475f, 650f, 5);
 
