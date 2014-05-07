@@ -7,7 +7,7 @@ namespace IRT.Viewer
 {
 	public class Camera
 	{
-		public Matrix CameraMatrix { get { return _camMatrix; } private set { this._camMatrix = value; } }
+		public Matrix CameraMatrix { get { return _camMatrix; }  set { this._camMatrix = value; } }
 		public Matrix ViewMatrix { get { return Matrix.Invert(this.CameraMatrix); } }
 		public Matrix ProjectionMatrix { get { return _projectionMatrix; } private set { _projectionMatrix = value; } }
 

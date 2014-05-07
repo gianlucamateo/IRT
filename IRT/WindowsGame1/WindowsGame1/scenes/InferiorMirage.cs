@@ -20,7 +20,8 @@ namespace IRT.Viewer
 			this.maxCount = 8000;
 			this.maxSpawns = 10;
 
-			cam.Position = new Vector3(0f, 0f, 20f);
+			cam.Position = new Vector3(-6f, 0f, 3f);
+			cam.CameraMatrix = Matrix.Invert(Matrix.CreateLookAt(cam.Position, Vector3.Zero, Vector3.UnitY));
 		}
 
 		public override void Load(List<IDrawable> rays, List<IDrawable> shapes)

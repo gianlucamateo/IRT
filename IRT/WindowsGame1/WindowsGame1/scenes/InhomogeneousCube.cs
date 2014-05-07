@@ -19,6 +19,9 @@ namespace IRT.Viewer
 		{
 			this.maxCount = 20000;
 			this.maxSpawns = 10;
+
+			cam.Position = new Vector3(-10f, 0f, 1f);
+			cam.CameraMatrix = Matrix.Invert(Matrix.CreateLookAt(cam.Position, Vector3.Zero, Vector3.UnitY));
 		}
 
 		public override void Load(List<IDrawable> rays, List<IDrawable> shapes)
