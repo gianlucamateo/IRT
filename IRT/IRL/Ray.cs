@@ -125,20 +125,20 @@ namespace IRT.Engine
 				}
 
 				Vector3 rayDir = direction, dirStep = Vector3.Zero;
-				Vector3 sum = Vector3.Zero;//, doubleSum = Vector3.Zero;
+				Vector3 sum = Vector3.Zero;
 
 				for (float dl = 0f; dl < Space.RAY_RESOLUTION; dl += Space.COMPUTE_RESOLUTION)
 				{
-					dirStep = dl * rayDir;
+					dirStep = dl * rayDir; 
 					Vector3 gradient = medium.GetGradient(position + dirStep, wavelength);
 					//Math.Abs to catch negative refractive indices
-					Vector3 dr = gradient * Space.COMPUTE_RESOLUTION * 
+					//COMPUTE_RESOLUTION denotes the inner 'dl
+					Vector3 dr = gradient * Space.COMPUTE_RESOLUTION *
 						Math.Abs(medium.GetRefractionIndex(position + dirStep, wavelength));
-					sum += dr;
-					
+					sum += dr;						//Integrate					
 				}
 				this.setIntensity(this.Intensity * medium.getAttenuation());
-				sum *= Space.RAY_RESOLUTION;
+				sum *= Space.RAY_RESOLUTION;		//RAY_RESOLUTION denotes the outer 'dl'
 				rayDir += sum;
 				rayDir.Normalize();
 
