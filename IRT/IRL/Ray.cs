@@ -125,7 +125,7 @@ namespace IRT.Engine
 				}
 
 				Vector3 rayDir = direction, dirStep = Vector3.Zero;
-				Vector3 sum = Vector3.Zero, doubleSum = Vector3.Zero;
+				Vector3 sum = Vector3.Zero;//, doubleSum = Vector3.Zero;
 
 				for (float dl = 0f; dl < Space.RAY_RESOLUTION; dl += Space.COMPUTE_RESOLUTION)
 				{
@@ -135,11 +135,11 @@ namespace IRT.Engine
 					Vector3 dr = gradient * Space.COMPUTE_RESOLUTION * 
 						Math.Abs(medium.GetRefractionIndex(position + dirStep, wavelength));
 					sum += dr;
-					doubleSum += sum * Space.COMPUTE_RESOLUTION;
+					
 				}
 				this.setIntensity(this.Intensity * medium.getAttenuation());
-
-				rayDir += doubleSum;
+				sum *= Space.RAY_RESOLUTION;
+				rayDir += sum;
 				rayDir.Normalize();
 
 				this.position += rayDir * Space.RAY_RESOLUTION;

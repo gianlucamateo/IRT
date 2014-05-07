@@ -8,7 +8,7 @@ namespace IRT.Engine
 {
 	public class Space
 	{
-		public const float RAY_RESOLUTION = 0.001f, COMPUTE_RESOLUTION = 0.0001f, DEFAULT_MIN_INTENSITY = 0.1f;
+		public const float RAY_RESOLUTION = 0.001f, COMPUTE_RESOLUTION = 0.00001f, DEFAULT_MIN_INTENSITY = 0.1f;
 		public float refractionIndex;
 		private List<Shape> shapes;
 		public List<Ray> rays;
