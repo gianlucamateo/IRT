@@ -1,6 +1,10 @@
 IRT - Inhomogeneous Ray Tracing
 ================================
 
+Download
+--------
+Click `Download Zip` on the right side of this text and extract the downloaded zip file.
+
 Running
 --------
 Run precompiled examples found in `/Examples` folder. Runs on windows only, for now. 
