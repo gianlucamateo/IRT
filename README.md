@@ -24,3 +24,10 @@ Controls
 | Restart animation       | R             |
 | Pause animation       | Space             |
 | Unpause animation       | Alt             |
+
+
+Edit source & compiling
+-----------------------
+
+Download `Visual C# 2010 Express` from http://www.visualstudio.com/en-us/downloads#d-2010-express. Edit source code and compile program using Visual Studio.
+
