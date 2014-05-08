@@ -26,6 +26,9 @@ namespace IRT.Engine
 			this.refractionIndex = refractionIndex;
 		}
 
+		/// <summary>
+		/// Spawn Ray with parameters
+		/// </summary>
 		public void SpawnRay(Vector3 position, Vector3 direction, float wavelength, float intensity = 1f, int timestamp = 0, float minIntensity = Space.DEFAULT_MIN_INTENSITY)
 		{
 			if (intensity > 0)
@@ -34,6 +37,9 @@ namespace IRT.Engine
 			}
 		}
 
+		/// <summary>
+		/// Spawn a number of rays with indicated wavelengths
+		/// </summary>
 		public void SpawnCluster(Vector3 position, Vector3 direction, float begin, float end, int numRays, float intensity = 1f, float minInt = Space.DEFAULT_MIN_INTENSITY, int timestamp = 0)
 		{
 			for (int i = 0; i < numRays; i++)
@@ -43,31 +49,29 @@ namespace IRT.Engine
 			}
 		}
 
+		/// <summary>
+		/// Start the simulation
+		/// </summary>
 		public void Update(int maxSpawns = 4, int count = 1)
 		{
 			int iterations = 0;
 
+			// Loop while ray is not dead and still able to spawn child rays
 			do
 			{
 				rays = newlySpawned;
 				newlySpawned = new List<Ray>();
 
-				/*for (int i = 0; i < count; i++)
-				{
-					//Parallel.ForEach(rays, ray => { ray.Propagate(); });
-					rays.ForEach(ray => ray.Propagate());
-				}*/
-
+				// Propagate each ray in parallel for faster performance
 				Parallel.ForEach(rays, ray => ray.Propagate(count));
-
-				foreach (var ray in this.rays)
-				{
-					finishedRays.Add(ray);
-				}
+				// Add finished rays to collection
+				rays.ForEach(ray => finishedRays.Add(ray));
 				iterations++;
+
 			} while (this.newlySpawned.Count > 0 && iterations < maxSpawns);
 		}
 
+		// Get the medium at a given position within space
 		public Shape GetMedium(Vector3 r)
 		{
 			int zIndex = -1;
@@ -94,6 +98,4 @@ namespace IRT.Engine
 			this.shapes.Add(shape);
 		}
 	}
-
-
 }

@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework;
 
 namespace IRT.Engine
 {
+	/// <summary>
+	/// Represents a cuboid shaped medium
+	/// </summary>
 	public class Cuboid : Shape, IShape
 	{
 		float heightY, widthX, depthZ;

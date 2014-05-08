@@ -20,7 +20,7 @@ namespace IRT.Viewer
 {
 	public class IRTViewer : Game
 	{
-		#region ugly code, programmer's eyes only
+		#region Drawing code
 		
 		GraphicsDeviceManager graphics;
 		Camera cam;
@@ -69,6 +69,10 @@ namespace IRT.Viewer
 		}
 		#endregion
 
+		/// <summary>
+		/// Load a specified scene and simulate ray propagation
+		/// Uncomment scene to load the respective scene
+		/// </summary>
 		protected override void LoadContent()
 		{
 			IScene scene;
@@ -88,7 +92,7 @@ namespace IRT.Viewer
 			generateHash(drawers);
 		}
 
-		#region crappy code
+		#region Drawing Code cont.
 		
 
 		private void generateHash(List<IDrawable> drawers)

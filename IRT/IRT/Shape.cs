@@ -6,12 +6,15 @@ using Microsoft.Xna.Framework;
 
 namespace IRT.Engine
 {
+	/// <summary>
+	/// A Shape represents a medium in the simulation
+	/// </summary>
 	public abstract class Shape : IShape
 	{
-		public Inhomogeneity Inhomogeniety;
+		public Inhomogeneity Inhomogeniety;	// n(r) = ..., medium may be inhomogenuous
 		protected Vector3 Center;
 		public int zIndex;
-		private float attenuation;
+		private float attenuation;			// Attenuation in medium
 		private bool interact;
 
 		public Vector3 Position
@@ -27,6 +30,9 @@ namespace IRT.Engine
 			this.interact = interact;
 		}
 
+		/// <summary>
+		/// Nummerically compute gradient of refractive index at specified position for a specific wavelength
+		/// </summary>
 		public Vector3 GetGradient(Vector3 r, float wavelength, float step = Space.COMPUTE_RESOLUTION)
 		{
 			Vector3 xDiff = new Vector3(step, 0, 0);
@@ -42,6 +48,10 @@ namespace IRT.Engine
 			return gradient;
 		}
 
+		/// <summary>
+		/// Compute refractive index at specified location for a specific wavelength,
+		/// i.e. evaluate Inhomogeniety at location and wavelength
+		/// </summary>
 		public float GetRefractionIndex(Vector3 r, float wavelength)
 		{
 			return this.Inhomogeniety.Evaluate(r, wavelength);
@@ -49,6 +59,9 @@ namespace IRT.Engine
 
 		public abstract bool IsInside(Vector3 r);
 
+		/// <summary>
+		/// Solve Snell's Law for medium change
+		/// </summary>
 		public void Interact(Vector3 r, Vector3 incident, out Vector3 reflected, out Vector3 refracted, out float refl, float outerRefractionIndex, float wavelength, out bool spawnRefl, out bool spawnRefr)
 		{
 			if (this.interact == false)
@@ -61,6 +74,7 @@ namespace IRT.Engine
 				spawnRefr = true;
 				return;
 			}
+
 			Vector3 normal = GetNormal(r);
 			incident.Normalize();
 			normal.Normalize();
@@ -100,11 +114,6 @@ namespace IRT.Engine
 					refracted = Vector3.Transform(normal, rot);
 				}
 
-
-
-				Console.WriteLine("Refracted: {0}", refracted);
-				// TODO: handle TIR
-
 				if (Math.Abs(nIn - outerRefractionIndex) < 0.02)
 				{
 					spawnRefl = false;
@@ -133,15 +142,15 @@ namespace IRT.Engine
 				axis.Normalize();
 
 				Matrix rot = Matrix.CreateFromAxisAngle(axis, thetaOut);
-				//TIR
 
 				if (Math.Abs(nIn - outerRefractionIndex) < Space.COMPUTE_RESOLUTION)
 				{
 					spawnRefl = false;
 				}
 
+				// Handle total internal reflection, compute critical angle
 				float critAngle = (float)Math.Asin(nIn / outerRefractionIndex);
-				if (thetaIn >= critAngle)//(thetaOut >= MathHelper.PiOver2 || float.IsNaN(thetaOut))
+				if (thetaIn >= critAngle)
 				{
 					refl = 1f;
 					spawnRefr = false;
@@ -152,6 +161,7 @@ namespace IRT.Engine
 					refl = reflectance(thetaIn, nIn, outerRefractionIndex);
 					refracted = Vector3.Transform(normal, rot);
 				}
+
 				// Compute and return reflected vector
 				normal *= -1;
 				Vector3.Reflect(ref incident, ref normal, out reflected);
@@ -159,6 +169,9 @@ namespace IRT.Engine
 			}
 		}
 
+		/// <summary>
+		/// Calculate Fresnel Equation, i.e Reflectance and Transmission, T = 1 - R
+		/// </summary>
 		private float reflectance(float thetaIn, float n1, float n2)
 		{
 			float scaling = 1;

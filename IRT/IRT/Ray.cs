@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework;
 
 namespace IRT.Engine
 {
+	/// <summary>
+	/// A segment on the ray
+	/// </summary>
 	public struct RaySegment
 	{
 		public int timeStamp;
@@ -19,6 +22,10 @@ namespace IRT.Engine
 			this.intensity = intensity;
 		}
 	}
+
+	/// <summary>
+	/// Class containing all ray related logic
+	/// </summary>
 	public class Ray
 	{
 		public List<RaySegment> segments;
@@ -66,12 +73,13 @@ namespace IRT.Engine
 			for (int i = 0; i < count; i++) Propagate();
 		}
 
+		/// <summary>
+		/// Calculate propagation for one time step, i.e. solve ray equation
+		/// </summary>
 		public void Propagate()
 		{
-			if (dead)
-			{
-				return;
-			}
+			// Do not propagate if dead
+			if (dead) return;
 
 			Vector3 predictedPosition = position + direction * Space.RAY_RESOLUTION;
 			Shape nextMedium = space.GetMedium(predictedPosition);
@@ -81,10 +89,12 @@ namespace IRT.Engine
 			// Check for medium change
 			if (nextMedium != medium)
 			{
+				// Medium change detected, handle reflection + refraction using 3D Snell's Law
 				float reflectance;
 				Vector3 reflected, refracted;
 				if (nextMedium == null)
 				{
+					// Next medium is empty space
 					medium.Interact(position, direction, out reflected, out refracted, out reflectance, space.refractionIndex, wavelength, out spawnRefl, out spawnRefr);
 				}
 				else
@@ -93,22 +103,18 @@ namespace IRT.Engine
 					nextMedium.Interact(position, direction, out reflected, out refracted, out reflectance, previousRefrac, wavelength, out spawnRefl, out spawnRefr);
 				}
 
-				if (!spawnRefl)
-				{
-					reflectance = 0;
-				}
-				if (!spawnRefr)
-				{
-					reflectance = 1;
-				}
+				if (!spawnRefl)	reflectance = 0;
+				if (!spawnRefr)	reflectance = 1;
 
 				if (spawnRefl)
 				{
+					// Spawn reflected ray
 					Console.WriteLine("spawning refl");
 					this.space.SpawnRay(position, reflected, wavelength, this.Intensity * (reflectance), this.timeStamp + 1, this.minIntensity);
 				}
 				if (spawnRefr)
 				{
+					// Spawn refracted ray
 					Console.WriteLine("spawning refr");
 					this.space.SpawnRay(predictedPosition, refracted, wavelength, this.Intensity * (1f - reflectance), this.timeStamp + 1, this.minIntensity);
 				}
@@ -120,8 +126,10 @@ namespace IRT.Engine
 			}
 			else
 			{
+				// No medium change detected, solve ray equation and propagate within medium
 				if (medium == null)
 				{
+					// Ray is in void space, propagate without interaction
 					this.position = predictedPosition;
 					this.segments.Add(new RaySegment(this.timeStamp, position, this.Intensity));
 					timeStamp++;
@@ -129,9 +137,11 @@ namespace IRT.Engine
 					return;
 				}
 
+				// Solve ray equation by integrating over ray segment
 				Vector3 rayDir = direction, dirStep = Vector3.Zero;
 				Vector3 sum = Vector3.Zero;
 
+				// Integrate
 				for (float dl = 0f; dl < Space.RAY_RESOLUTION; dl += Space.COMPUTE_RESOLUTION)
 				{
 					dirStep = dl * rayDir; 
@@ -142,15 +152,18 @@ namespace IRT.Engine
 						Math.Abs(medium.GetRefractionIndex(position + dirStep, wavelength));
 					sum += dr;						//Integrate					
 				}
-				this.setIntensity(this.Intensity * medium.getAttenuation());
+
 				sum *= Space.RAY_RESOLUTION;		//RAY_RESOLUTION denotes the outer 'dl'
 				rayDir += sum;
 				rayDir.Normalize();
 
+				// Update ray properties
 				this.position += rayDir * Space.RAY_RESOLUTION;
 				this.direction = rayDir;
+				this.setIntensity(this.Intensity * medium.getAttenuation());
 			}
 
+			// Add new segment to ray
 			this.segments.Add(new RaySegment(this.timeStamp, position, this.Intensity));
 			timeStamp++;
 		}

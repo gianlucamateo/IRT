@@ -128,11 +128,11 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\IRL\IRT.csproj">
+    <ProjectReference Include="..\..\IRT\IRT.csproj">
       <Project>{44E29DE0-AAD5-46A9-AFDF-5BBB464DA4CA}</Project>
       <Name>IRT</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WindowsGame1Content\IRTViewerContent.contentproj">
+    <ProjectReference Include="..\IRTViewerContent\IRTViewerContent.contentproj">
       <Name>IRTViewerContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
       <Project>{C0F5D3D1-BEC6-486D-BB09-A20726E09835}</Project>
