@@ -72,10 +72,11 @@ namespace IRT.Viewer
 		protected override void LoadContent()
 		{
 			IScene scene;
-			//scene = new Rainbow (Content, cam);					// Show this first
-			scene = new RadioPropagation (Content, cam);		// Show this next
+			scene = new Rainbow (Content, cam);					// Show this first
+			//scene = new RadioPropagation (Content, cam);		// Show this next
 			//scene = new SuperiorMirage (Content, cam);		// ...
 			//scene = new InferiorMirage (Content, cam);		// ...
+			//scene = new AstronomicRefraction(Content, cam);	// Show if time
 			//scene = new InhomoCube (Content, cam);			// Show this last
 
 			drawers = new List<IDrawable>();

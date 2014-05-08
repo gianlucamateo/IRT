@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace IRT.Engine
 {
@@ -50,13 +52,14 @@ namespace IRT.Engine
 				rays = newlySpawned;
 				newlySpawned = new List<Ray>();
 
-				for (int i = 0; i < count; i++)
+				/*for (int i = 0; i < count; i++)
 				{
-					foreach (var ray in this.rays)
-					{
-						ray.Propagate();
-					}
-				}
+					//Parallel.ForEach(rays, ray => { ray.Propagate(); });
+					rays.ForEach(ray => ray.Propagate());
+				}*/
+
+				Parallel.ForEach(rays, ray => ray.Propagate(count));
+
 				foreach (var ray in this.rays)
 				{
 					finishedRays.Add(ray);

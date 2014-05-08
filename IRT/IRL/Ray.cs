@@ -61,6 +61,11 @@ namespace IRT.Engine
 			}
 		}
 
+		public void Propagate(int count)
+		{
+			for (int i = 0; i < count; i++) Propagate();
+		}
+
 		public void Propagate()
 		{
 			if (dead)
